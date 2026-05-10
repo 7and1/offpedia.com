@@ -1,6 +1,6 @@
 ---
 title: Obsidian vs Logseq
-description: 从数据格式、本地优先、写作体验和发布路径比较 Obsidian 与 Logseq。
+description: Compare Obsidian and Logseq by data format, local-first design, writing experience, outlining, and publishing paths.
 customSlug: obsidian-vs-logseq
 status: p2
 tools:
@@ -17,25 +17,25 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 结论
+## Verdict
 
-如果你主要写长文、做公开发布、维护 Markdown 文件夹，优先选 Obsidian。
+Choose Obsidian if you mainly write long-form notes, publish Markdown, and want a file-based vault.
 
-如果你偏大纲式思考、块引用和每日笔记驱动，Logseq 很适合。
+Choose Logseq if your work starts from outlines, block references, and daily-note-driven thinking.
 
-## 对比表
+## Comparison table
 
-| 维度 | Obsidian | Logseq |
+| Criteria | Obsidian | Logseq |
 |---|---|---|
-| 主要体验 | 文档 / 页面 | 大纲 / 块 |
-| 数据格式 | Markdown 文件夹 | Markdown / Org 文件 |
-| 长文写作 | 强 | 中 |
-| 大纲思考 | 中 | 强 |
-| 发布生态 | 强 | 中 |
-| 新手门槛 | 中 | 中 |
+| Primary experience | Documents and pages | Outlines and blocks |
+| Data format | Markdown folders | Markdown or Org files |
+| Long-form writing | Strong | Medium |
+| Outlining | Medium | Strong |
+| Publishing ecosystem | Strong | Medium |
+| Beginner friction | Medium | Medium |
 
-## Offpedia 推荐
+## Offpedia recommendation
 
-- 写作者：Obsidian + GitHub
-- 研究者：Obsidian + Zotero 或 Logseq + Zotero
-- 大纲思考者：Logseq
+- Writers: Obsidian + GitHub
+- Researchers: Obsidian + Zotero or Logseq + Zotero
+- Outline-first thinkers: Logseq

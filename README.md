@@ -1,89 +1,88 @@
-# Offpedia P2 Starter
+# Offpedia
 
-Offpedia 是一个围绕 **本地优先 / 离线可用 / 自托管 / Git-based publishing** 的工作流百科站。
+Offpedia is a workflow encyclopedia for **local-first, offline-capable, self-hostable, Git-based publishing** systems.
 
-它不是普通工具导航站，而是一个由三层组成的产品：
+It is not a generic tool directory. It has three product layers:
 
-1. **Wiki**：解释工具、概念、数据格式、工作流术语。
-2. **Stacks**：把多个工具组合成可复制的工作流方案。
-3. **Kits**：提供可下载 / 可 fork / 可直接使用的 Obsidian Vault 或 GitHub Template Repo。
+1. **Wiki**: explains tools, concepts, data formats, and workflow terms.
+2. **Stacks**: combines tools into repeatable workflow patterns.
+3. **Kits**: provides downloadable, forkable, ready-to-use Obsidian vaults or GitHub template projects.
 
-本仓库包含：
+This repository includes:
 
-- 完整 P2 产品蓝图与执行文档
-- Astro 内容站代码骨架
-- Wiki / Stack / Kit / Guide / Compare 示例内容
-- Writer Vault Starter Kit 示例
-- GitHub Actions 部署模板
-- 本地搜索索引生成脚本
-- 简易 PWA 缓存逻辑
+- Product planning and execution docs
+- An Astro content-site codebase
+- Example Wiki, Stack, Kit, Guide, and Compare content
+- A Writer Vault Starter Kit
+- A GitHub Actions deployment workflow
+- A local search-index generation script
+- A simple PWA caching layer
 
-## 快速开始
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-打开：
+Open:
 
-```bash
+```txt
 http://localhost:4321
 ```
 
-构建：
+Build:
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## 推荐部署
+## Recommended Deployment
 
-- GitHub 仓库管理内容
-- Cloudflare Pages / Vercel 部署前台
-- Obsidian 打开 `src/content` 作为内容 Vault
-- 每个 Kit 放在 `vaults/` 或独立 Template Repo
+- Manage content in a GitHub repository.
+- Deploy the frontend with GitHub Pages, Cloudflare Pages, or Vercel.
+- Open `src/content` in Obsidian as a content vault.
+- Keep each kit in `vaults/` or in a separate template repository.
 
-## 目录结构
+## Structure
 
 ```txt
 .
-├── docs/                         # 完整产品文档
+├── docs/                         # Product documentation
 ├── src/
-│   ├── content/                  # Offpedia 内容库，可用 Obsidian 打开
-│   ├── components/               # Astro 组件
-│   ├── layouts/                  # 页面布局
-│   ├── pages/                    # 路由页面
-│   └── styles/                   # 全局样式
-├── vaults/                       # 可下载 Obsidian Starter Kits
-├── scripts/                      # 内容校验和搜索索引脚本
-├── public/                       # 静态资源、manifest、service worker
-└── .github/workflows/            # 部署 CI
+│   ├── content/                  # Offpedia content library
+│   ├── components/               # Astro components
+│   ├── layouts/                  # Page layouts
+│   ├── pages/                    # Routes
+│   └── styles/                   # Global styles
+├── vaults/                       # Downloadable Obsidian starter kits
+├── scripts/                      # Content validation and search index scripts
+├── public/                       # Static assets, manifest, service worker
+└── .github/workflows/            # Deployment CI
 ```
 
-## 内容类型
+## Content Types
 
-- `wiki`：工具词条 / 概念词条
-- `stacks`：工作流组合页
-- `kits`：模板项目页
-- `guides`：操作指南页
-- `compare`：对比页
+- `wiki`: tool and concept entries
+- `stacks`: workflow combination pages
+- `kits`: template project pages
+- `guides`: step-by-step workflow guides
+- `compare`: comparison pages
 
-## P2 核心目标
+## Core Goal
 
-P2 的目标不是做社区，也不是做 SaaS，而是先做出一个可以被搜索、浏览、下载、复用的 **可复制工作流平台**。
+The goal is not to build a forum or SaaS editor first. The first product loop is a searchable, browsable, downloadable, reusable workflow platform.
 
-最小闭环：
+Minimal loop:
 
 ```txt
-用户搜索问题 → 进入 Stack → 理解方案 → 下载 Kit → 按 Guide 跑通 → 回到 Wiki 深挖概念
+Search problem -> open Stack -> understand workflow -> download Kit -> follow Guide -> return to Wiki for concepts
 ```
 
-## 许可证建议
+## License Guidance
 
-- 网站代码：MIT
-- 原创内容：CC BY 4.0 或 CC BY-SA 4.0
-- Kit 模板：MIT / CC BY 4.0 双许可
+- Site code: MIT
+- Original content: CC BY 4.0 or CC BY-SA 4.0
+- Kit templates: MIT / CC BY 4.0 dual license
 
-正式上线前请把 `LICENSE` 和 `docs/08-LEGAL-CONTENT-POLICY.md` 按你的商业计划确认。
+Before a public community launch, confirm `LICENSE` and `docs/08-LEGAL-CONTENT-POLICY.md` against the commercial plan.

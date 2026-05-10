@@ -1,16 +1,15 @@
 ---
 title: Writer Vault Starter
-description: 面向写作者的 Obsidian Vault 模板，包含目录结构、文章模板、参考资料模板和 GitHub 同步说明。
+description: An Obsidian vault template for writers, with folders for drafts, essays, references, publishing records, and GitHub sync.
 customSlug: writer-vault-starter
 status: p2
 stack: writer-obsidian-github
-templateRepo: https://github.com/offpedia/writer-vault-starter
+templateRepo: null
 downloadUrl: /downloads/writer-vault-starter.zip
-obsidianVersion: 1.x
+obsidianVersion: 1.5+
 plugins:
-  - Dataview
-  - Templater
-  - Obsidian Git
+  - Templates
+  - Daily notes
 folders:
   - 00 Inbox
   - 10 Drafts
@@ -22,36 +21,36 @@ folders:
 relatedGuides:
   - setup-obsidian-github-sync
 tags:
-  - vault
-  - writer
+  - kit
+  - writing
   - obsidian
 updatedAt: 2026-05-09
 ---
 
-## Kit 简介
+## Kit overview
 
-Writer Vault Starter 是给写作者准备的 Obsidian Vault 模板。
+Writer Vault Starter is an Obsidian vault template for writers.
 
-它不是一个复杂系统，而是一套能长期维护的最小结构：
+It is intentionally small. The structure covers:
 
-- 想法捕捉
-- 草稿管理
-- 文章归档
-- 参考资料
-- 发布记录
-- 模板复用
+- Idea capture
+- Draft management
+- Essay archiving
+- Reference notes
+- Publishing records
+- Reusable templates
 
-## 适合谁
+## Best for
 
-- 写博客的人
-- 写 newsletter 的人
-- 写产品日志的人
-- 需要长期管理草稿的人
+- Blog writers
+- Newsletter authors
+- Product log writers
+- People who need long-term draft management
 
-## 文件夹结构
+## Folder structure
 
 ```txt
-Writer Vault Starter/
+Writer Vault/
 ├── 00 Inbox/
 ├── 10 Drafts/
 ├── 20 Essays/
@@ -61,19 +60,19 @@ Writer Vault Starter/
 └── 90 Templates/
 ```
 
-## 内置模板
+## Included templates
 
-- Essay Template
-- Reference Note Template
-- Daily Capture Template
+- Essay template
+- Reference note template
+- Daily capture template
 
-## 安装方式
+## Setup
 
-1. 下载 ZIP。
-2. 解压到本地。
-3. 用 Obsidian 打开这个文件夹。
-4. 按 Guide 配置 GitHub 同步。
+1. Download the ZIP.
+2. Unzip it locally.
+3. Open the folder in Obsidian.
+4. Follow the GitHub sync guide if you want version history and backup.
 
-## 下一步
+## Next step
 
-看对应 Guide：[如何用 GitHub 同步 Obsidian](/guides/setup-obsidian-github-sync)。
+Read [How to sync Obsidian with GitHub](/guides/setup-obsidian-github-sync).

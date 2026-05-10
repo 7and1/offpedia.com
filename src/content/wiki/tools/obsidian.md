@@ -1,6 +1,6 @@
 ---
 title: Obsidian
-description: 本地优先的 Markdown 知识库工具，适合搭建长期可迁移的个人知识系统。
+description: A local-first Markdown knowledge-base tool for building durable and portable personal knowledge systems.
 customSlug: tools/obsidian
 kind: tool
 category: knowledge-base
@@ -43,44 +43,44 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 一句话定义
+## One-line definition
 
-Obsidian 是一个以本地 Markdown 文件夹为核心的知识库工具。
+Obsidian is a knowledge-base app built around local Markdown folders.
 
-## 为什么适合 Offpedia
+## Why it fits Offpedia
 
-它非常符合 Offpedia 的核心判断：数据优先属于用户，工具只是打开数据的一种方式。
+Obsidian matches Offpedia's core belief: data should belong to the user, and tools are just interfaces for that data.
 
-Obsidian 的优势不是“功能最多”，而是：
+Its main advantages are practical:
 
-- 笔记以普通 Markdown 文件保存。
-- Vault 本质上是文件夹。
-- 可用 Git、Syncthing、iCloud、Dropbox 等方式同步。
-- 即使未来不用 Obsidian，文件仍可读、可迁移。
+- Notes are stored as normal Markdown files.
+- A vault is just a folder.
+- You can sync with Git, Syncthing, iCloud, Dropbox, or another file-sync layer.
+- If you stop using Obsidian, the files remain readable and portable.
 
-## 适合谁
+## Best for
 
-- 写作者
-- 研究者
-- 独立开发者
-- 想搭建个人 Wiki 的用户
-- 不希望内容被锁进云端数据库的人
+- Writers
+- Researchers
+- Indie makers
+- Personal wiki builders
+- People who do not want their knowledge base locked inside a cloud database
 
-## 不适合谁
+## Not ideal for
 
-- 只想多人实时协作编辑的人
-- 完全不想管理文件的人
-- 想要开箱即用团队知识库的人
+- People who need real-time collaborative editing
+- People who do not want to manage files
+- Teams that need a turnkey company knowledge base
 
-## 常见搭配
+## Common pairings
 
-- GitHub：版本管理与备份。
-- Quartz：把 Vault 发布成网站。
-- Zotero：研究资料管理。
-- Syncthing：多设备本地同步。
+- GitHub for version control and backup.
+- Quartz for publishing a vault as a website.
+- Zotero for research source management.
+- Syncthing for local-first device sync.
 
-## Offpedia 推荐下一步
+## Recommended next step
 
-- 看 Stack：[写作者栈：Obsidian + GitHub](/stacks/writer-obsidian-github)
-- 下载 Kit：[Writer Vault Starter](/kits/writer-vault-starter)
-- 跑 Guide：[如何用 GitHub 同步 Obsidian](/guides/setup-obsidian-github-sync)
+- Read [Writer Stack: Obsidian + GitHub](/stacks/writer-obsidian-github)
+- Download [Writer Vault Starter](/kits/writer-vault-starter)
+- Follow [How to sync Obsidian with GitHub](/guides/setup-obsidian-github-sync)

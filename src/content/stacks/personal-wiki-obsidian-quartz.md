@@ -1,7 +1,7 @@
 ---
-title: 个人 Wiki 栈：Obsidian + Quartz
-shortTitle: 个人 Wiki 栈
-description: 用 Obsidian 管理 Markdown 知识库，用 Quartz 发布成公开网站。
+title: "Personal Wiki Stack: Obsidian + Quartz"
+shortTitle: Personal Wiki Stack
+description: Use Obsidian to manage a Markdown knowledge base and Quartz to publish it as a public website.
 customSlug: personal-wiki-obsidian-quartz
 status: p2
 goal: personal-wiki
@@ -41,25 +41,25 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 这套栈解决什么问题
+## What this stack solves
 
-它把个人知识库从“只在本地看”升级成“可公开浏览的网站”。
+This stack upgrades a private knowledge base into a website other people can browse.
 
-## 核心分工
+## Core roles
 
-- Obsidian：写作和本地编辑。
-- GitHub：版本管理和部署触发。
-- Quartz：生成双链风格的静态网站。
-- Cloudflare Pages：部署和托管。
+- Obsidian handles local editing and writing.
+- GitHub handles version control and deployment triggers.
+- Quartz generates a linked static site.
+- Cloudflare Pages or GitHub Pages hosts the site.
 
-## 适合谁
+## Best for
 
-- 想公开部分笔记的人
-- 写技术文档的人
-- 做个人知识库的人
-- 课程、研究、产品日志维护者
+- People who want to publish selected notes
+- Technical writers
+- Personal knowledge-base maintainers
+- Course, research, and product-log authors
 
-## 推荐目录结构
+## Recommended folder structure
 
 ```txt
 Personal Wiki/
@@ -72,14 +72,14 @@ Personal Wiki/
 └── assets/
 ```
 
-## 注意事项
+## Publishing notes
 
-公开 Wiki 不是把所有私人笔记扔上网。建议区分：
+A public wiki should not be a raw dump of every private note. Keep a clear split between:
 
-- 私人 Vault
-- 公共 Vault
-- 待发布区
+- Private vault
+- Public vault
+- Drafts waiting for review
 
-## 对应 Kit
+## Matching kit
 
-查看 [Personal Wiki Kit](/kits/personal-wiki-kit)。
+Use [Personal Wiki Kit](/kits/personal-wiki-kit).

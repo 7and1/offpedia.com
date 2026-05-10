@@ -1,6 +1,6 @@
 ---
 title: Logseq
-description: Logseq 是本地优先的大纲式知识库工具，适合日记、任务、双链笔记和研究记录。
+description: Logseq is a local-first outliner knowledge-base tool for journals, tasks, backlinks, and research notes.
 customSlug: tools/logseq
 kind: tool
 category: knowledge-base
@@ -39,21 +39,21 @@ tags:
 updatedAt: 2026-05-10
 ---
 
-## 一句话定义
+## One-line definition
 
-Logseq 是一个以本地文件为基础的大纲式双链笔记工具。
+Logseq is a local-file outliner and backlink note-taking tool.
 
-## 适合什么场景
+## Best for
 
-- 每日笔记
-- 任务和项目日志
-- 研究摘录
-- 块引用和双链整理
+- Daily notes
+- Task and project logs
+- Research excerpts
+- Block references and linked thinking
 
-## Offpedia 视角
+## Offpedia perspective
 
-Logseq 更像从日记和大纲长出的知识库。它和 Obsidian 都重视本地数据，但组织方式不同：Logseq 更偏 block 和 journal，Obsidian 更偏文件和库。
+Logseq feels like a knowledge base grown from journals and outlines. Both Logseq and Obsidian value local data, but Logseq leans toward blocks and daily journals while Obsidian leans toward files and vaults.
 
-## 推荐下一步
+## Recommended next step
 
-- 对比：[Obsidian vs Logseq](/compare/obsidian-vs-logseq)
+- Compare [Obsidian vs Logseq](/compare/obsidian-vs-logseq)

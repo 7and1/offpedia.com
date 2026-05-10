@@ -1,57 +1,48 @@
-# 法务与内容边界建议
+# Legal and Content Boundaries
 
-## 基本原则
+## Principles
 
-Offpedia 不做软件下载、破解、镜像分发。Offpedia 做：
+Offpedia does not distribute software downloads, cracks, mirrors, or copied product documentation.
 
-- 工具介绍
-- 官方链接
-- 工作流教程
-- 模板项目
-- 对比评测
-- 原创内容
+Offpedia publishes:
 
-## 第三方工具内容
+- Tool introductions
+- Official links
+- Workflow tutorials
+- Template projects
+- Original comparisons
+- Original editorial content
 
-可以写：
+## Third-Party Tool Coverage
 
-- 工具名
-- 官方网站链接
-- GitHub 链接
-- 公开功能描述
-- 自己的评测和使用体验
+Allowed:
 
-谨慎处理：
+- Tool names
+- Official website links
+- GitHub links
+- Public feature summaries
+- Original evaluations and workflow notes
 
-- 截图
-- Logo
-- 长段官网文案
-- 商业软件价格表
-- 未授权文档复制
+Use care with:
 
-## 开源项目
+- Screenshots
+- Long official copy
+- Commercial pricing tables
+- Unlicensed documentation copies
 
-收录开源项目时建议记录：
+## Open-Source Projects
 
-- License
-- GitHub URL
-- 最后更新时间
-- 是否仍在维护
+When covering open-source projects, record the official site, repository, license when relevant, and maintenance status when it affects user decisions.
 
-不要暗示 Offpedia 与该项目官方存在合作，除非确实有合作。
+Do not imply official partnership unless one exists.
 
-## Kit 模板
+## Kit Templates
 
-Offpedia 自己制作的 Vault 模板建议使用：
+Offpedia-created vault templates should use clear licensing:
 
-- Markdown 内容：CC BY 4.0 或 CC BY-SA 4.0
-- 模板代码：MIT
+- Markdown content: CC BY 4.0 or CC BY-SA 4.0
+- Template code: MIT
 
-## 付费内容
+## Paid Content
 
-如果未来做付费 Kit，必须清楚标注：
-
-- 付费内容范围
-- 是否包含第三方软件
-- 是否包含官方支持
-- 退款规则
+If paid kits are added later, clearly state what is included, whether third-party software is included, what support is provided, and the refund policy.

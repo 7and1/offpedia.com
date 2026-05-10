@@ -1,6 +1,6 @@
 ---
 title: Notion
-description: Notion 是云端优先的协作文档和数据库工具，适合团队知识库、项目资料和轻量工作台。
+description: Notion is a cloud-first collaborative document and database workspace for team knowledge bases, project material, and lightweight operations.
 customSlug: tools/notion
 kind: tool
 category: workspace
@@ -39,22 +39,22 @@ tags:
 updatedAt: 2026-05-10
 ---
 
-## 一句话定义
+## One-line definition
 
-Notion 是一个云端优先的协作文档和轻量数据库工作台。
+Notion is a cloud-first workspace for collaborative documents and lightweight databases.
 
-## 适合什么场景
+## Best for
 
-- 团队 Wiki
-- 项目资料库
-- 内容日历
-- CRM 和轻量运营表
+- Team wikis
+- Project knowledge bases
+- Content calendars
+- Lightweight CRM and operations tables
 
-## Offpedia 视角
+## Offpedia perspective
 
-Notion 的优势是协作和结构化页面，弱点是本地文件可迁移性。它适合团队共享，不适合作为长期本地 Markdown 仓库的唯一数据层。
+Notion is strong at collaboration and structured pages. Its weak point is local file portability. It is a good shared team workspace, but it should not be the only long-term data layer for a Markdown-first archive.
 
-## 推荐下一步
+## Recommended next step
 
-- 对比：[Obsidian vs Notion](/compare/obsidian-vs-notion)
-- 如果你更重视本地数据，先看 [Obsidian](/wiki/tools/obsidian)。
+- Compare [Obsidian vs Notion](/compare/obsidian-vs-notion)
+- If local data ownership matters more, start with [Obsidian](/wiki/tools/obsidian).

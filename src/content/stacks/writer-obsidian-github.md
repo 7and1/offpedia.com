@@ -1,6 +1,6 @@
 ---
-title: 写作者栈：Obsidian + GitHub
-description: 用 Obsidian 写作，用 GitHub 做版本管理、备份和发布准备。
+title: "Writer Stack: Obsidian + GitHub"
+description: Use Obsidian for writing and GitHub for version history, backup, and publishing preparation.
 customSlug: writer-obsidian-github
 status: p2
 goal: writing
@@ -40,34 +40,34 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 这套栈解决什么问题
+## What this stack solves
 
-它解决的是写作者最常见的三个问题：
+This stack solves three common writing problems:
 
-1. 内容散落在不同平台。
-2. 写作平台不一定长期可靠。
-3. 文章版本、草稿、参考资料难以管理。
+1. Drafts and references are scattered across platforms.
+2. Writing platforms may not stay reliable forever.
+3. Version history, drafts, and reference material are hard to manage together.
 
-这套栈把写作系统拆成两个核心角色：
+The stack splits the writing system into two roles:
 
-- Obsidian：负责本地写作和知识组织。
-- GitHub：负责版本历史、远程备份和发布准备。
+- Obsidian handles local writing and knowledge organization.
+- GitHub handles version history, remote backup, and publishing preparation.
 
-## 适合谁
+## Best for
 
-- 长期写文章的人
-- 写 newsletter 的人
-- 独立开发者
-- 希望把草稿、资料、发布稿统一管理的人
-- 想保留所有历史版本的人
+- Long-form writers
+- Newsletter authors
+- Indie makers
+- People who want drafts, references, and published work in one system
+- People who want a durable version history
 
-## 不适合谁
+## Not ideal for
 
-- 不想接触 Git 的用户
-- 需要多人实时协作编辑的团队
-- 只想在手机上快速写短笔记的人
+- Users who do not want to learn any Git workflow
+- Teams that need real-time collaborative editing
+- People who only write quick mobile notes
 
-## 推荐目录结构
+## Recommended folder structure
 
 ```txt
 Writer Vault/
@@ -80,11 +80,11 @@ Writer Vault/
 └── 90 Templates/
 ```
 
-## 推荐 Frontmatter
+## Recommended frontmatter
 
 ```yaml
 ---
-title: 文章标题
+title: Article title
 status: draft
 type: essay
 tags:
@@ -95,35 +95,35 @@ publishTarget: blog
 ---
 ```
 
-## 最小使用流程
+## Minimal workflow
 
-1. 在 `00 Inbox` 捕捉想法。
-2. 把成熟想法移动到 `10 Drafts`。
-3. 写作过程中把资料放到 `30 References`。
-4. 完成后移动到 `20 Essays`。
-5. 发布后复制或移动到 `40 Published`。
-6. 每天或每次完成一个阶段后提交到 GitHub。
+1. Capture ideas in `00 Inbox`.
+2. Move mature ideas into `10 Drafts`.
+3. Store source material in `30 References`.
+4. Move finished pieces into `20 Essays`.
+5. Copy or move published work into `40 Published`.
+6. Commit to GitHub after each meaningful writing stage.
 
-## GitHub 在这里负责什么
+## GitHub's role
 
-GitHub 不负责写作体验，它负责长期安全：
+GitHub is not the writing interface. It provides long-term safety:
 
-- 版本历史
-- 云端备份
-- 模板分发
-- 发布流水线
-- 公开展示
+- Version history
+- Remote backup
+- Template distribution
+- Publishing workflows
+- Public project visibility
 
-## 对应 Kit
+## Matching kit
 
-推荐直接从 [Writer Vault Starter](/kits/writer-vault-starter) 开始。
+Start with [Writer Vault Starter](/kits/writer-vault-starter).
 
-## 对应 Guide
+## Matching guide
 
-如果你还没有 Git 流程，先看：[如何用 GitHub 同步 Obsidian](/guides/setup-obsidian-github-sync)。
+If you do not have a Git workflow yet, read [How to sync Obsidian with GitHub](/guides/setup-obsidian-github-sync).
 
-## 局限
+## Limits
 
-- Git 对完全新手有学习成本。
-- 大量图片和附件不适合直接塞进 Git 仓库。
-- 如果需要多人实时协同，应该考虑其他方案。
+- Git has a learning curve for complete beginners.
+- Large image libraries and attachments should not be pushed into Git without a plan.
+- If real-time collaboration is required, choose a different workflow.

@@ -8,8 +8,8 @@ tags:
 
 # Example Idea
 
-一句话想法：
+One-line idea:
 
-为什么它重要：
+Why it matters:
 
-可以发展成哪类文章：
+What kind of article it could become:

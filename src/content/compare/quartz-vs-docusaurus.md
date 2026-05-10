@@ -1,6 +1,6 @@
 ---
 title: Quartz vs Docusaurus
-description: 比较 Quartz 与 Docusaurus 在个人 Wiki、文档站和 Obsidian 发布场景中的差异。
+description: Compare Quartz and Docusaurus for personal wikis, documentation sites, and Obsidian publishing workflows.
 customSlug: quartz-vs-docusaurus
 status: p2
 tools:
@@ -17,24 +17,24 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 结论
+## Verdict
 
-如果目标是发布 Obsidian 风格的个人 Wiki，Quartz 更顺手。
+Choose Quartz if the goal is publishing an Obsidian-style personal wiki or digital garden.
 
-如果目标是产品文档、版本化文档、多语言文档，Docusaurus 更成熟。
+Choose Docusaurus if the goal is product documentation, versioned docs, multilingual docs, or a larger team documentation site.
 
-## 对比表
+## Comparison table
 
-| 维度 | Quartz | Docusaurus |
+| Criteria | Quartz | Docusaurus |
 |---|---|---|
-| Obsidian 友好度 | 强 | 中 |
-| 产品文档 | 中 | 强 |
-| 双链体验 | 强 | 弱 |
-| 自定义能力 | 中 | 强 |
-| 上手成本 | 中 | 中 |
+| Obsidian friendliness | Strong | Medium |
+| Product documentation | Medium | Strong |
+| Backlink experience | Strong | Weak |
+| Customization | Medium | Strong |
+| Setup friction | Medium | Medium |
 
-## Offpedia 推荐
+## Offpedia recommendation
 
-- 个人 Wiki：Obsidian + Quartz
-- 产品文档：Docusaurus
-- 内容型工作流百科站：Astro 或 Quartz，取决于你更看重 SEO 还是双链体验。
+- Personal wiki: Obsidian + Quartz
+- Product documentation: Docusaurus
+- Workflow encyclopedia: Astro or Quartz, depending on whether SEO or backlink browsing matters more.

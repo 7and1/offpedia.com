@@ -1,6 +1,6 @@
 ---
 title: GitHub
-description: GitHub 在 Offpedia 中主要承担版本管理、模板仓库和发布入口的角色。
+description: GitHub acts as the version-control, template-repository, and publishing entry point in Offpedia workflows.
 customSlug: tools/github
 kind: tool
 category: version-control
@@ -40,25 +40,25 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 一句话定义
+## One-line definition
 
-GitHub 是 Git 仓库托管平台，在 Offpedia 中用于版本管理、模板分发和静态站发布。
+GitHub is a Git repository hosting platform used in Offpedia for version control, template distribution, and static-site publishing.
 
-## 它在工作流里的角色
+## Role in the workflow
 
-在 Obsidian + GitHub 工作流里，GitHub 不负责写作体验，而负责：
+In an Obsidian + GitHub workflow, GitHub is not the writing interface. It handles:
 
-- 保存版本历史
-- 备份 Markdown 文件
-- 提供 Template Repo
-- 触发网站部署
-- 接收社区 issue / pull request
+- Version history
+- Markdown backup
+- Template repositories
+- Site deployment triggers
+- Public issues and pull requests
 
-## 为什么不是所有用户都必须用 GitHub
+## Why not every user needs GitHub
 
-GitHub 需要理解 Git 的基本概念。对非技术用户，可以先用手动 ZIP 备份或 Syncthing；但如果目标是长期维护、公开发布、协作修订，GitHub 很适合。
+GitHub requires a basic understanding of Git. Non-technical users can start with manual ZIP backups or Syncthing. For long-term maintenance, public publishing, and collaborative review, GitHub is a strong fit.
 
-## Offpedia 推荐下一步
+## Recommended next step
 
-- 看 Stack：[写作者栈：Obsidian + GitHub](/stacks/writer-obsidian-github)
-- 看概念：[Git-based publishing](/wiki/concepts/git-based-publishing)
+- Read [Writer Stack: Obsidian + GitHub](/stacks/writer-obsidian-github)
+- Read [Git-based publishing](/wiki/concepts/git-based-publishing)

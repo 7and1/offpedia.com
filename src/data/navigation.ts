@@ -7,9 +7,9 @@ export const navItems = [
 ];
 
 export const goals = [
-  { label: '写作', value: 'writing', href: '/stacks/writer-obsidian-github' },
-  { label: '个人 Wiki', value: 'personal-wiki', href: '/stacks/personal-wiki-obsidian-quartz' },
-  { label: '研究', value: 'research', href: '/stacks/researcher-obsidian-zotero' },
-  { label: '公开发布', value: 'publishing', href: '/guides/publish-obsidian-to-quartz' },
-  { label: '本地知识库', value: 'knowledge-base', href: '/wiki/concepts/local-first' }
+  { label: 'Writing', value: 'writing', href: '/stacks/writer-obsidian-github' },
+  { label: 'Personal Wiki', value: 'personal-wiki', href: '/stacks/personal-wiki-obsidian-quartz' },
+  { label: 'Research', value: 'research', href: '/stacks/researcher-obsidian-zotero' },
+  { label: 'Publishing', value: 'publishing', href: '/guides/publish-obsidian-to-quartz' },
+  { label: 'Local Knowledge Base', value: 'knowledge-base', href: '/wiki/concepts/local-first' }
 ];

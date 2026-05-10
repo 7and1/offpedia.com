@@ -1,6 +1,6 @@
 ---
 title: Zotero
-description: Zotero 是研究资料管理工具，适合与 Obsidian 组成研究笔记工作流。
+description: Zotero is a research source manager that pairs well with Obsidian for research-note workflows.
 customSlug: tools/zotero
 kind: tool
 category: research
@@ -39,14 +39,14 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 一句话定义
+## One-line definition
 
-Zotero 是面向研究者的文献管理工具，用于收集论文、网页、书籍条目和引用信息。
+Zotero is a reference manager for collecting papers, web pages, books, metadata, and citations.
 
-## 在 Offpedia 中的角色
+## Role in Offpedia
 
-Zotero 更适合做“资料源”和“引用管理”，Obsidian 更适合做“思考与写作”。两者组合后，可以形成研究者工作流。
+Zotero is best used as the source and citation layer. Obsidian is better for thinking, synthesis, and writing. Together, they form a practical research workflow.
 
-## 推荐下一步
+## Recommended next step
 
-- 看 Stack：[研究者栈：Obsidian + Zotero](/stacks/researcher-obsidian-zotero)
+- Read [Researcher Stack: Obsidian + Zotero](/stacks/researcher-obsidian-zotero)

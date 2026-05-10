@@ -1,13 +1,13 @@
 ---
 title: Markdown
-description: Markdown 是一种轻量标记语言，也是许多本地优先知识工作流的基础数据格式。
+description: Markdown is a lightweight markup format and a foundational data format for many local-first knowledge workflows.
 customSlug: concepts/markdown
 kind: concept
-category: format
+category: data-format
 status: p2
-website: null
+website: https://daringfireball.net/projects/markdown/
 github: null
-openSource: null
+openSource: true
 selfHosted: null
 localFirst: true
 offlineReady: true
@@ -17,28 +17,29 @@ platforms: []
 relatedStacks:
   - writer-obsidian-github
   - personal-wiki-obsidian-quartz
+  - researcher-obsidian-zotero
 relatedKits:
   - writer-vault-starter
   - personal-wiki-kit
 tags:
   - markdown
-  - writing
+  - text
   - portability
 updatedAt: 2026-05-09
 ---
 
-## 定义
+## Definition
 
-Markdown 是一种用纯文本表达标题、列表、链接、引用、代码块等结构的轻量标记语言。
+Markdown is a lightweight markup language for expressing headings, lists, links, quotes, code blocks, and other document structure in plain text.
 
-## 为什么 Offpedia 重视 Markdown
+## Why Offpedia values Markdown
 
-因为 Markdown 有三个优势：
+Markdown has three practical advantages:
 
-1. 普通文本，长期可读。
-2. 可被大量工具识别。
-3. 适合 Git 版本管理。
+1. It is plain text and remains readable for a long time.
+2. It is supported by many tools.
+3. It works well with Git version control.
 
-## 常见误区
+## Common misconception
 
-Markdown 不等于排版系统。它更像“内容结构格式”。如果需要出版级排版，可以和 Typst、Pandoc 或 LaTeX 搭配。
+Markdown is not a full typesetting system. It is closer to a content structure format. For publication-grade layout, combine it with tools like Typst, Pandoc, or LaTeX.

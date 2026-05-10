@@ -1,6 +1,6 @@
 ---
 title: Docusaurus
-description: Docusaurus 是面向产品文档和开发者文档的静态站生成工具，适合版本化文档和团队维护。
+description: Docusaurus is a static site generator for product documentation, developer docs, versioned docs, and team-maintained documentation sites.
 customSlug: tools/docusaurus
 kind: tool
 category: publishing
@@ -36,21 +36,21 @@ tags:
 updatedAt: 2026-05-10
 ---
 
-## 一句话定义
+## One-line definition
 
-Docusaurus 是一个适合构建产品文档、开发者文档和版本化文档站的静态站生成工具。
+Docusaurus is a static site generator for product documentation, developer documentation, and versioned docs.
 
-## 适合什么场景
+## Best for
 
-- SaaS 文档中心
-- 开源项目文档
-- 版本化 API 或产品说明
-- 多人维护的文档站
+- SaaS documentation centers
+- Open-source project docs
+- Versioned API or product docs
+- Documentation maintained by a team
 
-## Offpedia 视角
+## Offpedia perspective
 
-Docusaurus 更偏工程化文档产品，Quartz 更偏个人 Wiki 和 Obsidian 发布。两者都能发布 Markdown，但默认信息架构不同。
+Docusaurus is more like an engineering documentation product. Quartz is more like a personal wiki and Obsidian publishing layer. Both can publish Markdown, but their default information architecture is different.
 
-## 推荐下一步
+## Recommended next step
 
-- 对比：[Quartz vs Docusaurus](/compare/quartz-vs-docusaurus)
+- Compare [Quartz vs Docusaurus](/compare/quartz-vs-docusaurus)

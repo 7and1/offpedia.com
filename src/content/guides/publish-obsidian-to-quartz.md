@@ -1,6 +1,6 @@
 ---
-title: 如何把 Obsidian Vault 发布成网站
-description: 使用 GitHub 和 Quartz，把 Obsidian Markdown 知识库发布成公开 Wiki。
+title: How to publish an Obsidian vault as a website
+description: Use GitHub and Quartz to publish an Obsidian Markdown knowledge base as a public wiki.
 customSlug: publish-obsidian-to-quartz
 status: p2
 difficulty: intermediate
@@ -14,37 +14,37 @@ relatedWiki:
   - tools/github
   - concepts/git-based-publishing
 tags:
-  - guide
-  - quartz
   - obsidian
+  - quartz
+  - publishing
 updatedAt: 2026-05-09
 ---
 
-## 完成后你会得到什么
+## What you will have
 
-一个可以公开访问的个人 Wiki 网站。
+A public personal wiki website.
 
-## 基本路径
+## Basic path
 
 ```txt
-Obsidian Vault → GitHub Repo → Quartz Build → Cloudflare Pages
+Obsidian Vault -> GitHub -> Quartz -> Hosting
 ```
 
-## 步骤概览
+## Step overview
 
-1. 准备一个公共 Vault。
-2. 把 Vault 推送到 GitHub。
-3. 初始化 Quartz 项目。
-4. 把 Markdown 内容接入 Quartz。
-5. 部署到 Cloudflare Pages 或 Vercel。
+1. Prepare a public vault.
+2. Push the vault to GitHub.
+3. Initialize a Quartz project.
+4. Connect the Markdown content to Quartz.
+5. Deploy to GitHub Pages, Cloudflare Pages, or Vercel.
 
-## 公开前检查
+## Pre-publication checklist
 
-- 是否包含私人笔记？
-- 是否包含未授权图片？
-- 首页是否清楚？
-- 每篇笔记是否有标题和摘要？
+- Does the vault contain private notes?
+- Does it include images you do not have permission to publish?
+- Is the homepage clear?
+- Does each note have a title and summary?
 
-## 下一步
+## Next step
 
-如果你还没有公共 Vault，先使用 [Personal Wiki Kit](/kits/personal-wiki-kit)。
+If you do not have a public vault yet, start with [Personal Wiki Kit](/kits/personal-wiki-kit).

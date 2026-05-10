@@ -1,33 +1,32 @@
 ---
-title: 如何设计 Frontmatter Schema
-description: 给 Obsidian、Astro 和 Offpedia 内容建立可筛选、可关联的元数据字段。
+title: How to design a frontmatter schema
+description: Create filterable, linkable metadata fields for Obsidian, Astro, and Offpedia content.
 customSlug: design-frontmatter-schema
 status: p2
 difficulty: beginner
-timeRequired: 25min
-relatedStack: writer-obsidian-github
-relatedKits:
-  - writer-vault-starter
+timeRequired: 20min
+relatedStack: researcher-obsidian-zotero
+relatedKits: []
 relatedWiki:
   - concepts/frontmatter
   - concepts/markdown
 tags:
-  - guide
   - frontmatter
   - metadata
+  - markdown
 updatedAt: 2026-05-09
 ---
 
-## 完成后你会得到什么
+## What you will have
 
-一套可以用于文章、Wiki、Stack 和 Kit 的元数据字段。
+A small set of metadata fields that can work across articles, wiki entries, stacks, and kits.
 
-## 最小字段
+## Minimal fields
 
 ```yaml
 ---
-title: 标题
-description: 摘要
+title: Title
+description: Summary
 status: draft
 tags:
   - example
@@ -35,7 +34,7 @@ updatedAt: 2026-05-09
 ---
 ```
 
-## 写作者字段
+## Writer fields
 
 ```yaml
 ---
@@ -47,7 +46,7 @@ updated: 2026-05-09
 ---
 ```
 
-## Offpedia 字段
+## Offpedia fields
 
 ```yaml
 ---
@@ -59,6 +58,6 @@ relatedKits:
 ---
 ```
 
-## 原则
+## Principle
 
-字段越少越容易坚持。P2 先保证字段稳定，再逐渐扩展。
+The fewer fields you require, the easier the system is to maintain. Start with a stable minimum and expand only when a field is used by real pages or filters.

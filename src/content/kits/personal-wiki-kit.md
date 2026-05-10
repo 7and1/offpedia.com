@@ -1,46 +1,46 @@
 ---
 title: Personal Wiki Kit
-description: 面向个人公开 Wiki 的 Obsidian + Quartz 模板项目。
+description: A starter template for publishing a public personal wiki with Obsidian and Quartz.
 customSlug: personal-wiki-kit
 status: p2
 stack: personal-wiki-obsidian-quartz
-templateRepo: https://github.com/offpedia/personal-wiki-kit
-downloadUrl: /downloads/personal-wiki-kit.zip
-obsidianVersion: 1.x
+templateRepo: null
+obsidianVersion: 1.5+
 plugins:
-  - Dataview
+  - Templates
 folders:
   - concepts
   - tools
   - projects
+  - logs
   - references
   - assets
 relatedGuides:
   - publish-obsidian-to-quartz
 tags:
+  - kit
   - wiki
-  - quartz
-  - obsidian
+  - publishing
 updatedAt: 2026-05-09
 ---
 
-## Kit 简介
+## Kit overview
 
-Personal Wiki Kit 是把 Obsidian Vault 发布成公开 Wiki 的起点。
+Personal Wiki Kit is a starting point for turning an Obsidian vault into a public wiki.
 
-## 推荐使用方式
+## Recommended use
 
-- 私人笔记不要直接放入公共 Vault。
-- 每篇公开笔记都写清楚标题、摘要和更新时间。
-- 保持目录浅，不要一开始建太多分类。
+- Do not place private notes directly in the public vault.
+- Give every public note a clear title, summary, and updated date.
+- Keep the folder structure shallow at the start.
 
-## 适合谁
+## Best for
 
-- 技术写作者
-- 课程作者
-- 公开学习笔记维护者
-- 想建立个人知识主页的人
+- Technical writers
+- Course authors
+- Public learning-note maintainers
+- People building a personal knowledge homepage
 
-## 下一步
+## Next step
 
-看 Guide：[如何把 Obsidian Vault 发布成网站](/guides/publish-obsidian-to-quartz)。
+Read [How to publish an Obsidian vault as a website](/guides/publish-obsidian-to-quartz).

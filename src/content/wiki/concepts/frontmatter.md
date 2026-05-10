@@ -1,6 +1,6 @@
 ---
 title: Frontmatter
-description: Frontmatter 是 Markdown 文件顶部的结构化元数据区域，适合给 Wiki、Stack 和 Kit 建立数据层。
+description: Frontmatter is structured metadata at the top of a Markdown file, useful for building a data layer for wiki, stack, and kit content.
 customSlug: concepts/frontmatter
 kind: concept
 category: metadata
@@ -17,7 +17,6 @@ dataFormats:
 platforms: []
 relatedStacks:
   - writer-obsidian-github
-  - personal-wiki-obsidian-quartz
 relatedKits:
   - writer-vault-starter
 tags:
@@ -27,19 +26,19 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 定义
+## Definition
 
-Frontmatter 是 Markdown 文件顶部由 `---` 包裹的一段 YAML 元数据。
+Frontmatter is a block of YAML metadata wrapped in `---` at the top of a Markdown file.
 
-## 为什么重要
+## Why it matters
 
-Offpedia 要做的不是文章堆，而是数据型内容站。Frontmatter 可以让每篇内容被筛选、关联、索引和自动展示。
+Offpedia is not a loose article archive. It is a structured content site. Frontmatter lets each entry be filtered, linked, indexed, and rendered automatically.
 
-## 示例
+## Example
 
 ```yaml
 ---
-title: 写作者栈：Obsidian + GitHub
+title: Writer Stack: Obsidian + GitHub
 customSlug: writer-obsidian-github
 offlineReady: true
 localFirst: true

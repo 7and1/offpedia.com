@@ -1,6 +1,6 @@
 ---
 title: Quartz
-description: Quartz 是适合把 Obsidian Markdown Vault 发布成 Wiki 风格网站的静态站生成工具。
+description: Quartz is a static site generator for publishing Obsidian-style Markdown vaults as wiki websites.
 customSlug: tools/quartz
 kind: tool
 category: publishing
@@ -37,23 +37,23 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 一句话定义
+## One-line definition
 
-Quartz 是一个把 Markdown 知识库发布成静态网站的工具，尤其适合 Obsidian 风格的双链和 Wiki 内容。
+Quartz turns a Markdown knowledge base into a static website, especially for Obsidian-style backlinks and wiki content.
 
-## 它适合什么场景
+## Best for
 
-- 个人 Wiki
-- 公开知识库
-- 课程资料站
-- Obsidian Vault 发布
-- GitHub Pages / Cloudflare Pages 部署
+- Personal wikis
+- Public knowledge bases
+- Course resource sites
+- Obsidian vault publishing
+- GitHub Pages or Cloudflare Pages deployment
 
-## Offpedia 中的角色
+## Role in Offpedia
 
-Quartz 是 P2 里“个人 Wiki 栈”的发布层。Obsidian 负责写，GitHub 负责版本，Quartz 负责生成网站。
+Quartz is the publishing layer in the personal wiki stack. Obsidian handles writing, GitHub handles versioning, and Quartz generates the website.
 
-## 推荐下一步
+## Recommended next step
 
-- 看 Stack：[个人 Wiki 栈：Obsidian + Quartz](/stacks/personal-wiki-obsidian-quartz)
-- 看 Guide：[如何把 Obsidian Vault 发布成网站](/guides/publish-obsidian-to-quartz)
+- Read [Personal Wiki Stack: Obsidian + Quartz](/stacks/personal-wiki-obsidian-quartz)
+- Follow [How to publish an Obsidian vault as a website](/guides/publish-obsidian-to-quartz)

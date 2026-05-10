@@ -1,6 +1,6 @@
 ---
 title: Git-based publishing
-description: Git-based publishing 是用 Git 仓库管理内容，并通过自动化部署发布网站的工作流。
+description: Git-based publishing manages content in a Git repository and publishes a site through automated builds.
 customSlug: concepts/git-based-publishing
 kind: concept
 category: publishing
@@ -14,36 +14,36 @@ offlineReady: true
 dataFormats:
   - Git
   - Markdown
-platforms: []
+platforms:
+  - Web
 relatedStacks:
   - writer-obsidian-github
   - personal-wiki-obsidian-quartz
 relatedKits:
   - writer-vault-starter
-  - personal-wiki-kit
 tags:
   - git
   - publishing
-  - github
+  - version-control
 updatedAt: 2026-05-09
 ---
 
-## 定义
+## Definition
 
-Git-based publishing 是一种内容发布方式：把内容放在 Git 仓库中，提交后触发构建，自动发布到网站。
+Git-based publishing is a publishing workflow where content lives in a Git repository. Each commit can trigger a build and publish the result to a website.
 
-## 为什么适合 Offpedia
+## Why it fits Offpedia
 
-它让内容具备：
+It gives content a durable operational layer:
 
-- 历史版本
-- 可回滚
-- 可协作
-- 可审查
-- 可自动部署
+- Version history
+- Rollbacks
+- Collaboration
+- Review
+- Automated deployment
 
-## 典型组合
+## Typical stack
 
 ```txt
-Obsidian → Markdown → GitHub → Astro/Quartz → Cloudflare Pages
+Obsidian -> Markdown -> GitHub -> Astro or Quartz -> GitHub Pages
 ```

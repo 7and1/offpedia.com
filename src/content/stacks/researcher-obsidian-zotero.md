@@ -1,7 +1,7 @@
 ---
-title: 研究者栈：Obsidian + Zotero
-shortTitle: 研究者栈
-description: 用 Zotero 管理文献，用 Obsidian 形成可写作的研究笔记系统。
+title: "Researcher Stack: Obsidian + Zotero"
+shortTitle: Researcher Stack
+description: Use Zotero to manage sources and Obsidian to turn research notes into writing.
 customSlug: researcher-obsidian-zotero
 status: p2
 goal: research
@@ -36,16 +36,16 @@ tags:
 updatedAt: 2026-05-09
 ---
 
-## 这套栈解决什么问题
+## What this stack solves
 
-研究者常见的问题不是没有资料，而是资料、摘要、引用和写作之间断开。
+Researchers often have plenty of material but weak connections between sources, highlights, summaries, citations, and writing.
 
-这套栈把工作拆成：
+This stack splits the work into two roles:
 
-- Zotero：资料和引用管理。
-- Obsidian：研究问题、文献笔记、想法连接和写作。
+- Zotero manages sources and citations.
+- Obsidian handles research questions, literature notes, ideas, and writing.
 
-## 推荐目录结构
+## Recommended folder structure
 
 ```txt
 Research Vault/
@@ -57,7 +57,7 @@ Research Vault/
 └── 90 Templates/
 ```
 
-## 推荐笔记类型
+## Recommended note types
 
 - Literature note
 - Concept note
@@ -65,6 +65,6 @@ Research Vault/
 - Project note
 - Draft note
 
-## 下一步
+## Next step
 
-P2 先不提供完整 Research Kit，但会保留这个 Stack，为后续扩展做准备。
+Offpedia does not include a full research kit yet, but this stack is ready for future expansion.

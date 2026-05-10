@@ -1,92 +1,46 @@
-# GitHub 工作流
+# GitHub Workflow
 
-## 仓库策略
+## Repository Strategy
 
-早期建议一个主仓库：
+The site can start as one repository that contains:
 
-```txt
-offpedia/
-  docs/
-  src/content/
-  src/pages/
-  vaults/
-```
+- Astro site source
+- Markdown content
+- Starter vaults
+- GitHub Actions deployment workflow
 
-后期可以拆分：
+Kits can move into separate template repositories later if contribution volume grows.
 
-```txt
-offpedia-site
-offpedia-content
-offpedia-kits
-offpedia-writer-vault-starter
-```
+## Branch Strategy
 
-## 分支策略
+- `main`: production
+- `dev`: preview work
+- `content/*`: content updates
+- `kit/*`: kit updates
 
-- `main`：生产环境
-- `dev`：预览环境
-- `content/*`：内容更新
-- `kit/*`：Kit 模板更新
+## Content Update Flow
 
-## 内容更新流程
-
-1. 在 Obsidian 打开 `src/content`。
-2. 新建或编辑 Markdown。
-3. 填写 frontmatter。
-4. 运行：
+1. Edit Markdown in `src/content`.
+2. Keep frontmatter valid.
+3. Run validation:
 
 ```bash
 npm run validate:content
+npm run search:index
 npm run build
 ```
 
-5. 提交 PR。
-6. 合并到 main 自动部署。
+4. Open a pull request.
+5. Merge to `main` to deploy.
 
-## Commit 规范
+## Commit Style
 
-```txt
-content: add writer obsidian github stack
-kit: update writer vault starter
-fix: correct obsidian wiki metadata
-site: improve stack card UI
-docs: update p2 roadmap
-```
+Use short imperative commits:
 
-## Issue 模板建议
+- `Add Logseq tool page`
+- `Update writer stack guide`
+- `Fix sitemap generation`
 
-### 新工具提议
+## Deployment
 
-```md
-## 工具名称
-
-## 官网 / GitHub
-
-## 它是否离线可用？
-
-## 它适合哪个 Stack？
-
-## 为什么应该收录？
-```
-
-### Kit 问题反馈
-
-```md
-## Kit 名称
-
-## 你遇到的问题
-
-## 操作系统 / Obsidian 版本
-
-## 复现步骤
-```
-
-## GitHub Actions
-
-本仓库包含 `.github/workflows/deploy.yml`。
-
-你可以把它接到 Cloudflare Pages 或 GitHub Pages。P2 推荐 Cloudflare Pages：
-
-- Build command：`npm run build`
-- Output directory：`dist`
-- Node version：20+
+The repository uses `.github/workflows/deploy.yml` to build Astro and deploy the `dist/` artifact to GitHub Pages.
