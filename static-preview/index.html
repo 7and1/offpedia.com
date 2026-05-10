@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Offpedia Static Preview</title>
+  <style>
+    body { margin:0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#0c0f14; color:#eef4ff; line-height:1.7; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 48px 20px; }
+    h1 { font-size: clamp(42px, 8vw, 86px); line-height:.95; letter-spacing:-.07em; margin:0 0 20px; }
+    p { color:#9fb0c7; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:16px; margin-top:28px; }
+    .card { border:1px solid rgba(255,255,255,.14); border-radius:18px; padding:18px; background:rgba(255,255,255,.05); }
+    .badge { display:inline-block; border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:3px 8px; color:#8ee6c8; font-size:13px; margin-right:6px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Offpedia</h1>
+    <p>Local-first workflow encyclopedia: Wiki + Stack + Kit. 这个静态预览不需要 npm，正式版本请运行 Astro 项目。</p>
+    <div class="grid">
+      <section class="card"><span class="badge">Stack</span><h2>写作者栈：Obsidian + GitHub</h2><p>本地写作、Git 版本管理、可发布的 Markdown 工作流。</p></section>
+      <section class="card"><span class="badge">Kit</span><h2>Writer Vault Starter</h2><p>可下载、可 fork、可直接打开的 Obsidian Vault 模板。</p></section>
+      <section class="card"><span class="badge">Wiki</span><h2>Local-first</h2><p>优先把数据保存在本地，网络用于同步而不是使用前提。</p></section>
+    </div>
+  </main>
+</body>
+</html>

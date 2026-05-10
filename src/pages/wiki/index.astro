@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const entries = await getCollection('wiki');
+const tools = entries.filter(e => e.data.kind === 'tool').sort((a, b) => a.data.title.localeCompare(b.data.title));
+const concepts = entries.filter(e => e.data.kind === 'concept').sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<BaseLayout title="Wiki" description="Structured tool and concept entries for local-first workflows — the knowledge foundation of Offpedia.">
+  <section class="container-wide py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Wiki' }]} />
+
+    <div class="max-w-3xl mb-10">
+      <h1 class="section-title text-3xl sm:text-4xl">Wiki</h1>
+      <p class="section-subtitle">
+        工具词条和概念词条是 Offpedia 的知识底座。每个词条都有标准化字段，可被 Stack、Kit 和 Guide 引用。
+      </p>
+    </div>
+
+    <!-- Tools -->
+    <div class="mb-12">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-accent"></span>
+        Tools
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {tools.map((entry) => (
+          <Card
+            href={`/wiki/${entry.slug}`}
+            title={entry.data.title}
+            description={entry.data.description}
+            badges={[
+              entry.data.category,
+              entry.data.localFirst ? 'Local-first' : '',
+              entry.data.openSource ? 'Open-source' : '',
+            ].filter(Boolean)}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Concepts -->
+    <div>
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-300"></span>
+        Concepts
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {concepts.map((entry) => (
+          <Card
+            href={`/wiki/${entry.slug}`}
+            title={entry.data.title}
+            description={entry.data.description}
+            badges={[entry.data.category]}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

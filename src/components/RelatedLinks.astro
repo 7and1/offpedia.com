@@ -1,0 +1,31 @@
+---
+interface LinkItem {
+  label: string;
+  href: string;
+  type?: string;
+}
+
+interface Props {
+  title?: string;
+  links: LinkItem[];
+}
+
+const { title = 'Related', links } = Astro.props;
+---
+{links.length > 0 && (
+  <aside class="mt-10 pt-6 border-t border-line">
+    <h3 class="text-sm font-semibold text-text-subtle uppercase tracking-wider mb-4">{title}</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      {links.map((link) => (
+        <a href={link.href} class="flex items-center gap-3 px-4 py-3 rounded-xl border border-line hover:border-accent/30 hover:bg-bg-elevated transition-all no-underline group">
+          {link.type && (
+            <span class="shrink-0 px-2 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-bg-elevated text-text-subtle border border-line">
+              {link.type}
+            </span>
+          )}
+          <span class="text-sm text-text-muted group-hover:text-accent transition-colors truncate">{link.label}</span>
+        </a>
+      ))}
+    </div>
+  </aside>
+)}

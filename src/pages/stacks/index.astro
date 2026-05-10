@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const entries = await getCollection('stacks');
+const sorted = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<BaseLayout title="Stacks" description="Reusable local-first workflow stacks — complete tool combinations with directory structures, sync methods, and publishing paths.">
+  <section class="container-wide py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Stacks' }]} />
+
+    <div class="max-w-3xl mb-10">
+      <h1 class="section-title text-3xl sm:text-4xl">Workflow Stacks</h1>
+      <p class="section-subtitle">
+        每个 Stack 都是一套完整工作流：工具组合、目录结构、同步方式、发布路径。选一个开始，或下载对应 Kit 直接上手。
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {sorted.map((entry) => (
+        <Card
+          href={`/stacks/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={[
+            entry.data.goal,
+            entry.data.difficulty,
+            entry.data.localFirst ? 'Local-first' : '',
+            entry.data.offlineReady ? 'Offline-ready' : '',
+          ].filter(Boolean)}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

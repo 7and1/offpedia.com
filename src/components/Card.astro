@@ -1,0 +1,29 @@
+---
+import Badge from './Badge.astro';
+
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  badges?: string[];
+  icon?: string;
+}
+
+const { href, title, description, badges = [], icon } = Astro.props;
+---
+<a href={href} class="card-base block group no-underline animate-fade-in">
+  <div class="flex items-start justify-between gap-3">
+    <h3 class="text-base sm:text-lg font-semibold text-text group-hover:text-accent transition-colors leading-snug">
+      {title}
+    </h3>
+    <svg class="w-4 h-4 text-text-subtle group-hover:text-accent transition-all group-hover:translate-x-0.5 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </div>
+  <p class="mt-2 text-sm text-text-muted leading-relaxed line-clamp-2">{description}</p>
+  {badges.length > 0 && (
+    <div class="flex flex-wrap gap-1.5 mt-3">
+      {badges.filter(Boolean).slice(0, 5).map((b) => <Badge label={b} />)}
+    </div>
+  )}
+</a>

@@ -1,0 +1,205 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/Card.astro';
+import SearchBox from '../components/SearchBox.astro';
+import Badge from '../components/Badge.astro';
+import { goals } from '../data/navigation';
+
+const stacks = (await getCollection('stacks')).slice(0, 3);
+const kits = (await getCollection('kits')).slice(0, 3);
+const wiki = (await getCollection('wiki')).slice(0, 6);
+const guides = (await getCollection('guides')).slice(0, 3);
+const compare = (await getCollection('compare')).slice(0, 2);
+---
+<BaseLayout title="Offpedia" description="Local-first workflow encyclopedia. Wiki entries, reusable stacks, and downloadable vault kits for people who want durable, portable knowledge systems.">
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none"></div>
+    <div class="container-wide relative py-20 sm:py-28 lg:py-36">
+      <div class="max-w-4xl">
+        <div class="flex items-center gap-2 mb-6">
+          <Badge label="P2 Launch" tone="accent" />
+          <Badge label="18 entries" />
+          <Badge label="Open-source" />
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-6">
+          Build local-first workflows<br class="hidden sm:block" />
+          <span class="text-gradient">that still work</span><br class="hidden sm:block" />
+          when the cloud does not.
+        </h1>
+
+        <p class="text-lg sm:text-xl text-text-muted max-w-2xl mb-8 leading-relaxed">
+          Offpedia collects structured wiki entries, reusable workflow stacks, and downloadable vault kits for people who want durable, portable knowledge systems.
+        </p>
+
+        <!-- Search -->
+        <div class="mb-8">
+          <SearchBox placeholder="Search stacks, wiki, kits, guides... (⌘K)" />
+        </div>
+
+        <!-- CTA -->
+        <div class="flex flex-wrap gap-3">
+          <a class="btn-primary text-base px-7 py-3" href="/stacks">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+            Explore Stacks
+          </a>
+          <a class="btn-secondary text-base px-7 py-3" href="/kits">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+            Browse Kits
+          </a>
+          <a class="btn-ghost text-base px-7 py-3" href="/wiki">
+            Read Wiki
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Stacks -->
+  <section class="container-wide py-14 sm:py-20">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="section-title">Featured Stacks</h2>
+        <p class="section-subtitle">从目标出发，选择一套可以复制的本地优先工作流。</p>
+      </div>
+      <a href="/stacks" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {stacks.map((entry) => (
+        <Card
+          href={`/stacks/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={[
+            entry.data.offlineReady ? 'Offline-ready' : '',
+            entry.data.localFirst ? 'Local-first' : '',
+            entry.data.gitNative ? 'Git-native' : '',
+            entry.data.difficulty,
+          ].filter(Boolean)}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Popular Kits -->
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="section-title">Popular Kits</h2>
+        <p class="section-subtitle">可下载、可 fork、可直接打开的 Obsidian Vault 或模板项目。</p>
+      </div>
+      <a href="/kits" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {kits.map((entry) => (
+        <Card
+          href={`/kits/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={['Template', entry.data.stack, ...entry.data.plugins.slice(0, 2)]}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Browse by Goal -->
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="mb-8">
+      <h2 class="section-title">Browse by Goal</h2>
+      <p class="section-subtitle">你想解决什么问题？从目标出发找到对应的 Stack 和 Kit。</p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      {goals.map((goal) => (
+        <a href={goal.href} class="card-base text-center group no-underline p-4">
+          <div class="text-2xl mb-2">
+            {goal.value === 'writing' && '✍️'}
+            {goal.value === 'personal-wiki' && '📚'}
+            {goal.value === 'research' && '🔬'}
+            {goal.value === 'publishing' && '🚀'}
+            {goal.value === 'knowledge-base' && '🗄️'}
+          </div>
+          <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">{goal.label}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Core Wiki -->
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="section-title">Core Wiki</h2>
+        <p class="section-subtitle">工具和概念词条是 Offpedia 的知识底座。</p>
+      </div>
+      <a href="/wiki" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {wiki.map((entry) => (
+        <Card
+          href={`/wiki/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={[entry.data.kind, entry.data.category]}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Latest Guides -->
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="section-title">Latest Guides</h2>
+        <p class="section-subtitle">一步步跟着做，完成一个具体动作。</p>
+      </div>
+      <a href="/guides" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {guides.map((entry) => (
+        <Card
+          href={`/guides/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={[entry.data.difficulty, entry.data.timeRequired]}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Compare -->
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="section-title">Compare</h2>
+        <p class="section-subtitle">在相近工具之间做出选择。</p>
+      </div>
+      <a href="/compare" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {compare.map((entry) => (
+        <Card
+          href={`/compare/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={entry.data.tools}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA Bottom -->
+  <section class="container-wide py-20 sm:py-28 border-t border-line">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Ready to build your workflow?</h2>
+      <p class="text-text-muted mb-8">Pick a Stack, download a Kit, follow a Guide. Start with what you have.</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a class="btn-primary" href="/stacks">Explore Stacks</a>
+        <a class="btn-secondary" href="/kits">Browse Kits</a>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

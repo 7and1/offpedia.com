@@ -1,0 +1,170 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import Card from '../../../components/Card.astro';
+import ContentHeader from '../../../components/ContentHeader.astro';
+import {
+  articleFaqSchema,
+  getPersonaGoalPages,
+  relatedEntriesForStacks,
+  titleFromSlug,
+  toolPath,
+  type PersonaGoalPage,
+} from '../../../lib/pseo';
+
+export async function getStaticPaths() {
+  const stacks = await getCollection('stacks');
+  return getPersonaGoalPages(stacks).map((page) => ({
+    params: { persona: page.persona, goal: page.goal },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props as { page: PersonaGoalPage };
+const [wikiEntries, kitEntries, guideEntries, allStacks] = await Promise.all([
+  getCollection('wiki'),
+  getCollection('kits'),
+  getCollection('guides'),
+  getCollection('stacks'),
+]);
+
+const relatedKitSlugs = [...new Set(page.stacks.flatMap((stack) => stack.data.relatedKits))];
+const relatedGuideSlugs = [...new Set(page.stacks.flatMap((stack) => stack.data.relatedGuides))];
+const relatedWikiSlugs = [...new Set(page.stacks.flatMap((stack) => stack.data.relatedWiki))];
+const kits = relatedEntriesForStacks(kitEntries, relatedKitSlugs);
+const guides = relatedEntriesForStacks(guideEntries, relatedGuideSlugs);
+const wiki = relatedEntriesForStacks(wikiEntries, relatedWikiSlugs);
+const adjacentStacks = allStacks.filter(
+  (stack) =>
+    !page.stacks.some((item) => item.slug === stack.slug) &&
+    (stack.data.goal === page.goal || stack.data.personas.includes(page.persona)),
+);
+const personaLabel = titleFromSlug(page.persona);
+const goalLabel = titleFromSlug(page.goal);
+const faq = [
+  {
+    question: `What is the best ${goalLabel.toLowerCase()} stack for ${personaLabel.toLowerCase()}?`,
+    answer: page.stacks.length
+      ? `${page.stacks[0].data.title} is the current primary Offpedia recommendation for this persona and goal.`
+      : 'Start with the stack that matches your goal, then add only the tools required by your publishing or backup needs.',
+  },
+  {
+    question: 'Should the stack be local-first?',
+    answer: 'Use a local-first stack when long-term ownership, offline access, and migration matter more than real-time collaboration.',
+  },
+];
+const structuredData = articleFaqSchema({
+  title: page.title,
+  description: page.description,
+  url: Astro.url.href,
+  faq,
+});
+---
+<BaseLayout title={page.title} description={page.description} type="article" structuredData={structuredData}>
+  <section class="container-wide py-10 sm:py-14">
+    <Breadcrumb items={[{ label: 'For', href: '/stacks' }, { label: personaLabel }, { label: goalLabel }]} />
+
+    <ContentHeader
+      title={page.title}
+      description={page.description}
+      type="Persona stack"
+      tags={[page.persona, page.goal]}
+      meta={[
+        { label: 'Persona', value: personaLabel },
+        { label: 'Goal', value: goalLabel },
+        { label: 'Recommended stacks', value: String(page.stacks.length) },
+      ]}
+    />
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Recommended stacks</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {page.stacks.map((stack) => (
+          <Card
+            href={`/stacks/${stack.data.customSlug || stack.slug}`}
+            title={stack.data.title}
+            description={stack.data.description}
+            badges={[stack.data.difficulty, stack.data.setupTime, ...stack.data.coreTools]}
+          />
+        ))}
+      </div>
+    </section>
+
+    {kits.length > 0 && (
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-4">Starter kits</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {kits.map((kit) => (
+            <Card
+              href={`/kits/${kit.data.customSlug || kit.slug}`}
+              title={kit.data.title}
+              description={kit.data.description}
+              badges={kit.data.plugins.length ? kit.data.plugins : [kit.data.stack]}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {guides.length > 0 && (
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-4">Guides</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {guides.map((guide) => (
+            <Card
+              href={`/guides/${guide.data.customSlug || guide.slug}`}
+              title={guide.data.title}
+              description={guide.data.description}
+              badges={[guide.data.difficulty, guide.data.timeRequired]}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {wiki.length > 0 && (
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-4">Tools and concepts</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {wiki.map((entry) => (
+            <Card
+              href={toolPath(entry)}
+              title={entry.data.title}
+              description={entry.data.description}
+              badges={[entry.data.kind, entry.data.category, ...entry.data.tags]}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    {adjacentStacks.length > 0 && (
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-4">Adjacent stacks</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {adjacentStacks.map((stack) => (
+            <Card
+              href={`/stacks/${stack.data.customSlug || stack.slug}`}
+              title={stack.data.title}
+              description={stack.data.description}
+              badges={[stack.data.goal, ...stack.data.personas]}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mb-4">
+      <h2 class="text-2xl font-bold mb-4">FAQ</h2>
+      <div class="space-y-4">
+        {faq.map((item) => (
+          <details class="card-base">
+            <summary class="cursor-pointer font-semibold text-text">{item.question}</summary>
+            <p class="mt-3 text-sm text-text-muted">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </section>
+</BaseLayout>

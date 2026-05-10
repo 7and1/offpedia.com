@@ -1,0 +1,21 @@
+---
+interface Props {
+  label: string;
+  tone?: 'default' | 'accent' | 'good' | 'warn';
+  size?: 'sm' | 'md';
+}
+const { label, tone = 'default', size = 'sm' } = Astro.props;
+
+const toneClasses = {
+  default: 'badge',
+  accent: 'badge-accent',
+  good: 'badge-good',
+  warn: 'badge-warn',
+};
+
+const sizeClasses = {
+  sm: '',
+  md: 'text-sm px-3 py-1',
+};
+---
+<span class:list={[toneClasses[tone], sizeClasses[size]]}>{label}</span>

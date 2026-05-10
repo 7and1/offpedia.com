@@ -1,0 +1,17 @@
+{
+  "name": "Offpedia",
+  "short_name": "Offpedia",
+  "description": "Local-first workflow encyclopedia. Wiki entries, reusable stacks, and downloadable vault kits.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0f14",
+  "theme_color": "#0c0f14",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["productivity", "education"]
+}

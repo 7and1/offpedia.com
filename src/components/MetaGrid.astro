@@ -1,0 +1,41 @@
+---
+interface Item {
+  label: string;
+  value: string | boolean | string[] | undefined | null;
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+
+function format(value: Item['value']): string {
+  if (Array.isArray(value)) return value.join(', ');
+  if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+  return value || '—';
+}
+
+function getBoolIcon(value: Item['value']): string | null {
+  if (typeof value !== 'boolean') return null;
+  return value ? '✓' : '✗';
+}
+---
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 my-6">
+  {items.filter(item => item.value !== undefined && item.value !== null).map((item) => (
+    <div class="bg-bg-surface/60 border border-line rounded-xl px-4 py-3">
+      <dt class="text-xs font-medium text-text-subtle uppercase tracking-wider mb-1">{item.label}</dt>
+      <dd class="text-sm font-semibold text-text flex items-center gap-1.5">
+        {typeof item.value === 'boolean' && (
+          <span class:list={[
+            'w-4 h-4 rounded-full flex items-center justify-center text-[10px]',
+            item.value ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+          ]}>
+            {item.value ? '✓' : '✗'}
+          </span>
+        )}
+        <span>{format(item.value)}</span>
+      </dd>
+    </div>
+  ))}
+</div>

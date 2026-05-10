@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentHeader from '../../components/ContentHeader.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import {
+  articleFaqSchema,
+  buildCompareFaq,
+  compareMatrix,
+  getCompareEligibleTools,
+  getComparePairs,
+  softwareApplicationSchema,
+  toolPath,
+  type CompareEntry,
+  type ComparePair,
+} from '../../lib/pseo';
+
+export async function getStaticPaths() {
+  const [wikiEntries, compareEntries] = await Promise.all([
+    getCollection('wiki'),
+    getCollection('compare'),
+  ]);
+  const pairs = getComparePairs(getCompareEligibleTools(wikiEntries));
+  const manualBySlug = new Map(compareEntries.map((entry) => [entry.slug, entry]));
+  const paths = pairs.map((pair) => ({
+    params: { slug: pair.slug },
+    props: { pair, entry: manualBySlug.get(pair.slug) ?? null },
+  }));
+  const generated = new Set(pairs.map((pair) => pair.slug));
+
+  for (const entry of compareEntries) {
+    if (!generated.has(entry.slug)) {
+      paths.push({ params: { slug: entry.slug }, props: { pair: null, entry } });
+    }
+  }
+
+  return paths;
+}
+
+type Props = {
+  pair: ComparePair | null;
+  entry: CompareEntry | null;
+};
+
+const { pair, entry } = Astro.props as Props;
+const rendered = entry ? await entry.render() : null;
+const Content = rendered?.Content;
+const headings = rendered?.headings ?? [];
+
+const title = entry?.data.title ?? (pair ? `${pair.tools[0].data.title} vs ${pair.tools[1].data.title}` : 'Compare');
+const description =
+  entry?.data.description ??
+  (pair
+    ? `Compare ${pair.tools[0].data.title} and ${pair.tools[1].data.title} for local-first knowledge work, publishing, research, and long-term portability.`
+    : 'Compare local-first tools and publishing workflows.');
+const faq = pair ? buildCompareFaq(pair) : [];
+const matrix = pair ? compareMatrix(pair) : [];
+const winnerEntries = Object.entries(entry?.data.winnerByUseCase ?? {});
+const relatedLinks = pair
+  ? pair.tools.map((tool) => ({ label: tool.data.title, href: toolPath(tool), type: 'Wiki' }))
+  : (entry?.data.tools ?? []).map((tool) => ({ label: tool, href: `/wiki/tools/${tool}`, type: 'Wiki' }));
+const structuredData = articleFaqSchema({
+  title,
+  description,
+  url: Astro.url.href,
+  faq,
+  software: pair
+    ? pair.tools.map((tool) => softwareApplicationSchema(tool, new URL(toolPath(tool), Astro.site ?? Astro.url.origin).href))
+    : undefined,
+});
+---
+<BaseLayout title={title} description={description} type="article" structuredData={structuredData}>
+  <article class="container-content py-10 sm:py-14">
+    <Breadcrumb items={[{ label: 'Compare', href: '/compare' }, { label: title }]} />
+
+    <ContentHeader
+      title={title}
+      description={description}
+      type={entry ? 'Compare / Editorial' : 'Compare'}
+      tags={entry?.data.tags ?? pair?.tools.flatMap((tool) => tool.data.tags).slice(0, 6) ?? []}
+      meta={[
+        ...(pair ? [{ label: 'Tools compared', value: pair.tools.map((tool) => tool.data.title) }] : []),
+        ...winnerEntries.map(([useCase, winner]) => ({
+          label: `Best for ${useCase}`,
+          value: winner as string,
+        })),
+      ]}
+    />
+
+    {Content && (
+      <div class="prose mb-10">
+        <Content />
+      </div>
+    )}
+
+    {pair && (
+      <>
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">Quick verdict</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {pair.tools.map((tool) => (
+              <div class="card-base">
+                <h3 class="text-lg font-semibold mb-2">{tool.data.title}</h3>
+                <p class="text-sm text-text-muted mb-3">{tool.data.description}</p>
+                <div class="flex flex-wrap gap-1.5">
+                  {tool.data.bestFor.slice(0, 3).map((item) => (
+                    <span class="badge-good">{item}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-10 overflow-x-auto">
+          <h2 class="text-2xl font-bold mb-4">Comparison matrix</h2>
+          <table class="w-full min-w-[640px] border-collapse text-sm">
+            <thead>
+              <tr>
+                <th class="bg-bg-elevated text-left px-4 py-3 border border-line">Criteria</th>
+                <th class="bg-bg-elevated text-left px-4 py-3 border border-line">{pair.tools[0].data.title}</th>
+                <th class="bg-bg-elevated text-left px-4 py-3 border border-line">{pair.tools[1].data.title}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matrix.map((row) => (
+                <tr>
+                  <th class="text-left px-4 py-3 border border-line font-semibold text-text">{row.label}</th>
+                  <td class="px-4 py-3 border border-line text-text-muted">{row.a}</td>
+                  <td class="px-4 py-3 border border-line text-text-muted">{row.b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">Who each tool fits</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {pair.tools.map((tool) => (
+              <div class="card-base">
+                <h3 class="text-lg font-semibold mb-3">{tool.data.title} fits when</h3>
+                <ul class="space-y-2 text-sm text-text-muted">
+                  {tool.data.bestFor.map((item) => <li>{item}</li>)}
+                  {tool.data.localFirst && <li>You want local ownership and file portability.</li>}
+                  {tool.data.gitSupport && <li>{tool.data.gitSupport}</li>}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">Migration and combination notes</h2>
+          <div class="prose">
+            <p>
+              Keep one tool as the system of record. Before moving content, export a small sample with links,
+              attachments, tags, and metadata, then check that the destination keeps the parts your workflow relies on.
+            </p>
+            <p>
+              For mixed workflows, use {pair.tools[0].data.title} and {pair.tools[1].data.title} for distinct jobs
+              instead of duplicating the same notes in both places.
+            </p>
+          </div>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">FAQ</h2>
+          <div class="space-y-4">
+            {faq.map((item) => (
+              <details class="card-base">
+                <summary class="cursor-pointer font-semibold text-text">{item.question}</summary>
+                <p class="mt-3 text-sm text-text-muted">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      </>
+    )}
+
+    <RelatedLinks title="Related tools" links={relatedLinks} />
+  </article>
+
+  <TableOfContents headings={headings} />
+</BaseLayout>

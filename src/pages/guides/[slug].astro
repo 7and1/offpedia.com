@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentHeader from '../../components/ContentHeader.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('guides');
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const relatedLinks = [
+  ...(entry.data.relatedStack ? [{ label: entry.data.relatedStack, href: `/stacks/${entry.data.relatedStack}`, type: 'Stack' }] : []),
+  ...entry.data.relatedKits.map((k: string) => ({ label: k, href: `/kits/${k}`, type: 'Kit' })),
+  ...entry.data.relatedWiki.map((w: string) => ({ label: w, href: `/wiki/${w}`, type: 'Wiki' })),
+];
+---
+<BaseLayout title={entry.data.title} description={entry.data.description} type="article">
+  <article class="container-content py-10 sm:py-14">
+    <Breadcrumb items={[{ label: 'Guides', href: '/guides' }, { label: entry.data.title }]} />
+
+    <ContentHeader
+      title={entry.data.title}
+      description={entry.data.description}
+      type="Guide"
+      tags={entry.data.tags}
+      meta={[
+        { label: 'Difficulty', value: entry.data.difficulty },
+        { label: 'Time required', value: entry.data.timeRequired },
+        { label: 'Related stack', value: entry.data.relatedStack },
+        { label: 'Related kits', value: entry.data.relatedKits },
+      ]}
+    />
+
+    <!-- Content -->
+    <div class="prose">
+      <Content />
+    </div>
+
+    <!-- Related -->
+    <RelatedLinks title="Related content" links={relatedLinks} />
+  </article>
+
+  <TableOfContents headings={headings} />
+</BaseLayout>

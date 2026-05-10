@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ContentHeader from '../../components/ContentHeader.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('stacks');
+  return entries.map((entry) => ({ params: { slug: entry.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+
+const relatedLinks = [
+  ...entry.data.relatedKits.map((kit: string) => ({ label: kit, href: `/kits/${kit}`, type: 'Kit' })),
+  ...entry.data.relatedGuides.map((guide: string) => ({ label: guide, href: `/guides/${guide}`, type: 'Guide' })),
+  ...entry.data.relatedWiki.map((wiki: string) => ({ label: wiki, href: `/wiki/${wiki}`, type: 'Wiki' })),
+];
+---
+<BaseLayout title={entry.data.title} description={entry.data.description} type="article">
+  <article class="container-content py-10 sm:py-14">
+    <Breadcrumb items={[{ label: 'Stacks', href: '/stacks' }, { label: entry.data.title }]} />
+
+    <ContentHeader
+      title={entry.data.title}
+      description={entry.data.description}
+      type="Stack"
+      tags={entry.data.tags}
+      meta={[
+        { label: 'Goal', value: entry.data.goal },
+        { label: 'Difficulty', value: entry.data.difficulty },
+        { label: 'Setup time', value: entry.data.setupTime },
+        { label: 'Maintenance', value: entry.data.maintenance },
+        { label: 'Offline-ready', value: entry.data.offlineReady },
+        { label: 'Local-first', value: entry.data.localFirst },
+        { label: 'Git-native', value: entry.data.gitNative },
+        { label: 'Publish-ready', value: entry.data.publishReady },
+        { label: 'Core tools', value: entry.data.coreTools },
+        { label: 'Optional tools', value: entry.data.optionalTools },
+        { label: 'Personas', value: entry.data.personas },
+      ]}
+    />
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-wrap gap-3 mb-8">
+      {entry.data.relatedKits.map((kit: string) => (
+        <a class="btn-primary" href={`/kits/${kit}`}>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+          Get Kit: {kit}
+        </a>
+      ))}
+      {entry.data.relatedGuides.map((guide: string) => (
+        <a class="btn-secondary" href={`/guides/${guide}`}>
+          Read Guide: {guide}
+        </a>
+      ))}
+    </div>
+
+    <!-- Content -->
+    <div class="prose">
+      <Content />
+    </div>
+
+    <!-- Related -->
+    <RelatedLinks title="Related content" links={relatedLinks} />
+  </article>
+
+  <TableOfContents headings={headings} />
+</BaseLayout>

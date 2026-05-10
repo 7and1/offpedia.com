@@ -1,0 +1,82 @@
+---
+import { navItems } from '../data/navigation';
+const currentPath = Astro.url.pathname;
+---
+<header class="sticky top-0 z-50 backdrop-blur-xl bg-bg/80 border-b border-line">
+  <div class="container-wide">
+    <nav class="flex items-center justify-between h-16 sm:h-[70px]">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2 no-underline group">
+        <span class="text-xl font-extrabold tracking-tight text-text group-hover:text-accent transition-colors">
+          Off<span class="text-accent">pedia</span>
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-1">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 no-underline',
+              currentPath.startsWith(item.href)
+                ? 'text-accent bg-accent/10'
+                : 'text-text-muted hover:text-text hover:bg-bg-elevated'
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a href="/search" class="ml-2 p-2 rounded-lg text-text-muted hover:text-text hover:bg-bg-elevated transition-all no-underline" aria-label="Search">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-btn"
+        class="md:hidden p-2 rounded-lg text-text-muted hover:text-text hover:bg-bg-elevated transition-all"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </nav>
+
+    <!-- Mobile Nav -->
+    <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-line mt-1 pt-3">
+      <div class="flex flex-col gap-1">
+        {navItems.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'px-4 py-2.5 rounded-lg text-sm font-medium transition-all no-underline',
+              currentPath.startsWith(item.href)
+                ? 'text-accent bg-accent/10'
+                : 'text-text-muted hover:text-text hover:bg-bg-elevated'
+            ]}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a href="/search" class="px-4 py-2.5 rounded-lg text-sm font-medium text-text-muted hover:text-text hover:bg-bg-elevated transition-all no-underline">
+          Search
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    menu?.classList.toggle('hidden');
+  });
+</script>

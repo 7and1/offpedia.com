@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg text-text font-sans leading-relaxed min-h-screen;
+    background-image:
+      radial-gradient(circle at 20% 0%, rgba(110, 231, 183, 0.08), transparent 28rem),
+      radial-gradient(circle at 80% 0%, rgba(147, 197, 253, 0.06), transparent 24rem);
+  }
+
+  ::selection {
+    @apply bg-accent/20 text-accent;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-text;
+  }
+
+  code {
+    @apply font-mono text-sm bg-bg-elevated px-1.5 py-0.5 rounded;
+  }
+
+  pre {
+    @apply !bg-bg-surface border border-line rounded-xl p-4 overflow-x-auto my-4;
+  }
+
+  pre code {
+    @apply bg-transparent p-0;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply max-w-wide mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-content {
+    @apply max-w-content mx-auto px-4 sm:px-6;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-200 no-underline;
+  }
+
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-accent to-emerald-300 text-[#0c0f14] hover:shadow-lg hover:shadow-accent/20 hover:scale-[1.02];
+  }
+
+  .btn-secondary {
+    @apply btn border border-line text-text hover:border-accent/50 hover:text-accent hover:bg-bg-elevated;
+  }
+
+  .btn-ghost {
+    @apply btn text-text-muted hover:text-text hover:bg-bg-elevated;
+  }
+
+  .card-base {
+    @apply bg-bg-surface/60 border border-line rounded-2xl p-5 sm:p-6 transition-all duration-200 hover:border-line-hover hover:bg-bg-elevated/60 hover:shadow-xl hover:shadow-black/20;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-bg-elevated text-text-muted border border-line whitespace-nowrap;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent/10 text-accent border-accent/20;
+  }
+
+  .badge-good {
+    @apply badge bg-emerald-500/10 text-emerald-300 border-emerald-500/20;
+  }
+
+  .badge-warn {
+    @apply badge bg-amber-500/10 text-amber-300 border-amber-500/20;
+  }
+
+  .section-title {
+    @apply text-2xl sm:text-3xl font-bold tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-text-muted mt-2 text-base sm:text-lg max-w-2xl;
+  }
+
+  /* Prose styling for markdown content */
+  .prose {
+    @apply text-text/90 leading-relaxed;
+  }
+
+  .prose h2 {
+    @apply text-xl sm:text-2xl font-bold mt-10 mb-4 pb-2 border-b border-line text-text;
+  }
+
+  .prose h3 {
+    @apply text-lg sm:text-xl font-semibold mt-8 mb-3 text-text;
+  }
+
+  .prose h4 {
+    @apply text-base font-semibold mt-6 mb-2 text-text;
+  }
+
+  .prose p {
+    @apply mb-4;
+  }
+
+  .prose ul, .prose ol {
+    @apply mb-4 pl-6;
+  }
+
+  .prose ul {
+    @apply list-disc;
+  }
+
+  .prose ol {
+    @apply list-decimal;
+  }
+
+  .prose li {
+    @apply mb-1.5;
+  }
+
+  .prose li::marker {
+    @apply text-text-subtle;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-accent/40 pl-4 py-1 my-4 text-text-muted italic;
+  }
+
+  .prose table {
+    @apply w-full border-collapse my-6 text-sm;
+  }
+
+  .prose th {
+    @apply bg-bg-elevated text-left px-4 py-3 border border-line font-semibold text-text;
+  }
+
+  .prose td {
+    @apply px-4 py-3 border border-line;
+  }
+
+  .prose img {
+    @apply rounded-xl my-6;
+  }
+
+  .prose hr {
+    @apply border-line my-8;
+  }
+
+  .prose a {
+    @apply text-accent underline underline-offset-2 decoration-accent/30 hover:decoration-accent;
+  }
+
+  .prose strong {
+    @apply text-text font-semibold;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent via-emerald-300 to-teal-200;
+  }
+
+  .glow {
+    box-shadow: 0 0 60px -15px theme('colors.accent.DEFAULT');
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

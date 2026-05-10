@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const entries = await getCollection('kits');
+const sorted = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<BaseLayout title="Kits" description="Downloadable vault kits and template repos — the most product-like layer of Offpedia.">
+  <section class="container-wide py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Kits' }]} />
+
+    <div class="max-w-3xl mb-10">
+      <h1 class="section-title text-3xl sm:text-4xl">Vault Kits</h1>
+      <p class="section-subtitle">
+        Kit 是 Offpedia 最像产品的一层：下载后就能打开、能用、能跑。每个 Kit 对应一个 Stack，配有 Guide 指导上手。
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {sorted.map((entry) => (
+        <Card
+          href={`/kits/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={['Template', entry.data.stack, ...entry.data.plugins.slice(0, 2)]}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

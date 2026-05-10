@@ -1,0 +1,183 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Card from '../../components/Card.astro';
+import ContentHeader from '../../components/ContentHeader.astro';
+import RelatedLinks from '../../components/RelatedLinks.astro';
+import {
+  articleFaqSchema,
+  getToolId,
+  getWorkflowPages,
+  softwareApplicationSchema,
+  titleFromSlug,
+  toolPath,
+  type ToolEntry,
+  type WorkflowPage,
+} from '../../lib/pseo';
+
+export async function getStaticPaths() {
+  const stacks = await getCollection('stacks');
+  return getWorkflowPages(stacks).map((workflow) => ({
+    params: { slug: workflow.slug },
+    props: { workflow },
+  }));
+}
+
+const { workflow } = Astro.props as { workflow: WorkflowPage };
+const [wikiEntries, guideEntries, kitEntries] = await Promise.all([
+  getCollection('wiki'),
+  getCollection('guides'),
+  getCollection('kits'),
+]);
+const tools = wikiEntries.filter((entry): entry is ToolEntry => entry.data.kind === 'tool');
+const toolById = new Map(tools.map((tool) => [getToolId(tool), tool]));
+const toolA = toolById.get(workflow.toolA);
+const toolB = toolById.get(workflow.toolB);
+const toolALabel = toolA?.data.title ?? titleFromSlug(workflow.toolA);
+const toolBLabel = toolB?.data.title ?? titleFromSlug(workflow.toolB);
+const relatedGuideSlugs = [...new Set(workflow.stacks.flatMap((stack) => stack.data.relatedGuides))];
+const relatedKitSlugs = [...new Set(workflow.stacks.flatMap((stack) => stack.data.relatedKits))];
+const relatedGuides = guideEntries.filter((entry) => relatedGuideSlugs.includes(entry.slug) || relatedGuideSlugs.includes(entry.data.customSlug ?? ''));
+const relatedKits = kitEntries.filter((entry) => relatedKitSlugs.includes(entry.slug) || relatedKitSlugs.includes(entry.data.customSlug ?? ''));
+const faq = [
+  {
+    question: `Why use ${toolALabel} with ${toolBLabel}?`,
+    answer: `Use ${toolALabel} with ${toolBLabel} when each tool has a separate role and the handoff keeps content portable.`,
+  },
+  {
+    question: 'What is the main risk in this workflow?',
+    answer: 'The main risk is unclear ownership. Decide which tool stores the canonical content before adding sync, export, or publishing steps.',
+  },
+  {
+    question: 'Does this workflow require Git?',
+    answer: workflow.stacks.some((stack) => stack.data.gitNative)
+      ? 'At least one recommended stack for this workflow uses Git for version history, backup, or publishing.'
+      : 'Git is optional for this workflow, but periodic exports are still recommended for long-term portability.',
+  },
+];
+const structuredData = articleFaqSchema({
+  title: workflow.title,
+  description: workflow.description,
+  url: Astro.url.href,
+  faq,
+  software: [toolA, toolB]
+    .filter((tool): tool is ToolEntry => Boolean(tool))
+    .map((tool) => softwareApplicationSchema(tool, new URL(toolPath(tool), Astro.site ?? Astro.url.origin).href)),
+});
+const relatedLinks = [
+  ...(toolA ? [{ label: toolA.data.title, href: toolPath(toolA), type: 'Tool' }] : []),
+  ...(toolB ? [{ label: toolB.data.title, href: toolPath(toolB), type: 'Tool' }] : []),
+  ...workflow.stacks.map((stack) => ({
+    label: stack.data.title,
+    href: `/stacks/${stack.data.customSlug || stack.slug}`,
+    type: 'Stack',
+  })),
+];
+---
+<BaseLayout title={workflow.title} description={workflow.description} type="article" structuredData={structuredData}>
+  <article class="container-content py-10 sm:py-14">
+    <Breadcrumb items={[{ label: 'Workflow', href: '/stacks' }, { label: workflow.title }]} />
+
+    <ContentHeader
+      title={workflow.title}
+      description={workflow.description}
+      type="Workflow"
+      tags={[workflow.toolA, workflow.toolB]}
+      meta={[
+        { label: 'Tool A', value: toolALabel },
+        { label: 'Tool B', value: toolBLabel },
+        { label: 'Source', value: workflow.source === 'seed' ? 'Editorial seed' : 'Stack data' },
+        { label: 'Related stacks', value: workflow.stacks.map((stack) => stack.data.title) },
+      ]}
+    />
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Workflow roles</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="card-base">
+          <h3 class="text-lg font-semibold mb-2">{toolALabel}</h3>
+          <p class="text-sm text-text-muted">{toolA?.data.description ?? `${toolALabel} is one side of this workflow.`}</p>
+          {toolA?.data.bestFor?.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 mt-3">
+              {toolA.data.bestFor.slice(0, 3).map((item) => <span class="badge-good">{item}</span>)}
+            </div>
+          )}
+        </div>
+        <div class="card-base">
+          <h3 class="text-lg font-semibold mb-2">{toolBLabel}</h3>
+          <p class="text-sm text-text-muted">{toolB?.data.description ?? `${toolBLabel} handles the second side of this workflow.`}</p>
+          {toolB?.data.bestFor?.length > 0 && (
+            <div class="flex flex-wrap gap-1.5 mt-3">
+              {toolB.data.bestFor.slice(0, 3).map((item) => <span class="badge-good">{item}</span>)}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Recommended stack path</h2>
+      <div class="space-y-4">
+        {workflow.stacks.map((stack) => (
+          <Card
+            href={`/stacks/${stack.data.customSlug || stack.slug}`}
+            title={stack.data.title}
+            description={stack.data.description}
+            badges={[stack.data.goal, stack.data.difficulty, ...stack.data.coreTools]}
+          />
+        ))}
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Connection checklist</h2>
+      <div class="prose">
+        <ol>
+          <li>Pick the canonical place where content or records live.</li>
+          <li>Define the handoff: export, sync, citation link, Git push, or static publish.</li>
+          <li>Test one sample note, PDF, or page before moving the whole workspace.</li>
+          <li>Document the backup path so the workflow still works if one hosted service is unavailable.</li>
+        </ol>
+      </div>
+    </section>
+
+    {(relatedKits.length > 0 || relatedGuides.length > 0) && (
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-4">Kits and guides</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {relatedKits.map((kit) => (
+            <Card
+              href={`/kits/${kit.data.customSlug || kit.slug}`}
+              title={kit.data.title}
+              description={kit.data.description}
+              badges={[kit.data.stack]}
+            />
+          ))}
+          {relatedGuides.map((guide) => (
+            <Card
+              href={`/guides/${guide.data.customSlug || guide.slug}`}
+              title={guide.data.title}
+              description={guide.data.description}
+              badges={[guide.data.difficulty, guide.data.timeRequired]}
+            />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">FAQ</h2>
+      <div class="space-y-4">
+        {faq.map((item) => (
+          <details class="card-base">
+            <summary class="cursor-pointer font-semibold text-text">{item.question}</summary>
+            <p class="mt-3 text-sm text-text-muted">{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <RelatedLinks title="Related workflow content" links={relatedLinks} />
+  </article>
+</BaseLayout>

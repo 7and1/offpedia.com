@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+<BaseLayout title="About" description="Offpedia is a local-first workflow encyclopedia — not a tool directory, not a download site.">
+  <article class="container-content py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'About' }]} />
+
+    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-6">About Offpedia</h1>
+
+    <div class="prose">
+      <h2>What is Offpedia?</h2>
+      <p>
+        <strong>Offpedia is a local-first workflow encyclopedia.</strong> It helps users go from "knowing a tool exists" to "having a complete, running workflow" built on durable, portable, offline-capable systems.
+      </p>
+
+      <h2>What makes it different?</h2>
+      <p>
+        Ordinary tool sites answer: <em>"What is this tool?"</em>
+      </p>
+      <p>
+        Offpedia answers: <em>"How do I build a stable, migratable, offline-capable, publishable, reproducible system using these tools?"</em>
+      </p>
+
+      <h2>Core content types</h2>
+      <ul>
+        <li><strong>Wiki</strong> — Structured tool and concept entries with standardized fields.</li>
+        <li><strong>Stacks</strong> — Complete workflow combinations: tools, directory structures, sync methods, publishing paths.</li>
+        <li><strong>Kits</strong> — Downloadable vault templates and GitHub template repos you can start using immediately.</li>
+        <li><strong>Guides</strong> — Step-by-step instructions that help you complete a specific action.</li>
+        <li><strong>Compare</strong> — Structured comparisons between similar tools for specific use cases.</li>
+      </ul>
+
+      <h2>Principles</h2>
+      <ol>
+        <li><strong>Stack first, Wiki second.</strong> Users care more about solving problems.</li>
+        <li><strong>Every Stack should have a Kit.</strong> Without a Kit, it's just an article.</li>
+        <li><strong>Every Kit must have a Guide.</strong> Without a Guide, users won't know how to start.</li>
+        <li><strong>Wiki is infrastructure, not the homepage star.</strong></li>
+        <li><strong>No software downloads.</strong> Only reviews, comparisons, tutorials, and official links.</li>
+        <li><strong>Curated first, community later.</strong></li>
+        <li><strong>Obsidian is a content production tool, not Offpedia's entire identity.</strong></li>
+      </ol>
+
+      <h2>Who is it for?</h2>
+      <p>Writers, researchers, indie developers, knowledge management enthusiasts, and anyone who wants to build systems that outlast any single platform.</p>
+
+      <h2>Technology</h2>
+      <p>Offpedia is built with Astro, uses Markdown content collections, deploys as a static site, and works offline via service worker caching. The content is version-controlled in Git.</p>
+
+      <h2>License</h2>
+      <p>Content is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Code is MIT licensed.</p>
+    </div>
+  </article>
+</BaseLayout>

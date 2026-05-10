@@ -1,0 +1,62 @@
+---
+import { navItems } from '../data/navigation';
+---
+<footer class="border-t border-line mt-20">
+  <div class="container-wide py-12 sm:py-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
+      <!-- Brand -->
+      <div class="sm:col-span-2 lg:col-span-1">
+        <a href="/" class="text-xl font-extrabold tracking-tight no-underline text-text">
+          Off<span class="text-accent">pedia</span>
+        </a>
+        <p class="mt-3 text-sm text-text-muted leading-relaxed max-w-xs">
+          Local-first workflow encyclopedia. Wiki entries, reusable stacks, and downloadable vault kits.
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <h4 class="text-sm font-semibold text-text mb-3">Content</h4>
+        <ul class="space-y-2">
+          {navItems.map((item) => (
+            <li>
+              <a href={item.href} class="text-sm text-text-muted hover:text-accent transition-colors no-underline">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h4 class="text-sm font-semibold text-text mb-3">Resources</h4>
+        <ul class="space-y-2">
+          <li><a href="/search" class="text-sm text-text-muted hover:text-accent transition-colors no-underline">Search</a></li>
+          <li><a href="/about" class="text-sm text-text-muted hover:text-accent transition-colors no-underline">About</a></li>
+          <li><a href="https://github.com/offpedia" class="text-sm text-text-muted hover:text-accent transition-colors no-underline" target="_blank" rel="noopener">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!-- Principles -->
+      <div>
+        <h4 class="text-sm font-semibold text-text mb-3">Principles</h4>
+        <ul class="space-y-2">
+          <li class="text-sm text-text-muted">Local-first</li>
+          <li class="text-sm text-text-muted">Offline-capable</li>
+          <li class="text-sm text-text-muted">Git-native</li>
+          <li class="text-sm text-text-muted">Portable data</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-text-subtle">
+        &copy; {new Date().getFullYear()} Offpedia. Built with Astro. Content licensed under CC BY-SA 4.0.
+      </p>
+      <p class="text-xs text-text-subtle">
+        Not a software download site. A workflow encyclopedia.
+      </p>
+    </div>
+  </div>
+</footer>

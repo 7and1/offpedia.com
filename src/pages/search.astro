@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SearchBox from '../components/SearchBox.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+<BaseLayout title="Search" description="Search all Offpedia content — stacks, wiki entries, kits, guides, and comparisons.">
+  <section class="container-wide py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Search' }]} />
+
+    <div class="max-w-3xl mx-auto text-center mb-10">
+      <h1 class="section-title text-3xl sm:text-4xl mb-4">Search Offpedia</h1>
+      <p class="section-subtitle mx-auto">
+        Find stacks, wiki entries, kits, guides, and comparisons across all content.
+      </p>
+    </div>
+
+    <div class="max-w-2xl mx-auto">
+      <SearchBox placeholder="Type to search..." autofocus={true} />
+    </div>
+
+    <!-- Browse suggestions -->
+    <div class="max-w-2xl mx-auto mt-12">
+      <h3 class="text-sm font-semibold text-text-subtle uppercase tracking-wider mb-4">Or browse by section</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        <a href="/stacks" class="card-base text-center no-underline p-4">
+          <span class="text-sm font-medium text-text-muted hover:text-accent">Stacks</span>
+        </a>
+        <a href="/wiki" class="card-base text-center no-underline p-4">
+          <span class="text-sm font-medium text-text-muted hover:text-accent">Wiki</span>
+        </a>
+        <a href="/kits" class="card-base text-center no-underline p-4">
+          <span class="text-sm font-medium text-text-muted hover:text-accent">Kits</span>
+        </a>
+        <a href="/guides" class="card-base text-center no-underline p-4">
+          <span class="text-sm font-medium text-text-muted hover:text-accent">Guides</span>
+        </a>
+        <a href="/compare" class="card-base text-center no-underline p-4">
+          <span class="text-sm font-medium text-text-muted hover:text-accent">Compare</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

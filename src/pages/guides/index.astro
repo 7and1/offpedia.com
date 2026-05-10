@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+const entries = await getCollection('guides');
+const sorted = entries.sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<BaseLayout title="Guides" description="Step-by-step local-first workflow guides — each one helps you complete a specific action, not just understand a concept.">
+  <section class="container-wide py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Guides' }]} />
+
+    <div class="max-w-3xl mb-10">
+      <h1 class="section-title text-3xl sm:text-4xl">Guides</h1>
+      <p class="section-subtitle">
+        Guide 的目标是让你完成一个动作，而不是只理解一个概念。每篇 Guide 都有前置条件、步骤和验收标准。
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {sorted.map((entry) => (
+        <Card
+          href={`/guides/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.description}
+          badges={[entry.data.difficulty, entry.data.timeRequired]}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
