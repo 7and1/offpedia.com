@@ -28,6 +28,9 @@ platforms:
   - macOS
   - Windows
   - Linux
+limitations:
+  - GitHub is infrastructure, not a writing interface, so non-technical users can hit friction if they skip the workflow design step.
+  - Large binary assets and messy repositories can make a content workflow harder to maintain over time.
 relatedStacks:
   - writer-obsidian-github
   - personal-wiki-obsidian-quartz

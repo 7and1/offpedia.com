@@ -22,6 +22,24 @@ publishReady: false
 difficulty: intermediate
 setupTime: 60min
 maintenance: medium
+outcome: A research workflow where the citation library and the thinking layer stay separate, traceable, and portable.
+quickVerdict: Use this when you want cleaner synthesis, better source tracking, and fewer mixed-up research artifacts.
+idealFor:
+  - Researchers managing papers, notes, and draft arguments
+  - Students building literature notes that outlive a single semester
+  - Analysts who need a trail from source material to synthesis
+avoidIf:
+  - You want one app to be your PDF library, citation engine, and collaborative editor
+  - Your work depends on heavy realtime collaboration in the drafting layer
+  - You do not want any deliberate source-to-note handoff
+proofPoints:
+  - Zotero keeps source metadata, PDFs, and citations in a dedicated library.
+  - Obsidian keeps synthesis, concept notes, and writing separate from citation storage.
+  - The note layer can still be versioned or exported without moving the whole reference database.
+alternatives:
+  - label: Obsidian vs Logseq
+    href: /compare/obsidian-vs-logseq
+    reason: Use this if your research workflow is more outline-first than document-first.
 relatedWiki:
   - tools/obsidian
   - tools/zotero
@@ -64,6 +82,18 @@ Research Vault/
 - Question note
 - Project note
 - Draft note
+
+## Best for
+
+- Source-heavy reading and literature review
+- Research synthesis that needs links back to evidence
+- Academic or analyst workflows with long-lived notes
+
+## Not ideal for
+
+- Teams that need a shared realtime writing space
+- Users who want source storage and final writing in the same app
+- Workflows that depend on zero setup between PDFs and notes
 
 ## Next step
 

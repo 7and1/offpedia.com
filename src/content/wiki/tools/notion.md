@@ -30,6 +30,9 @@ platforms:
   - Windows
   - iOS
   - Android
+limitations:
+  - Exports do not preserve every database behavior or block interaction, so portability is weaker than a file-first Markdown system.
+  - Offline ownership is limited because the workspace remains cloud-first even when local apps exist.
 relatedStacks: []
 relatedKits: []
 tags:

@@ -11,15 +11,17 @@ interface Props {
   ogImage?: string;
   canonicalUrl?: string;
   type?: 'website' | 'article';
+  robots?: string;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title,
-  description = 'Wiki entries, workflow stacks, and reusable vault kits for local-first knowledge work.',
+  description = 'Workflow advisor for durable writing, research, publishing, and knowledge systems.',
   ogImage = '/og-default.png',
   canonicalUrl,
   type = 'website',
+  robots = 'index,follow',
   structuredData,
 } = Astro.props;
 
@@ -35,6 +37,7 @@ const canonical = canonicalUrl || Astro.url.href;
 
   <title>{siteTitle}</title>
   <meta name="description" content={description} />
+  <meta name="robots" content={robots} />
   <link rel="canonical" href={canonical} />
 
   <!-- Open Graph -->

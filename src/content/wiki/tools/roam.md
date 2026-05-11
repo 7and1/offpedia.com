@@ -27,6 +27,9 @@ dataFormats:
 platforms:
   - Web
   - Desktop
+limitations:
+  - Roam is cloud-first, so long-term ownership depends on how carefully you export and archive your content.
+  - Git-based workflows and file-level publishing paths are weaker than in Markdown-first alternatives.
 relatedStacks: []
 relatedKits: []
 tags:

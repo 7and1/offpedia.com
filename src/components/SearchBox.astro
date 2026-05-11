@@ -14,6 +14,7 @@ const { placeholder = 'Search stacks, wiki, kits, guides...', autofocus = false 
       type="search"
       placeholder={placeholder}
       aria-label="Search Offpedia"
+      autofocus={autofocus}
       class="w-full bg-bg-surface/80 border border-line rounded-full pl-12 pr-4 py-3.5 text-text placeholder:text-text-subtle focus:outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/10 transition-all"
       data-search-input
     />
@@ -31,6 +32,8 @@ const { placeholder = 'Search stacks, wiki, kits, guides...', autofocus = false 
 </div>
 
 <script>
+  import Fuse from 'fuse.js';
+
   const widgets = document.querySelectorAll('[data-search]');
 
   widgets.forEach((widget) => {
@@ -38,7 +41,6 @@ const { placeholder = 'Search stacks, wiki, kits, guides...', autofocus = false 
     const results = widget.querySelector('[data-search-results]') as HTMLElement;
     const list = widget.querySelector('[data-search-list]') as HTMLElement;
     const count = widget.querySelector('[data-search-count]') as HTMLElement;
-    const kbd = widget.querySelector('[data-search-kbd]') as HTMLElement;
     let index: any[] = [];
     let fuse: any = null;
 
@@ -46,7 +48,6 @@ const { placeholder = 'Search stacks, wiki, kits, guides...', autofocus = false 
       try {
         const res = await fetch('/search-index.json');
         index = await res.json();
-        const { default: Fuse } = await import('https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs');
         fuse = new Fuse(index, {
           keys: [
             { name: 'title', weight: 3 },

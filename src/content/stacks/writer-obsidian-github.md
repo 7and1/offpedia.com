@@ -22,6 +22,24 @@ publishReady: true
 difficulty: beginner
 setupTime: 30min
 maintenance: low
+outcome: A portable writing workflow with local Markdown drafts, Git version history, and a clear publishing handoff.
+quickVerdict: Start here if you want your writing archive to stay readable and reusable outside any one app.
+idealFor:
+  - Long-form writers building a durable archive
+  - Newsletter authors who want local drafts and revision history
+  - Solo creators who publish from Markdown or static sites
+avoidIf:
+  - You need realtime collaborative editing across a team
+  - You do not want to learn even a lightweight Git routine
+  - Your workflow is mostly mobile capture with no desktop review step
+proofPoints:
+  - Obsidian stores drafts as normal Markdown files in a local folder.
+  - GitHub adds version history, remote backup, and repo-based publishing handoff.
+  - The same structure can later feed Quartz or another static publishing layer.
+alternatives:
+  - label: Obsidian vs Notion
+    href: /compare/obsidian-vs-notion
+    reason: Use this if collaboration convenience matters more than local ownership.
 relatedWiki:
   - tools/obsidian
   - tools/github
@@ -55,17 +73,17 @@ The stack splits the writing system into two roles:
 
 ## Best for
 
-- Long-form writers
-- Newsletter authors
-- Indie makers
-- People who want drafts, references, and published work in one system
-- People who want a durable version history
+- Long-form writers who want a portable archive
+- Newsletter authors who want a durable draft history
+- Indie makers who publish essays, product logs, or documentation
+- People who want drafts, references, and publishing prep in one system
+- People who want version history without changing writing tools
 
 ## Not ideal for
 
-- Users who do not want to learn any Git workflow
-- Teams that need real-time collaborative editing
-- People who only write quick mobile notes
+- Users who do not want any Git workflow at all
+- Teams that need realtime collaborative editing
+- People who only write quick mobile notes and never review on desktop
 
 ## Recommended folder structure
 
@@ -127,3 +145,4 @@ If you do not have a Git workflow yet, read [How to sync Obsidian with GitHub](/
 - Git has a learning curve for complete beginners.
 - Large image libraries and attachments should not be pushed into Git without a plan.
 - If real-time collaboration is required, choose a different workflow.
+- If you publish through multiple destinations, keep the Markdown vault as the source of truth and treat each platform as an output surface.

@@ -5,6 +5,9 @@ import ContentHeader from '../../components/ContentHeader.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import DecisionCard from '../../components/DecisionCard.astro';
+import WorkflowMap from '../../components/WorkflowMap.astro';
+import { getWorkflowRecommendationById } from '../../lib/workflow-advisor';
 
 export async function getStaticPaths() {
   const entries = await getCollection('stacks');
@@ -13,6 +16,18 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
+const wikiEntries = await getCollection('wiki');
+
+const recommendationBySlug = {
+  'writer-obsidian-github': getWorkflowRecommendationById('writer'),
+  'researcher-obsidian-zotero': getWorkflowRecommendationById('researcher'),
+  'personal-wiki-obsidian-quartz': getWorkflowRecommendationById('personal-wiki-builder'),
+} as const;
+
+const recommendation = recommendationBySlug[entry.slug as keyof typeof recommendationBySlug];
+const toolSources = wikiEntries.filter(
+  (wiki) => wiki.data.kind === 'tool' && entry.data.coreTools.includes((wiki.data.customSlug || wiki.slug).split('/').at(-1) ?? wiki.slug),
+);
 
 const relatedLinks = [
   ...entry.data.relatedKits.map((kit: string) => ({ label: kit, href: `/kits/${kit}`, type: 'Kit' })),
@@ -33,6 +48,7 @@ const relatedLinks = [
         { label: 'Goal', value: entry.data.goal },
         { label: 'Difficulty', value: entry.data.difficulty },
         { label: 'Setup time', value: entry.data.setupTime },
+        { label: 'Last updated', value: entry.data.updatedAt.toISOString().slice(0, 10) },
         { label: 'Maintenance', value: entry.data.maintenance },
         { label: 'Offline-ready', value: entry.data.offlineReady },
         { label: 'Local-first', value: entry.data.localFirst },
@@ -44,27 +60,86 @@ const relatedLinks = [
       ]}
     />
 
-    <!-- CTA Buttons -->
-    <div class="flex flex-wrap gap-3 mb-8">
-      {entry.data.relatedKits.map((kit: string) => (
-        <a class="btn-primary" href={`/kits/${kit}`}>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-          Get Kit: {kit}
-        </a>
-      ))}
-      {entry.data.relatedGuides.map((guide: string) => (
-        <a class="btn-secondary" href={`/guides/${guide}`}>
-          Read Guide: {guide}
-        </a>
-      ))}
-    </div>
+    <section class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-4 mb-10">
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Quick verdict</p>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{entry.data.quickVerdict}</h2>
+        <p class="mt-4 text-text-muted leading-relaxed">{entry.data.outcome}</p>
 
-    <!-- Content -->
+        <div class="mt-6 flex flex-wrap gap-3">
+          {entry.data.relatedKits.map((kit: string) => (
+            <a class="btn-primary" href={`/kits/${kit}`}>Get the matching kit</a>
+          ))}
+          {entry.data.relatedGuides.map((guide: string) => (
+            <a class="btn-secondary" href={`/guides/${guide}`}>Open the setup guide</a>
+          ))}
+        </div>
+      </article>
+
+      <DecisionCard
+        eyebrow="Decision"
+        title="Choose this stack if"
+        description="Offpedia recommends this path when the operational tradeoffs make sense, not just because the tools are popular."
+        chooseIf={entry.data.idealFor}
+        avoidIf={entry.data.avoidIf}
+        alternative={entry.data.alternatives[0] ? { ...entry.data.alternatives[0], kind: 'Alternative' } : null}
+      />
+    </section>
+
+    {recommendation && (
+      <div class="mb-10">
+        <WorkflowMap
+          title={`${recommendation.recommendedPath.label} workflow`}
+          intro={recommendation.reason}
+          steps={recommendation.workflowMap}
+        />
+      </div>
+    )}
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-10">
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Why this recommendation holds up</p>
+        <h2 class="text-2xl font-bold tracking-tight">Proof points</h2>
+        <ul class="mt-5 space-y-3 text-text-muted">
+          {entry.data.proofPoints.map((point: string) => (
+            <li class="flex gap-3">
+              <span class="mt-2 h-1.5 w-1.5 rounded-full bg-accent shrink-0"></span>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Recommendation criteria</p>
+        <h2 class="text-2xl font-bold tracking-tight">What Offpedia checked</h2>
+        <ul class="mt-5 space-y-3 text-text-muted">
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-300 shrink-0"></span><span>Portability and the durability of the file format</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-300 shrink-0"></span><span>Offline access and ownership of the working archive</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-300 shrink-0"></span><span>Git support, publishing path, and rollback safety</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-emerald-300 shrink-0"></span><span>Migration risk if you outgrow the current setup</span></li>
+        </ul>
+      </article>
+    </section>
+
     <div class="prose">
       <Content />
     </div>
 
-    <!-- Related -->
+    {toolSources.length > 0 && (
+      <section class="mt-10 pt-6 border-t border-line">
+        <h2 class="text-2xl font-bold mb-4">Official sources</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {toolSources.map((tool) => (
+            <a href={tool.data.website ?? `/wiki/${tool.data.customSlug || tool.slug}`} class="card-base no-underline group" target="_blank" rel="noopener">
+              <p class="text-sm font-semibold text-text group-hover:text-accent transition-colors">{tool.data.title}</p>
+              <p class="mt-2 text-sm text-text-muted">{tool.data.website ?? 'See wiki entry'}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
     <RelatedLinks title="Related content" links={relatedLinks} />
   </article>
 

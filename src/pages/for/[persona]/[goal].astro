@@ -4,14 +4,15 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Breadcrumb from '../../../components/Breadcrumb.astro';
 import Card from '../../../components/Card.astro';
 import ContentHeader from '../../../components/ContentHeader.astro';
+import DecisionCard from '../../../components/DecisionCard.astro';
 import {
   articleFaqSchema,
   getPersonaGoalPages,
   relatedEntriesForStacks,
-  titleFromSlug,
   toolPath,
   type PersonaGoalPage,
 } from '../../../lib/pseo';
+import { getWorkflowRecommendationForPersonaGoal, goalLabel, personaLabel } from '../../../lib/workflow-advisor';
 
 export async function getStaticPaths() {
   const stacks = await getCollection('stacks');
@@ -35,16 +36,17 @@ const relatedWikiSlugs = [...new Set(page.stacks.flatMap((stack) => stack.data.r
 const kits = relatedEntriesForStacks(kitEntries, relatedKitSlugs);
 const guides = relatedEntriesForStacks(guideEntries, relatedGuideSlugs);
 const wiki = relatedEntriesForStacks(wikiEntries, relatedWikiSlugs);
+const recommendation = getWorkflowRecommendationForPersonaGoal(page.persona, page.goal);
 const adjacentStacks = allStacks.filter(
   (stack) =>
     !page.stacks.some((item) => item.slug === stack.slug) &&
     (stack.data.goal === page.goal || stack.data.personas.includes(page.persona)),
 );
-const personaLabel = titleFromSlug(page.persona);
-const goalLabel = titleFromSlug(page.goal);
+const personaTitle = personaLabel(page.persona);
+const goalTitle = goalLabel(page.goal);
 const faq = [
   {
-    question: `What is the best ${goalLabel.toLowerCase()} stack for ${personaLabel.toLowerCase()}?`,
+    question: `What is the best ${goalTitle.toLowerCase()} workflow for ${personaTitle}?`,
     answer: page.stacks.length
       ? `${page.stacks[0].data.title} is the current primary Offpedia recommendation for this persona and goal.`
       : 'Start with the stack that matches your goal, then add only the tools required by your publishing or backup needs.',
@@ -63,7 +65,7 @@ const structuredData = articleFaqSchema({
 ---
 <BaseLayout title={page.title} description={page.description} type="article" structuredData={structuredData}>
   <section class="container-wide py-10 sm:py-14">
-    <Breadcrumb items={[{ label: 'For', href: '/stacks' }, { label: personaLabel }, { label: goalLabel }]} />
+    <Breadcrumb items={[{ label: 'For', href: '/stacks' }, { label: personaTitle }, { label: goalTitle }]} />
 
     <ContentHeader
       title={page.title}
@@ -71,11 +73,34 @@ const structuredData = articleFaqSchema({
       type="Persona stack"
       tags={[page.persona, page.goal]}
       meta={[
-        { label: 'Persona', value: personaLabel },
-        { label: 'Goal', value: goalLabel },
+        { label: 'Persona', value: personaTitle },
+        { label: 'Goal', value: goalTitle },
         { label: 'Recommended stacks', value: String(page.stacks.length) },
       ]}
     />
+
+    {recommendation && (
+      <section class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-4 mb-10">
+        <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+          <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Primary recommendation</p>
+          <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{recommendation.recommendedPath.label}</h2>
+          <p class="mt-4 text-text-muted">{recommendation.reason}</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a class="btn-primary" href={recommendation.recommendedPath.href}>Open the primary path</a>
+            <a class="btn-secondary" href={recommendation.todayAction.href}>Take today’s action</a>
+          </div>
+        </article>
+
+        <DecisionCard
+          eyebrow="Compare-first"
+          title={recommendation.alternative.label}
+          description={recommendation.warning}
+          chooseIf={recommendation.criteria.slice(0, 3)}
+          action={recommendation.guide ?? recommendation.kit ?? recommendation.todayAction}
+          alternative={recommendation.alternative}
+        />
+      </section>
+    )}
 
     <section class="mb-10">
       <h2 class="text-2xl font-bold mb-4">Recommended stacks</h2>
@@ -84,7 +109,7 @@ const structuredData = articleFaqSchema({
           <Card
             href={`/stacks/${stack.data.customSlug || stack.slug}`}
             title={stack.data.title}
-            description={stack.data.description}
+            description={stack.data.quickVerdict}
             badges={[stack.data.difficulty, stack.data.setupTime, ...stack.data.coreTools]}
           />
         ))}
@@ -99,7 +124,7 @@ const structuredData = articleFaqSchema({
             <Card
               href={`/kits/${kit.data.customSlug || kit.slug}`}
               title={kit.data.title}
-              description={kit.data.description}
+              description={kit.data.outcome}
               badges={kit.data.plugins.length ? kit.data.plugins : [kit.data.stack]}
             />
           ))}
@@ -141,13 +166,13 @@ const structuredData = articleFaqSchema({
 
     {adjacentStacks.length > 0 && (
       <section class="mb-10">
-        <h2 class="text-2xl font-bold mb-4">Adjacent stacks</h2>
+        <h2 class="text-2xl font-bold mb-4">Closest alternatives</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           {adjacentStacks.map((stack) => (
             <Card
               href={`/stacks/${stack.data.customSlug || stack.slug}`}
               title={stack.data.title}
-              description={stack.data.description}
+              description={stack.data.quickVerdict}
               badges={[stack.data.goal, ...stack.data.personas]}
             />
           ))}

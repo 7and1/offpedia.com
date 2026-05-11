@@ -27,6 +27,9 @@ dataFormats:
 platforms:
   - Web
   - Node.js
+limitations:
+  - Docusaurus is heavier than a personal wiki stack if all you need is a lightweight public garden or note archive.
+  - It assumes more documentation structure and configuration than tools aimed at personal vault publishing.
 relatedStacks: []
 relatedKits: []
 tags:

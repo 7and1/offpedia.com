@@ -5,7 +5,7 @@ import ContentHeader from '../../components/ContentHeader.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import { softwareApplicationSchema, toolPath } from '../../lib/pseo';
+import { softwareApplicationSchema, toolPath, type ToolEntry } from '../../lib/pseo';
 
 export async function getStaticPaths() {
   const entries = await getCollection('wiki');
@@ -19,17 +19,18 @@ const relatedLinks = [
   ...entry.data.relatedStacks.map((s: string) => ({ label: s, href: `/stacks/${s}`, type: 'Stack' })),
   ...entry.data.relatedKits.map((k: string) => ({ label: k, href: `/kits/${k}`, type: 'Kit' })),
 ];
-const structuredData = entry.data.kind === 'tool'
+const toolEntry = entry.data.kind === 'tool' ? (entry as ToolEntry) : null;
+const structuredData = toolEntry
   ? {
       '@context': 'https://schema.org',
       '@graph': [
         {
           '@type': 'Article',
-          headline: entry.data.title,
-          description: entry.data.description,
+          headline: toolEntry.data.title,
+          description: toolEntry.data.description,
           mainEntityOfPage: Astro.url.href,
         },
-        softwareApplicationSchema(entry, new URL(toolPath(entry), Astro.site ?? Astro.url.origin).href),
+        softwareApplicationSchema(toolEntry, new URL(toolPath(toolEntry), Astro.site ?? Astro.url.origin).href),
       ],
     }
   : undefined;

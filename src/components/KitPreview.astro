@@ -1,0 +1,62 @@
+---
+interface Props {
+  title?: string;
+  folders: string[];
+  includedFiles?: string[];
+  notes?: string[];
+}
+
+const {
+  title = 'Kit preview',
+  folders,
+  includedFiles = [],
+  notes = [],
+} = Astro.props as Props;
+---
+<section class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+  <div class="max-w-3xl">
+    <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Preview</p>
+    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h2>
+    <p class="mt-3 text-text-muted">See the folder model, starter files, and setup notes before you download the archive.</p>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 xl:grid-cols-[1.2fr_0.8fr] gap-4">
+    <article class="rounded-3xl border border-line bg-bg/50 p-5">
+      <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-text-subtle mb-4">Folder tree</h3>
+      <div class="rounded-2xl bg-[#0a0d11] border border-white/5 p-4 font-mono text-sm text-slate-200">
+        <p class="text-slate-400">/vault</p>
+        {folders.map((folder) => (
+          <p class="mt-2">├── {folder}/</p>
+        ))}
+      </div>
+    </article>
+
+    <div class="grid grid-cols-1 gap-4">
+      <article class="rounded-3xl border border-line bg-bg/50 p-5">
+        <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-text-subtle mb-4">Included files</h3>
+        <ul class="space-y-2 text-sm text-text-muted">
+          {includedFiles.map((file) => (
+            <li class="flex gap-2">
+              <span class="mt-1 h-1.5 w-1.5 rounded-full bg-accent shrink-0"></span>
+              <span>{file}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+
+      {notes.length > 0 && (
+        <article class="rounded-3xl border border-line bg-bg/50 p-5">
+          <h3 class="text-sm font-semibold uppercase tracking-[0.18em] text-text-subtle mb-4">Preview notes</h3>
+          <ul class="space-y-2 text-sm text-text-muted">
+            {notes.map((note) => (
+              <li class="flex gap-2">
+                <span class="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-300 shrink-0"></span>
+                <span>{note}</span>
+              </li>
+            ))}
+          </ul>
+        </article>
+      )}
+    </div>
+  </div>
+</section>

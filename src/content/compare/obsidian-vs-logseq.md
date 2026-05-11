@@ -6,10 +6,24 @@ status: p2
 tools:
   - obsidian
   - logseq
+quickAnswer: Choose Obsidian for document-style writing, publishing prep, and a more file-and-folder-driven archive. Choose Logseq for outline-first thinking, daily notes, and block-level structure.
 winnerByUseCase:
   writing: obsidian
   outlining: logseq
   publishing: obsidian
+useCaseVerdicts:
+  Solo writing: Obsidian
+  Research: Logseq for outline-heavy reading notes; Obsidian for longer synthesis
+  Team collaboration: Neither is a realtime collaboration tool; compare-first before adopting either for shared docs
+  Publishing: Obsidian
+  Long-term archive: Obsidian
+migrationWarnings:
+  - Moving from Logseq to Obsidian usually flattens a block-first workflow into note-level structure, so backlinks and block habits need a deliberate rewrite.
+  - Moving from Obsidian to Logseq can make long-form document workflows feel more fragmented if you rely on large essays and folder-based organization.
+bestAlternativeLinks:
+  - label: "Writer Stack: Obsidian + GitHub"
+    href: /stacks/writer-obsidian-github
+    reason: Use this if the real goal is durable writing rather than choosing between two note apps in the abstract.
 tags:
   - compare
   - obsidian

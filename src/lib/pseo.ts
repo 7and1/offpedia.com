@@ -1,4 +1,10 @@
 import type { CollectionEntry } from 'astro:content';
+import {
+  getWorkflowPageNote,
+  getWorkflowRecommendationForPersonaGoal,
+  goalLabel,
+  personaLabel,
+} from './workflow-advisor';
 
 export type WikiEntry = CollectionEntry<'wiki'>;
 export type StackEntry = CollectionEntry<'stacks'>;
@@ -15,6 +21,7 @@ export type ToolEntry = WikiEntry & {
 export type ComparePair = {
   slug: string;
   tools: [ToolEntry, ToolEntry];
+  indexable: boolean;
 };
 
 export type PersonaGoalPage = {
@@ -33,7 +40,11 @@ export type WorkflowPage = {
   title: string;
   description: string;
   stacks: StackEntry[];
-  source: 'stack' | 'seed';
+  source: 'seed';
+  sourceOfTruth: string;
+  whatSyncs: string[];
+  whatDoesNotSync: string[];
+  failureModes: string[];
 };
 
 export const compareToolOrder = [
@@ -47,12 +58,12 @@ export const compareToolOrder = [
   'mendeley',
 ];
 
-const workflowSeeds = [
-  { toolA: 'obsidian', toolB: 'github', stackSlug: 'writer-obsidian-github' },
-  { toolA: 'obsidian', toolB: 'zotero', stackSlug: 'researcher-obsidian-zotero' },
-  { toolA: 'quartz', toolB: 'github', stackSlug: 'personal-wiki-obsidian-quartz' },
-  { toolA: 'quartz', toolB: 'github-pages', stackSlug: 'personal-wiki-obsidian-quartz' },
-];
+const workflowPageStacks: Record<string, string[]> = {
+  'obsidian-with-github': ['writer-obsidian-github'],
+  'obsidian-with-zotero': ['researcher-obsidian-zotero'],
+  'quartz-with-github': ['personal-wiki-obsidian-quartz'],
+  'quartz-with-github-pages': ['personal-wiki-obsidian-quartz'],
+};
 
 export function getToolId(entry: Pick<WikiEntry, 'slug' | 'data'>): string {
   const slug = entry.data.customSlug || entry.slug;
@@ -87,8 +98,104 @@ function toolRank(entry: ToolEntry): number {
   return rank === -1 ? Number.MAX_SAFE_INTEGER : rank;
 }
 
-function workflowSlug(toolA: string, toolB: string): string {
-  return `${toolA}-with-${toolB}`;
+function collaborationFit(tool: ToolEntry): string {
+  const id = getToolId(tool);
+  if (id === 'notion') return 'Strong for realtime collaboration';
+  if (id === 'docusaurus') return 'Strong for reviewed team docs';
+  if (id === 'github') return 'Strong for async Git collaboration';
+  if (tool.data.localFirst) return 'Best for solo or light async collaboration';
+  return 'Better for solo use than structured team editing';
+}
+
+function publishingFit(tool: ToolEntry): string {
+  const id = getToolId(tool);
+  if (id === 'quartz') return 'Strong for personal wiki publishing';
+  if (id === 'docusaurus') return 'Strong for product and versioned docs';
+  if (id === 'github') return 'Strong as publishing infrastructure';
+  if (tool.data.category === 'publishing') return 'Built for publishing';
+  if (tool.data.relatedStacks.some((slug) => slug.includes('quartz') || slug.includes('github'))) return 'Works in publishing workflows';
+  return 'Secondary publishing fit';
+}
+
+function archiveFitScore(tool: ToolEntry): number {
+  let score = 0;
+  if (tool.data.localFirst) score += 3;
+  if (tool.data.offlineReady) score += 2;
+  if (tool.data.dataFormats.includes('Markdown')) score += 2;
+  if (tool.data.gitSupport) score += 1;
+  if (tool.data.limitations.some((item) => /export|cloud|lock/i.test(item))) score -= 1;
+  return score;
+}
+
+function researchFitScore(tool: ToolEntry): number {
+  let score = 0;
+  if (tool.data.bestFor.some((item) => /research|literature|citation/i.test(item))) score += 3;
+  if (tool.data.category === 'research') score += 2;
+  if (tool.data.bestFor.some((item) => /notes/i.test(item))) score += 1;
+  return score;
+}
+
+function writingFitScore(tool: ToolEntry): number {
+  let score = 0;
+  if (tool.data.bestFor.some((item) => /writing|documents|knowledge/i.test(item))) score += 3;
+  if (tool.data.dataFormats.includes('Markdown')) score += 2;
+  if (tool.data.localFirst) score += 1;
+  return score;
+}
+
+function teamFitScore(tool: ToolEntry): number {
+  const id = getToolId(tool);
+  if (id === 'notion') return 5;
+  if (id === 'docusaurus') return 4;
+  if (id === 'github') return 3;
+  return tool.data.localFirst ? 1 : 2;
+}
+
+function publishingFitScore(tool: ToolEntry): number {
+  const id = getToolId(tool);
+  if (id === 'quartz') return 5;
+  if (id === 'docusaurus') return 4;
+  if (id === 'github') return 4;
+  if (tool.data.category === 'publishing') return 3;
+  return tool.data.relatedStacks.some((slug) => slug.includes('quartz')) ? 2 : 1;
+}
+
+function strongerTool(pair: ComparePair, dimension: 'writing' | 'research' | 'team' | 'publishing' | 'archive'): ToolEntry {
+  const [toolA, toolB] = pair.tools;
+  const scoreA =
+    dimension === 'writing'
+      ? writingFitScore(toolA)
+      : dimension === 'research'
+        ? researchFitScore(toolA)
+        : dimension === 'team'
+          ? teamFitScore(toolA)
+          : dimension === 'publishing'
+            ? publishingFitScore(toolA)
+            : archiveFitScore(toolA);
+  const scoreB =
+    dimension === 'writing'
+      ? writingFitScore(toolB)
+      : dimension === 'research'
+        ? researchFitScore(toolB)
+        : dimension === 'team'
+          ? teamFitScore(toolB)
+          : dimension === 'publishing'
+            ? publishingFitScore(toolB)
+            : archiveFitScore(toolB);
+  return scoreA >= scoreB ? toolA : toolB;
+}
+
+export function isCompareToolComplete(tool: ToolEntry): boolean {
+  return Boolean(
+    tool.data.pricing &&
+      tool.data.gitSupport &&
+      tool.data.bestFor.length > 0 &&
+      tool.data.dataFormats.length > 0 &&
+      tool.data.platforms.length > 0 &&
+      tool.data.limitations.length > 0 &&
+      typeof tool.data.localFirst === 'boolean' &&
+      typeof tool.data.offlineReady === 'boolean',
+  );
 }
 
 export function getCompareEligibleTools(entries: WikiEntry[]): ToolEntry[] {
@@ -106,10 +213,15 @@ export function getComparePairs(tools: ToolEntry[]): ComparePair[] {
       pairs.push({
         slug: `${getToolId(toolA)}-vs-${getToolId(toolB)}`,
         tools: [toolA, toolB],
+        indexable: isCompareToolComplete(toolA) && isCompareToolComplete(toolB),
       });
     }
   }
   return pairs;
+}
+
+export function getIndexableComparePairs(tools: ToolEntry[]): ComparePair[] {
+  return getComparePairs(tools).filter((pair) => pair.indexable);
 }
 
 export function buildCompareFaq(pair: ComparePair) {
@@ -117,15 +229,15 @@ export function buildCompareFaq(pair: ComparePair) {
   return [
     {
       question: `Should I choose ${toolA.data.title} or ${toolB.data.title}?`,
-      answer: `Choose ${toolA.data.title} when your work matches ${formatValue(toolA.data.bestFor).toLowerCase()}. Choose ${toolB.data.title} when your priority is ${formatValue(toolB.data.bestFor).toLowerCase()}.`,
+      answer: buildGeneratedQuickAnswer(pair),
     },
     {
       question: `Can ${toolA.data.title} and ${toolB.data.title} work together?`,
-      answer: `They can work together when the workflow has a clear handoff. Keep one tool as the primary source of truth and use the other for publishing, reference management, or collaboration.`,
+      answer: `Yes, when they do different jobs. Keep one tool as the source of truth and use the second tool for publishing, collaboration, or source management instead of duplicating the same content in both.`,
     },
     {
       question: 'What should I check before migrating?',
-      answer: 'Check export formats, offline access, Git support, attachment handling, and whether your links or citations survive the move.',
+      answer: 'Check export formats, offline access, Git support, attachment handling, and whether links, metadata, or citations survive the move.',
     },
   ];
 }
@@ -135,13 +247,68 @@ export function compareMatrix(pair: ComparePair) {
   return [
     { label: 'Best for', a: formatValue(toolA.data.bestFor), b: formatValue(toolB.data.bestFor) },
     { label: 'Pricing', a: formatValue(toolA.data.pricing), b: formatValue(toolB.data.pricing) },
-    { label: 'Local-first', a: formatValue(toolA.data.localFirst), b: formatValue(toolB.data.localFirst) },
+    { label: 'Data formats', a: formatValue(toolA.data.dataFormats), b: formatValue(toolB.data.dataFormats) },
     { label: 'Offline-ready', a: formatValue(toolA.data.offlineReady), b: formatValue(toolB.data.offlineReady) },
     { label: 'Git support', a: formatValue(toolA.data.gitSupport), b: formatValue(toolB.data.gitSupport) },
-    { label: 'Open source', a: formatValue(toolA.data.openSource), b: formatValue(toolB.data.openSource) },
-    { label: 'Data formats', a: formatValue(toolA.data.dataFormats), b: formatValue(toolB.data.dataFormats) },
-    { label: 'Platforms', a: formatValue(toolA.data.platforms), b: formatValue(toolB.data.platforms) },
+    { label: 'Collaboration fit', a: collaborationFit(toolA), b: collaborationFit(toolB) },
+    { label: 'Publishing fit', a: publishingFit(toolA), b: publishingFit(toolB) },
+    { label: 'Main limitation', a: toolA.data.limitations[0] ?? 'Not specified', b: toolB.data.limitations[0] ?? 'Not specified' },
   ];
+}
+
+export function buildGeneratedQuickAnswer(pair: ComparePair): string {
+  const [toolA, toolB] = pair.tools;
+  if (toolA.data.localFirst && !toolB.data.localFirst) {
+    return `Choose ${toolA.data.title} when ownership, offline access, or long-term portability matters more. Choose ${toolB.data.title} when collaboration speed or cloud convenience matters more.`;
+  }
+  if (!toolA.data.localFirst && toolB.data.localFirst) {
+    return `Choose ${toolB.data.title} when ownership, offline access, or long-term portability matters more. Choose ${toolA.data.title} when collaboration speed or cloud convenience matters more.`;
+  }
+
+  const writingWinner = strongerTool(pair, 'writing');
+  const teamWinner = strongerTool(pair, 'team');
+  if (writingWinner.slug !== teamWinner.slug) {
+    const other = writingWinner.slug === toolA.slug ? toolB : toolA;
+    return `Choose ${writingWinner.data.title} for solo writing, archive quality, or file-based work. Choose ${other.data.title} when your workflow leans more toward collaboration or operational structure.`;
+  }
+
+  return `Choose ${toolA.data.title} when its strengths match ${formatValue(toolA.data.bestFor).toLowerCase()}. Choose ${toolB.data.title} when your priority is ${formatValue(toolB.data.bestFor).toLowerCase()}.`;
+}
+
+export function buildGeneratedUseCaseVerdicts(pair: ComparePair): Record<string, string> {
+  return {
+    'Solo writing': strongerTool(pair, 'writing').data.title,
+    Research: strongerTool(pair, 'research').data.title,
+    'Team collaboration': strongerTool(pair, 'team').data.title,
+    Publishing: strongerTool(pair, 'publishing').data.title,
+    'Long-term archive': strongerTool(pair, 'archive').data.title,
+  };
+}
+
+export function buildMigrationWarnings(pair: ComparePair): string[] {
+  const [toolA, toolB] = pair.tools;
+  const warnings = new Set<string>();
+
+  if (toolA.data.localFirst !== toolB.data.localFirst) {
+    warnings.add('Moving between a local-first system and a cloud-first system usually changes offline behavior, conflict handling, and export quality.');
+  }
+
+  if (!toolA.data.dataFormats.some((value) => toolB.data.dataFormats.includes(value))) {
+    warnings.add('The two tools do not share a clean native data format, so test links, metadata, and attachments on a small sample before migrating.');
+  }
+
+  if (toolA.data.gitSupport && !toolB.data.gitSupport) {
+    warnings.add(`${toolB.data.title} is weaker as a Git-based archive, so treat exports as checkpoints instead of assuming full repository parity.`);
+  }
+
+  if (toolB.data.gitSupport && !toolA.data.gitSupport) {
+    warnings.add(`${toolA.data.title} is weaker as a Git-based archive, so treat exports as checkpoints instead of assuming full repository parity.`);
+  }
+
+  warnings.add(`${toolA.data.title}: ${toolA.data.limitations[0] ?? 'Review the official limitations before migrating.'}`);
+  warnings.add(`${toolB.data.title}: ${toolB.data.limitations[0] ?? 'Review the official limitations before migrating.'}`);
+
+  return [...warnings];
 }
 
 export function softwareApplicationSchema(tool: ToolEntry, url: string) {
@@ -219,14 +386,22 @@ export function getPersonaGoalPages(stacks: StackEntry[]): PersonaGoalPage[] {
       if (existing) {
         existing.stacks.push(stack);
       } else {
-        const personaLabel = titleFromSlug(persona);
-        const goalLabel = titleFromSlug(goal);
+        const recommendation = getWorkflowRecommendationForPersonaGoal(persona, goal);
+        const title =
+          goal === 'research'
+            ? `Best research workflows for ${personaLabel(persona)}`
+            : goal === 'personal-wiki'
+              ? `Best personal wiki workflows for ${personaLabel(persona)}`
+              : `Best knowledge workflows for ${personaLabel(persona)}`;
+        const description = recommendation
+          ? `${recommendation.recommendedPath.label} is the primary Offpedia recommendation for ${personaLabel(persona)} who care about ${goalLabel(goal)}, ownership, and a practical next step.`
+          : `Recommended Offpedia workflows for ${personaLabel(persona)} focused on ${goalLabel(goal)}.`;
         pages.set(slug, {
           persona,
           goal,
           slug,
-          title: `${personaLabel} ${goalLabel} stacks`,
-          description: `Recommended Offpedia stacks, kits, guides, and tools for ${personaLabel.toLowerCase()} focused on ${goalLabel.toLowerCase()}.`,
+          title,
+          description,
           stacks: [stack],
         });
       }
@@ -237,56 +412,28 @@ export function getPersonaGoalPages(stacks: StackEntry[]): PersonaGoalPage[] {
 }
 
 export function getWorkflowPages(stacks: StackEntry[]): WorkflowPage[] {
-  const pages = new Map<string, WorkflowPage>();
-
-  for (const stack of stacks) {
-    const tools = stack.data.coreTools;
-    for (let i = 0; i < tools.length; i += 1) {
-      for (let j = i + 1; j < tools.length; j += 1) {
-        const toolA = tools[i];
-        const toolB = tools[j];
-        const slug = workflowSlug(toolA, toolB);
-        const existing = pages.get(slug);
-        if (existing) {
-          existing.stacks.push(stack);
-        } else {
-          pages.set(slug, {
+  return workflowPageStacks
+    ? Object.entries(workflowPageStacks)
+        .map(([slug, stackSlugs]) => {
+          const note = getWorkflowPageNote(slug);
+          if (!note) return null;
+          return {
             slug,
-            toolA,
-            toolB,
-            title: `${titleFromSlug(toolA)} with ${titleFromSlug(toolB)}`,
-            description: `A practical workflow page for using ${titleFromSlug(toolA)} with ${titleFromSlug(toolB)} in local-first knowledge work.`,
-            stacks: [stack],
-            source: 'stack',
-          });
-        }
-      }
-    }
-  }
-
-  for (const seed of workflowSeeds) {
-    const slug = workflowSlug(seed.toolA, seed.toolB);
-    const stack = stacks.find((entry) => entry.slug === seed.stackSlug || entry.data.customSlug === seed.stackSlug);
-    const seedStacks = stack ? [stack] : [];
-    const existing = pages.get(slug);
-    if (existing) {
-      for (const entry of seedStacks) {
-        if (!existing.stacks.some((item) => item.slug === entry.slug)) existing.stacks.push(entry);
-      }
-    } else {
-      pages.set(slug, {
-        slug,
-        toolA: seed.toolA,
-        toolB: seed.toolB,
-        title: `${titleFromSlug(seed.toolA)} with ${titleFromSlug(seed.toolB)}`,
-        description: `A practical workflow page for connecting ${titleFromSlug(seed.toolA)} and ${titleFromSlug(seed.toolB)} without losing ownership of your content.`,
-        stacks: seedStacks,
-        source: 'seed',
-      });
-    }
-  }
-
-  return [...pages.values()].sort((a, b) => a.slug.localeCompare(b.slug));
+            toolA: note.toolA,
+            toolB: note.toolB,
+            title: note.title,
+            description: note.description,
+            stacks: stacks.filter((stack) => stackSlugs.includes(stack.slug) || stackSlugs.includes(stack.data.customSlug ?? '')),
+            source: 'seed' as const,
+            sourceOfTruth: note.sourceOfTruth,
+            whatSyncs: note.whatSyncs,
+            whatDoesNotSync: note.whatDoesNotSync,
+            failureModes: note.failureModes,
+          };
+        })
+        .filter((item): item is WorkflowPage => Boolean(item))
+        .sort((a, b) => a.slug.localeCompare(b.slug))
+    : [];
 }
 
 export function relatedEntriesForStacks<T extends { slug: string; data: { customSlug?: string } }>(

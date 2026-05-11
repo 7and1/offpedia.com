@@ -29,6 +29,9 @@ platforms:
   - Linux
   - iOS
   - Android
+limitations:
+  - Realtime collaboration is weaker than cloud-native team workspaces, so multi-editor workflows need extra tooling or a different primary system.
+  - Sync and publishing workflows depend on plugins or external tools rather than one built-in universal pipeline.
 relatedStacks:
   - writer-obsidian-github
   - personal-wiki-obsidian-quartz

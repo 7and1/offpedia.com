@@ -8,6 +8,9 @@ import TableOfContents from '../../components/TableOfContents.astro';
 import {
   articleFaqSchema,
   buildCompareFaq,
+  buildGeneratedQuickAnswer,
+  buildGeneratedUseCaseVerdicts,
+  buildMigrationWarnings,
   compareMatrix,
   getCompareEligibleTools,
   getComparePairs,
@@ -17,14 +20,19 @@ import {
   type ComparePair,
 } from '../../lib/pseo';
 
+type Props = {
+  pair: ComparePair | null;
+  entry: CompareEntry | null;
+};
+
 export async function getStaticPaths() {
   const [wikiEntries, compareEntries] = await Promise.all([
     getCollection('wiki'),
     getCollection('compare'),
   ]);
   const pairs = getComparePairs(getCompareEligibleTools(wikiEntries));
-  const manualBySlug = new Map(compareEntries.map((entry) => [entry.slug, entry]));
-  const paths = pairs.map((pair) => ({
+  const manualBySlug = new Map<string, CompareEntry>(compareEntries.map((entry) => [entry.slug, entry]));
+  const paths: Array<{ params: { slug: string }; props: Props }> = pairs.map((pair) => ({
     params: { slug: pair.slug },
     props: { pair, entry: manualBySlug.get(pair.slug) ?? null },
   }));
@@ -39,12 +47,12 @@ export async function getStaticPaths() {
   return paths;
 }
 
-type Props = {
-  pair: ComparePair | null;
-  entry: CompareEntry | null;
-};
-
 const { pair, entry } = Astro.props as Props;
+const [stackEntries, kitEntries, guideEntries] = await Promise.all([
+  getCollection('stacks'),
+  getCollection('kits'),
+  getCollection('guides'),
+]);
 const rendered = entry ? await entry.render() : null;
 const Content = rendered?.Content;
 const headings = rendered?.headings ?? [];
@@ -58,9 +66,28 @@ const description =
 const faq = pair ? buildCompareFaq(pair) : [];
 const matrix = pair ? compareMatrix(pair) : [];
 const winnerEntries = Object.entries(entry?.data.winnerByUseCase ?? {});
-const relatedLinks = pair
-  ? pair.tools.map((tool) => ({ label: tool.data.title, href: toolPath(tool), type: 'Wiki' }))
-  : (entry?.data.tools ?? []).map((tool) => ({ label: tool, href: `/wiki/tools/${tool}`, type: 'Wiki' }));
+const useCaseVerdicts = Object.entries(entry?.data.useCaseVerdicts ?? (pair ? buildGeneratedUseCaseVerdicts(pair) : {}));
+const migrationWarnings = entry?.data.migrationWarnings?.length ? entry.data.migrationWarnings : pair ? buildMigrationWarnings(pair) : [];
+const quickAnswer = entry?.data.quickAnswer ?? (pair ? buildGeneratedQuickAnswer(pair) : description);
+const lastUpdated =
+  entry?.data.updatedAt ??
+  (pair ? new Date(Math.max(...pair.tools.map((tool) => tool.data.updatedAt.getTime()))) : undefined);
+const relatedStackSlugs = pair ? [...new Set(pair.tools.flatMap((tool) => tool.data.relatedStacks))] : [];
+const relatedKitSlugs = pair ? [...new Set(pair.tools.flatMap((tool) => tool.data.relatedKits))] : [];
+const relatedGuideSlugs = relatedStackSlugs.flatMap((stackSlug) => stackEntries.find((stack) => stack.slug === stackSlug)?.data.relatedGuides ?? []);
+const relatedLinks = [
+  ...(pair ? pair.tools.map((tool) => ({ label: tool.data.title, href: toolPath(tool), type: 'Tool' })) : []),
+  ...stackEntries
+    .filter((stack) => relatedStackSlugs.includes(stack.slug))
+    .map((stack) => ({ label: stack.data.title, href: `/stacks/${stack.data.customSlug || stack.slug}`, type: 'Stack' })),
+  ...kitEntries
+    .filter((kit) => relatedKitSlugs.includes(kit.slug))
+    .map((kit) => ({ label: kit.data.title, href: `/kits/${kit.data.customSlug || kit.slug}`, type: 'Kit' })),
+  ...guideEntries
+    .filter((guide) => relatedGuideSlugs.includes(guide.slug))
+    .map((guide) => ({ label: guide.data.title, href: `/guides/${guide.data.customSlug || guide.slug}`, type: 'Guide' })),
+  ...(entry?.data.bestAlternativeLinks ?? []).map((link) => ({ label: link.label, href: link.href, type: 'Alternative' })),
+];
 const structuredData = articleFaqSchema({
   title,
   description,
@@ -71,7 +98,13 @@ const structuredData = articleFaqSchema({
     : undefined,
 });
 ---
-<BaseLayout title={title} description={description} type="article" structuredData={structuredData}>
+<BaseLayout
+  title={title}
+  description={description}
+  type="article"
+  structuredData={structuredData}
+  robots={pair && !pair.indexable && !entry ? 'noindex,follow' : 'index,follow'}
+>
   <article class="container-content py-10 sm:py-14">
     <Breadcrumb items={[{ label: 'Compare', href: '/compare' }, { label: title }]} />
 
@@ -82,12 +115,22 @@ const structuredData = articleFaqSchema({
       tags={entry?.data.tags ?? pair?.tools.flatMap((tool) => tool.data.tags).slice(0, 6) ?? []}
       meta={[
         ...(pair ? [{ label: 'Tools compared', value: pair.tools.map((tool) => tool.data.title) }] : []),
+        ...(lastUpdated ? [{ label: 'Last updated', value: lastUpdated.toISOString().slice(0, 10) }] : []),
+        ...(pair && !pair.indexable && !entry ? [{ label: 'Indexing', value: 'Internal search only until both tools have complete comparison data' }] : []),
         ...winnerEntries.map(([useCase, winner]) => ({
           label: `Best for ${useCase}`,
           value: winner as string,
         })),
       ]}
     />
+
+    <section class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8 mb-10">
+      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Quick answer</p>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{quickAnswer}</h2>
+      <p class="mt-4 text-text-muted">
+        Offpedia compares portability, offline access, Git support, collaboration fit, publishing path, and migration risk before making a recommendation.
+      </p>
+    </section>
 
     {Content && (
       <div class="prose mb-10">
@@ -98,17 +141,12 @@ const structuredData = articleFaqSchema({
     {pair && (
       <>
         <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">Quick verdict</h2>
+          <h2 class="text-2xl font-bold mb-4">Use-case verdicts</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {pair.tools.map((tool) => (
+            {useCaseVerdicts.map(([useCase, winner]) => (
               <div class="card-base">
-                <h3 class="text-lg font-semibold mb-2">{tool.data.title}</h3>
-                <p class="text-sm text-text-muted mb-3">{tool.data.description}</p>
-                <div class="flex flex-wrap gap-1.5">
-                  {tool.data.bestFor.slice(0, 3).map((item) => (
-                    <span class="badge-good">{item}</span>
-                  ))}
-                </div>
+                <p class="text-xs uppercase tracking-[0.18em] text-text-subtle mb-2">{useCase}</p>
+                <h3 class="text-lg font-semibold">{winner}</h3>
               </div>
             ))}
           </div>
@@ -153,7 +191,18 @@ const structuredData = articleFaqSchema({
         </section>
 
         <section class="mb-10">
-          <h2 class="text-2xl font-bold mb-4">Migration and combination notes</h2>
+          <h2 class="text-2xl font-bold mb-4">Migration warnings</h2>
+          <div class="space-y-3">
+            {migrationWarnings.map((warning) => (
+              <div class="card-base">
+                <p class="text-sm text-text-muted">{warning}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">Combination advice</h2>
           <div class="prose">
             <p>
               Keep one tool as the system of record. Before moving content, export a small sample with links,
@@ -161,8 +210,21 @@ const structuredData = articleFaqSchema({
             </p>
             <p>
               For mixed workflows, use {pair.tools[0].data.title} and {pair.tools[1].data.title} for distinct jobs
-              instead of duplicating the same notes in both places.
+              instead of duplicating the same notes in both places. That usually means one tool owns the archive while the
+              other handles collaboration, sources, or publishing.
             </p>
+          </div>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4">Official sources</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {pair.tools.map((tool) => (
+              <a href={tool.data.website ?? toolPath(tool)} class="card-base no-underline group" target="_blank" rel="noopener">
+                <p class="text-sm font-semibold text-text group-hover:text-accent transition-colors">{tool.data.title}</p>
+                <p class="mt-2 text-sm text-text-muted">{tool.data.website ?? toolPath(tool)}</p>
+              </a>
+            ))}
           </div>
         </section>
 
@@ -180,7 +242,7 @@ const structuredData = articleFaqSchema({
       </>
     )}
 
-    <RelatedLinks title="Related tools" links={relatedLinks} />
+    <RelatedLinks title="Related paths" links={relatedLinks} />
   </article>
 
   <TableOfContents headings={headings} />

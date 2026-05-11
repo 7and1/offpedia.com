@@ -1,0 +1,36 @@
+---
+import type { WorkflowMapStep } from '../lib/workflow-advisor';
+
+interface Props {
+  title?: string;
+  intro?: string;
+  steps: WorkflowMapStep[];
+}
+
+const { title = 'Workflow map', intro, steps } = Astro.props as Props;
+---
+<section class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+  <div class="max-w-3xl">
+    <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Workflow map</p>
+    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h2>
+    {intro && <p class="mt-3 text-text-muted max-w-2xl">{intro}</p>}
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-4">
+    {steps.map((step, index) => (
+      <article class="relative rounded-3xl border border-line bg-bg/50 p-5">
+        <div class="flex items-center justify-between gap-3 mb-4">
+          <span class="text-[11px] uppercase tracking-[0.2em] text-text-subtle">{step.stage}</span>
+          <span class="text-xs text-text-subtle">0{index + 1}</span>
+        </div>
+        <h3 class="text-lg font-semibold mb-2">{step.title}</h3>
+        <p class="text-sm text-text-muted leading-relaxed">{step.detail}</p>
+        {step.tool && (
+          <div class="mt-4">
+            <span class="badge-accent">{step.tool}</span>
+          </div>
+        )}
+      </article>
+    ))}
+  </div>
+</section>

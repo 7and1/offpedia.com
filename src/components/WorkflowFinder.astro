@@ -1,0 +1,302 @@
+---
+import {
+  defaultFinderInput,
+  finderOptions,
+  recommendWorkflow,
+  workflowRecommendations,
+  type FinderInput,
+} from '../lib/workflow-advisor';
+
+interface Props {
+  title?: string;
+  intro?: string;
+  embedded?: boolean;
+  initialInput?: Partial<FinderInput>;
+}
+
+const {
+  title = 'Workflow Finder',
+  intro = 'Answer six short questions and get a practical recommendation with today’s next move, the matching kit or guide, and the nearest alternative.',
+  embedded = false,
+  initialInput = {},
+} = Astro.props as Props;
+
+const normalizedInput: FinderInput = {
+  ...defaultFinderInput,
+  ...initialInput,
+};
+
+const initialRecommendation = recommendWorkflow(normalizedInput);
+const profilesJson = JSON.stringify(workflowRecommendations);
+const initialInputJson = JSON.stringify(normalizedInput);
+---
+<section
+  class:list={[
+    'workflow-finder rounded-[2rem] border border-line bg-bg-surface/70 backdrop-blur p-6 sm:p-8',
+    embedded ? '' : 'container-wide my-10 sm:my-14',
+  ]}
+  data-finder-root
+>
+  <div class="grid grid-cols-1 xl:grid-cols-[0.92fr_1.08fr] gap-8">
+    <div>
+      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Interactive advisor</p>
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">{title}</h2>
+      <p class="mt-3 text-text-muted max-w-xl">{intro}</p>
+
+      <form class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4" data-finder-form>
+        <label class="finder-field">
+          <span>Role</span>
+          <select name="role">
+            {finderOptions.role.map((option) => (
+              <option value={option.value} selected={option.value === normalizedInput.role}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="finder-field">
+          <span>Goal</span>
+          <select name="goal">
+            {finderOptions.goal.map((option) => (
+              <option value={option.value} selected={option.value === normalizedInput.goal}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="finder-field">
+          <span>Git comfort</span>
+          <select name="gitComfort">
+            {finderOptions.gitComfort.map((option) => (
+              <option value={option.value} selected={option.value === normalizedInput.gitComfort}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="finder-field">
+          <span>Collaboration need</span>
+          <select name="collaboration">
+            {finderOptions.collaboration.map((option) => (
+              <option value={option.value} selected={option.value === normalizedInput.collaboration}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="finder-field">
+          <span>Publishing need</span>
+          <select name="publishing">
+            {finderOptions.publishing.map((option) => (
+              <option value={option.value} selected={option.value === normalizedInput.publishing}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+
+        <label class="finder-field">
+          <span>Offline ownership priority</span>
+          <select name="ownership">
+            {finderOptions.ownership.map((option) => (
+              <option value={option.value} selected={option.value === normalizedInput.ownership}>{option.label}</option>
+            ))}
+          </select>
+        </label>
+      </form>
+
+      <div class="mt-6 flex flex-wrap gap-2">
+        <span class="badge-accent">Portable workflows only</span>
+        <span class="badge">No account wall</span>
+        <span class="badge">Compare-first when needed</span>
+      </div>
+    </div>
+
+    <div class="rounded-[1.75rem] border border-white/5 bg-[#0a0d11] p-6 sm:p-7" aria-live="polite" data-finder-result>
+      <div class="flex flex-wrap items-center gap-2 mb-4">
+        <span class="badge-accent" data-rec-role>{initialRecommendation.role}</span>
+        <span class="badge" data-rec-outcome>{initialRecommendation.outcome}</span>
+      </div>
+
+      <h3 class="text-2xl sm:text-3xl font-bold tracking-tight text-white" data-rec-title>{initialRecommendation.recommendedPath.label}</h3>
+      <p class="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed" data-rec-summary>{initialRecommendation.summary}</p>
+
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <article class="rounded-3xl border border-white/10 bg-white/5 p-4">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400 mb-2">Why this fits</p>
+          <p class="text-sm text-slate-200" data-rec-reason>{initialRecommendation.reason}</p>
+        </article>
+        <article class="rounded-3xl border border-white/10 bg-white/5 p-4">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400 mb-2">Not for you if</p>
+          <p class="text-sm text-slate-200" data-rec-warning>{initialRecommendation.warning}</p>
+        </article>
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 gap-3">
+        <a class="finder-link-primary" data-rec-path href={initialRecommendation.recommendedPath.href}>
+          <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400" data-rec-path-kind>{initialRecommendation.recommendedPath.kind}</span>
+          <span class="block text-base font-semibold text-white mt-1" data-rec-path-label>{initialRecommendation.recommendedPath.label}</span>
+        </a>
+        <a class="finder-link" data-rec-action href={initialRecommendation.todayAction.href}>
+          <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400">{initialRecommendation.todayAction.kind}</span>
+          <span class="block text-sm font-medium text-slate-100 mt-1">{initialRecommendation.todayAction.label}</span>
+        </a>
+        <a class:list={['finder-link', !initialRecommendation.kit && 'hidden']} data-rec-kit href={initialRecommendation.kit?.href ?? '#'}>
+          <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Kit</span>
+          <span class="block text-sm font-medium text-slate-100 mt-1" data-rec-kit-label>{initialRecommendation.kit?.label ?? ''}</span>
+        </a>
+        <a class:list={['finder-link', !initialRecommendation.guide && 'hidden']} data-rec-guide href={initialRecommendation.guide?.href ?? '#'}>
+          <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400">Guide</span>
+          <span class="block text-sm font-medium text-slate-100 mt-1" data-rec-guide-label>{initialRecommendation.guide?.label ?? ''}</span>
+        </a>
+        <a class="finder-link" data-rec-alt href={initialRecommendation.alternative.href}>
+          <span class="text-[11px] uppercase tracking-[0.18em] text-slate-400">{initialRecommendation.alternative.kind}</span>
+          <span class="block text-sm font-medium text-slate-100 mt-1" data-rec-alt-label>{initialRecommendation.alternative.label}</span>
+          <span class="block text-sm text-slate-400 mt-1" data-rec-alt-note>{initialRecommendation.alternative.note}</span>
+        </a>
+      </div>
+
+      <div class="mt-6 pt-5 border-t border-white/10">
+        <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400 mb-2">Why you can trust this</p>
+        <p class="text-sm text-slate-300" data-rec-trust>{initialRecommendation.trustNote}</p>
+        <div class="mt-3 flex flex-wrap gap-2" data-rec-criteria>
+          {initialRecommendation.criteria.map((criterion) => (
+            <span class="badge bg-white/5 text-slate-200 border-white/10">{criterion}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" data-finder-profiles set:html={profilesJson}></script>
+  <script type="application/json" data-finder-input set:html={initialInputJson}></script>
+</section>
+
+<script is:inline>
+  const recommendProfile = (input, profiles) => {
+    if (
+      input.role === 'team-docs' ||
+      input.goal === 'team-docs' ||
+      input.collaboration === 'realtime' ||
+      (input.ownership === 'low' && input.collaboration !== 'solo')
+    ) {
+      return profiles.find((profile) => profile.id === 'team-docs');
+    }
+
+    if (input.role === 'researcher' || input.goal === 'research') {
+      return profiles.find((profile) => profile.id === 'researcher');
+    }
+
+    if (
+      input.role === 'personal-wiki-builder' ||
+      input.goal === 'publish-wiki' ||
+      input.publishing === 'public-site'
+    ) {
+      return profiles.find((profile) => profile.id === 'personal-wiki-builder');
+    }
+
+    return profiles.find((profile) => profile.id === 'writer');
+  };
+
+  const updateVisibility = (element, isVisible) => {
+    if (!element) return;
+    element.classList.toggle('hidden', !isVisible);
+  };
+
+  document.querySelectorAll('[data-finder-root]').forEach((root) => {
+    const profiles = JSON.parse(root.querySelector('[data-finder-profiles]')?.textContent || '[]');
+    const initialInput = JSON.parse(root.querySelector('[data-finder-input]')?.textContent || '{}');
+    const form = root.querySelector('[data-finder-form]');
+    const fields = {
+      role: form?.querySelector('[name="role"]'),
+      goal: form?.querySelector('[name="goal"]'),
+      gitComfort: form?.querySelector('[name="gitComfort"]'),
+      collaboration: form?.querySelector('[name="collaboration"]'),
+      publishing: form?.querySelector('[name="publishing"]'),
+      ownership: form?.querySelector('[name="ownership"]'),
+    };
+
+    const nodes = {
+      role: root.querySelector('[data-rec-role]'),
+      outcome: root.querySelector('[data-rec-outcome]'),
+      title: root.querySelector('[data-rec-title]'),
+      summary: root.querySelector('[data-rec-summary]'),
+      reason: root.querySelector('[data-rec-reason]'),
+      warning: root.querySelector('[data-rec-warning]'),
+      path: root.querySelector('[data-rec-path]'),
+      pathKind: root.querySelector('[data-rec-path-kind]'),
+      pathLabel: root.querySelector('[data-rec-path-label]'),
+      action: root.querySelector('[data-rec-action]'),
+      kit: root.querySelector('[data-rec-kit]'),
+      kitLabel: root.querySelector('[data-rec-kit-label]'),
+      guide: root.querySelector('[data-rec-guide]'),
+      guideLabel: root.querySelector('[data-rec-guide-label]'),
+      alt: root.querySelector('[data-rec-alt]'),
+      altLabel: root.querySelector('[data-rec-alt-label]'),
+      altNote: root.querySelector('[data-rec-alt-note]'),
+      trust: root.querySelector('[data-rec-trust]'),
+      criteria: root.querySelector('[data-rec-criteria]'),
+    };
+
+    const render = (profile) => {
+      if (!profile) return;
+
+      if (nodes.role) nodes.role.textContent = profile.role;
+      if (nodes.outcome) nodes.outcome.textContent = profile.outcome;
+      if (nodes.title) nodes.title.textContent = profile.recommendedPath.label;
+      if (nodes.summary) nodes.summary.textContent = profile.summary;
+      if (nodes.reason) nodes.reason.textContent = profile.reason;
+      if (nodes.warning) nodes.warning.textContent = profile.warning;
+      if (nodes.trust) nodes.trust.textContent = profile.trustNote;
+
+      if (nodes.path) nodes.path.href = profile.recommendedPath.href;
+      if (nodes.pathKind) nodes.pathKind.textContent = profile.recommendedPath.kind || 'Path';
+      if (nodes.pathLabel) nodes.pathLabel.textContent = profile.recommendedPath.label;
+      if (nodes.action) {
+        nodes.action.href = profile.todayAction.href;
+        nodes.action.querySelector('span:last-child').textContent = profile.todayAction.label;
+        nodes.action.querySelector('span:first-child').textContent = profile.todayAction.kind || 'Next';
+      }
+
+      if (nodes.kit) {
+        updateVisibility(nodes.kit, Boolean(profile.kit));
+        if (profile.kit) {
+          nodes.kit.href = profile.kit.href;
+          if (nodes.kitLabel) nodes.kitLabel.textContent = profile.kit.label;
+        }
+      }
+
+      if (nodes.guide) {
+        updateVisibility(nodes.guide, Boolean(profile.guide));
+        if (profile.guide) {
+          nodes.guide.href = profile.guide.href;
+          if (nodes.guideLabel) nodes.guideLabel.textContent = profile.guide.label;
+        }
+      }
+
+      if (nodes.alt) {
+        nodes.alt.href = profile.alternative.href;
+        if (nodes.altLabel) nodes.altLabel.textContent = profile.alternative.label;
+        if (nodes.altNote) nodes.altNote.textContent = profile.alternative.note || '';
+      }
+
+      if (nodes.criteria) {
+        nodes.criteria.innerHTML = '';
+        profile.criteria.forEach((criterion) => {
+          const badge = document.createElement('span');
+          badge.className = 'badge bg-white/5 text-slate-200 border-white/10';
+          badge.textContent = criterion;
+          nodes.criteria.appendChild(badge);
+        });
+      }
+    };
+
+    render(recommendProfile(initialInput, profiles));
+
+    form?.addEventListener('input', () => {
+      const nextInput = {
+        role: fields.role?.value,
+        goal: fields.goal?.value,
+        gitComfort: fields.gitComfort?.value,
+        collaboration: fields.collaboration?.value,
+        publishing: fields.publishing?.value,
+        ownership: fields.ownership?.value,
+      };
+      render(recommendProfile(nextInput, profiles));
+    });
+  });
+</script>

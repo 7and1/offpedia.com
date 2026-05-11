@@ -30,6 +30,9 @@ platforms:
   - Linux
   - iOS
   - Android
+limitations:
+  - Long-form document workflows can feel fragmented if you prefer stable page structure over block-first outlining.
+  - Publishing and broader ecosystem support are narrower than Obsidian's current plugin and publishing paths.
 relatedStacks: []
 relatedKits: []
 tags:

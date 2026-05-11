@@ -36,6 +36,8 @@ const toolA = toolById.get(workflow.toolA);
 const toolB = toolById.get(workflow.toolB);
 const toolALabel = toolA?.data.title ?? titleFromSlug(workflow.toolA);
 const toolBLabel = toolB?.data.title ?? titleFromSlug(workflow.toolB);
+const toolABestFor = toolA?.data.bestFor ?? [];
+const toolBBestFor = toolB?.data.bestFor ?? [];
 const relatedGuideSlugs = [...new Set(workflow.stacks.flatMap((stack) => stack.data.relatedGuides))];
 const relatedKitSlugs = [...new Set(workflow.stacks.flatMap((stack) => stack.data.relatedKits))];
 const relatedGuides = guideEntries.filter((entry) => relatedGuideSlugs.includes(entry.slug) || relatedGuideSlugs.includes(entry.data.customSlug ?? ''));
@@ -92,24 +94,29 @@ const relatedLinks = [
       ]}
     />
 
+    <section class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8 mb-10">
+      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Source of truth</p>
+      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">{workflow.sourceOfTruth}</h2>
+    </section>
+
     <section class="mb-10">
       <h2 class="text-2xl font-bold mb-4">Workflow roles</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div class="card-base">
           <h3 class="text-lg font-semibold mb-2">{toolALabel}</h3>
           <p class="text-sm text-text-muted">{toolA?.data.description ?? `${toolALabel} is one side of this workflow.`}</p>
-          {toolA?.data.bestFor?.length > 0 && (
+          {toolABestFor.length > 0 && (
             <div class="flex flex-wrap gap-1.5 mt-3">
-              {toolA.data.bestFor.slice(0, 3).map((item) => <span class="badge-good">{item}</span>)}
+              {toolABestFor.slice(0, 3).map((item) => <span class="badge-good">{item}</span>)}
             </div>
           )}
         </div>
         <div class="card-base">
           <h3 class="text-lg font-semibold mb-2">{toolBLabel}</h3>
           <p class="text-sm text-text-muted">{toolB?.data.description ?? `${toolBLabel} handles the second side of this workflow.`}</p>
-          {toolB?.data.bestFor?.length > 0 && (
+          {toolBBestFor.length > 0 && (
             <div class="flex flex-wrap gap-1.5 mt-3">
-              {toolB.data.bestFor.slice(0, 3).map((item) => <span class="badge-good">{item}</span>)}
+              {toolBBestFor.slice(0, 3).map((item) => <span class="badge-good">{item}</span>)}
             </div>
           )}
         </div>
@@ -123,7 +130,7 @@ const relatedLinks = [
           <Card
             href={`/stacks/${stack.data.customSlug || stack.slug}`}
             title={stack.data.title}
-            description={stack.data.description}
+            description={stack.data.quickVerdict}
             badges={[stack.data.goal, stack.data.difficulty, ...stack.data.coreTools]}
           />
         ))}
@@ -131,14 +138,31 @@ const relatedLinks = [
     </section>
 
     <section class="mb-10">
-      <h2 class="text-2xl font-bold mb-4">Connection checklist</h2>
-      <div class="prose">
-        <ol>
-          <li>Pick the canonical place where content or records live.</li>
-          <li>Define the handoff: export, sync, citation link, Git push, or static publish.</li>
-          <li>Test one sample note, PDF, or page before moving the whole workspace.</li>
-          <li>Document the backup path so the workflow still works if one hosted service is unavailable.</li>
-        </ol>
+      <h2 class="text-2xl font-bold mb-4">What syncs and what does not</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="card-base">
+          <h3 class="text-lg font-semibold mb-3">What syncs</h3>
+          <ul class="space-y-2 text-sm text-text-muted">
+            {workflow.whatSyncs.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div class="card-base">
+          <h3 class="text-lg font-semibold mb-3">What does not sync</h3>
+          <ul class="space-y-2 text-sm text-text-muted">
+            {workflow.whatDoesNotSync.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Failure modes</h2>
+      <div class="space-y-3">
+        {workflow.failureModes.map((item) => (
+          <div class="card-base">
+            <p class="text-sm text-text-muted">{item}</p>
+          </div>
+        ))}
       </div>
     </section>
 
@@ -150,7 +174,7 @@ const relatedLinks = [
             <Card
               href={`/kits/${kit.data.customSlug || kit.slug}`}
               title={kit.data.title}
-              description={kit.data.description}
+              description={kit.data.outcome}
               badges={[kit.data.stack]}
             />
           ))}

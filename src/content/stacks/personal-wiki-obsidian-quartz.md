@@ -23,6 +23,24 @@ publishReady: true
 difficulty: intermediate
 setupTime: 60min
 maintenance: medium
+outcome: A Markdown-first publishing workflow that turns a curated vault into a public wiki without giving up file ownership.
+quickVerdict: Choose this when you want a personal wiki or digital garden that starts from your own Markdown source of truth.
+idealFor:
+  - Personal wiki builders publishing selected notes
+  - Technical writers who want repo-based docs without losing Markdown ownership
+  - Researchers or creators turning a vault into a browseable public knowledge base
+avoidIf:
+  - You need a fully collaborative team documentation product first
+  - You want publishing with zero Git exposure
+  - You plan to dump every private note directly onto the public site
+proofPoints:
+  - Obsidian keeps the private working vault local and editable.
+  - GitHub holds the publishable repo and deployment history.
+  - Quartz is built for linked Markdown sites and works well with Obsidian-style structures.
+alternatives:
+  - label: Quartz vs Docusaurus
+    href: /compare/quartz-vs-docusaurus
+    reason: Use this when you are choosing between a personal wiki and a team-maintained docs framework.
 relatedWiki:
   - tools/obsidian
   - tools/quartz
@@ -59,6 +77,12 @@ This stack upgrades a private knowledge base into a website other people can bro
 - Personal knowledge-base maintainers
 - Course, research, and product-log authors
 
+## Not ideal for
+
+- Realtime multi-editor team docs
+- Database-heavy knowledge hubs
+- People who do not want a curated public/private split
+
 ## Recommended folder structure
 
 ```txt
@@ -83,3 +107,9 @@ A public wiki should not be a raw dump of every private note. Keep a clear split
 ## Matching kit
 
 Use [Personal Wiki Kit](/kits/personal-wiki-kit).
+
+## Limits
+
+- The public site should be treated as a curated surface, not a mirror of every private note.
+- Git and deploy steps add maintenance overhead compared with hosted note-sharing tools.
+- Media-heavy sites need an asset strategy before the repo grows too large.

@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import {
   getCompareEligibleTools,
-  getComparePairs,
+  getIndexableComparePairs,
   getPersonaGoalPages,
   getWorkflowPages,
 } from '../lib/pseo';
@@ -19,7 +19,8 @@ function escapeXml(value: string): string {
 }
 
 function urlFor(path: string): string {
-  return `${site}${path}`;
+  const normalizedPath = path === '/' || path.endsWith('/') ? path : `${path}/`;
+  return `${site}${normalizedPath}`;
 }
 
 function dateOnly(value: Date | string): string {
@@ -36,7 +37,7 @@ export const GET: APIRoute = async () => {
   ]);
   const urls = new Map<string, string | undefined>();
 
-  for (const path of ['/', '/about', '/search', '/wiki', '/stacks', '/kits', '/guides', '/compare']) {
+  for (const path of ['/', '/about', '/finder', '/search', '/wiki', '/stacks', '/kits', '/guides', '/compare']) {
     urls.set(urlFor(path), undefined);
   }
 
@@ -46,7 +47,7 @@ export const GET: APIRoute = async () => {
   for (const entry of guideEntries) urls.set(urlFor(`/guides/${entry.data.customSlug || entry.slug}`), dateOnly(entry.data.updatedAt));
   for (const entry of compareEntries) urls.set(urlFor(`/compare/${entry.data.customSlug || entry.slug}`), dateOnly(entry.data.updatedAt));
 
-  for (const pair of getComparePairs(getCompareEligibleTools(wikiEntries))) {
+  for (const pair of getIndexableComparePairs(getCompareEligibleTools(wikiEntries))) {
     urls.set(urlFor(`/compare/${pair.slug}`), undefined);
   }
 

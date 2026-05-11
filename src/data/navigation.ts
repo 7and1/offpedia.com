@@ -1,9 +1,10 @@
 export const navItems = [
+  { href: '/finder', label: 'Finder' },
   { href: '/stacks', label: 'Stacks' },
-  { href: '/wiki', label: 'Wiki' },
   { href: '/kits', label: 'Kits' },
   { href: '/guides', label: 'Guides' },
-  { href: '/compare', label: 'Compare' }
+  { href: '/compare', label: 'Compare' },
+  { href: '/wiki', label: 'Wiki' }
 ];
 
 export const goals = [

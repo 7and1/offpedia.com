@@ -18,6 +18,20 @@ folders:
   - 40 Published
   - 80 Assets
   - 90 Templates
+outcome: A ready-to-open writer vault with durable folder conventions, starter templates, and a clean GitHub sync next step.
+includedFiles:
+  - Essay template with frontmatter
+  - Reference note template
+  - Daily capture template
+  - Folder scaffold for drafts, references, and published work
+previewNotes:
+  - "`00 Inbox` catches raw ideas before they get lost."
+  - "`10 Drafts` keeps active writing separate from archive material."
+  - "`40 Published` gives you a durable record of what shipped."
+bestNextStep:
+  label: Sync the vault with GitHub
+  href: /guides/setup-obsidian-github-sync
+  reason: Add version history and a safe backup path once the folder model feels right.
 relatedGuides:
   - setup-obsidian-github-sync
 tags:

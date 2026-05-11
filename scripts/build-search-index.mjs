@@ -25,10 +25,10 @@ const compareToolOrder = [
 ];
 
 const workflowSeeds = [
-  { toolA: 'obsidian', toolB: 'github', stackSlug: 'writer-obsidian-github' },
-  { toolA: 'obsidian', toolB: 'zotero', stackSlug: 'researcher-obsidian-zotero' },
-  { toolA: 'quartz', toolB: 'github', stackSlug: 'personal-wiki-obsidian-quartz' },
-  { toolA: 'quartz', toolB: 'github-pages', stackSlug: 'personal-wiki-obsidian-quartz' },
+  { toolA: 'obsidian', toolB: 'github', stackSlug: 'writer-obsidian-github', description: 'A durable writing and knowledge workflow where local Markdown stays primary and GitHub handles version history, backup, and publishing handoff.' },
+  { toolA: 'obsidian', toolB: 'zotero', stackSlug: 'researcher-obsidian-zotero', description: 'A research workflow where Zotero manages the evidence library and Obsidian turns that evidence into questions, notes, and drafts.' },
+  { toolA: 'quartz', toolB: 'github', stackSlug: 'personal-wiki-obsidian-quartz', description: 'A publishing workflow where GitHub holds the site repo and Quartz turns Markdown into a linked personal wiki or digital garden.' },
+  { toolA: 'quartz', toolB: 'github-pages', stackSlug: 'personal-wiki-obsidian-quartz', description: 'A low-friction static publishing path for Quartz sites where GitHub Pages acts as the origin and GitHub Actions handles the build.' },
 ];
 
 function parseValue(value) {
@@ -118,6 +118,34 @@ function workflowSlug(toolA, toolB) {
   return `${toolA}-with-${toolB}`;
 }
 
+function personaTitle(persona) {
+  const labels = {
+    writer: 'writers',
+    'indie-maker': 'indie makers',
+    'newsletter-author': 'newsletter authors',
+    researcher: 'researchers',
+    student: 'students',
+    analyst: 'analysts',
+    developer: 'developers',
+  };
+  return labels[persona] || `${persona.replace(/-/g, ' ')}s`;
+}
+
+function forTitle(persona, goal) {
+  if (goal === 'research') return `Best research workflows for ${personaTitle(persona)}`;
+  if (goal === 'personal-wiki') return `Best personal wiki workflows for ${personaTitle(persona)}`;
+  return `Best knowledge workflows for ${personaTitle(persona)}`;
+}
+
+function forDescription(persona, goal, stackTitle) {
+  const labels = {
+    writing: 'writing',
+    research: 'research',
+    'personal-wiki': 'personal wiki publishing',
+  };
+  return `${stackTitle} is the primary Offpedia recommendation for ${personaTitle(persona)} who care about ${labels[goal] || goal}, ownership, and a practical next step.`;
+}
+
 function makeRecord({ collection, title, description, tags = [], url, body = '' }) {
   return {
     collection,
@@ -131,6 +159,15 @@ function makeRecord({ collection, title, description, tags = [], url, body = '' 
 
 const index = [];
 const parsed = Object.fromEntries(Object.keys(collections).map((collection) => [collection, []]));
+
+index.push(makeRecord({
+  collection: 'finder',
+  title: 'Workflow Finder',
+  description: 'Find the right durable knowledge workflow for writing, research, personal wiki publishing, or team docs in one guided pass.',
+  tags: ['finder', 'workflow', 'advisor'],
+  url: '/finder',
+  body: 'Choose a durable knowledge workflow before you rebuild it again. Answer six questions and get a recommendation, next action, kit, guide, and alternative.',
+}));
 
 for (const [collection, baseUrl] of Object.entries(collections)) {
   const dir = path.join(contentRoot, collection);
@@ -189,8 +226,8 @@ for (const stack of parsed.stacks) {
     const relatedStacks = parsed.stacks.filter((entry) => entry.data.goal === goal && (entry.data.personas || []).includes(persona));
     index.push(makeRecord({
       collection: 'for',
-      title: `${titleFromSlug(persona)} ${titleFromSlug(goal)} stacks`,
-      description: `Recommended Offpedia stacks, kits, guides, and tools for ${titleFromSlug(persona).toLowerCase()} focused on ${titleFromSlug(goal).toLowerCase()}.`,
+      title: forTitle(persona, goal),
+      description: forDescription(persona, goal, relatedStacks[0]?.data.title || 'A recommended stack'),
       tags: [persona, goal],
       url: `/for/${slug}`,
       body: relatedStacks.map((entry) => `${entry.data.title} ${entry.data.description} ${(entry.data.coreTools || []).join(' ')}`).join(' '),
@@ -198,34 +235,15 @@ for (const stack of parsed.stacks) {
   }
 }
 
-const workflowSlugs = new Map();
-for (const stack of parsed.stacks) {
-  const tools = stack.data.coreTools || [];
-  for (let i = 0; i < tools.length; i += 1) {
-    for (let j = i + 1; j < tools.length; j += 1) {
-      const slug = workflowSlug(tools[i], tools[j]);
-      const existing = workflowSlugs.get(slug) || [];
-      existing.push(stack);
-      workflowSlugs.set(slug, existing);
-    }
-  }
-}
-
 for (const seed of workflowSeeds) {
   const slug = workflowSlug(seed.toolA, seed.toolB);
-  if (!workflowSlugs.has(slug)) {
-    const stack = parsed.stacks.find((entry) => entry.slug === seed.stackSlug || entry.data.customSlug === seed.stackSlug);
-    workflowSlugs.set(slug, stack ? [stack] : []);
-  }
-}
-
-for (const [slug, stacks] of workflowSlugs) {
-  const [toolA, toolB] = slug.split('-with-');
+  const stack = parsed.stacks.find((entry) => entry.slug === seed.stackSlug || entry.data.customSlug === seed.stackSlug);
+  const stacks = stack ? [stack] : [];
   index.push(makeRecord({
     collection: 'workflow',
-    title: `${titleFromSlug(toolA)} with ${titleFromSlug(toolB)}`,
-    description: `A practical workflow page for using ${titleFromSlug(toolA)} with ${titleFromSlug(toolB)} in local-first knowledge work.`,
-    tags: [toolA, toolB, 'workflow'],
+    title: `${titleFromSlug(seed.toolA)} with ${titleFromSlug(seed.toolB)}`,
+    description: seed.description,
+    tags: [seed.toolA, seed.toolB, 'workflow'],
     url: `/workflow/${slug}`,
     body: stacks.map((entry) => `${entry.data.title} ${entry.data.description} ${(entry.data.relatedGuides || []).join(' ')}`).join(' '),
   }));

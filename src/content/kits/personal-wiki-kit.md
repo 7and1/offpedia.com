@@ -15,6 +15,19 @@ folders:
   - logs
   - references
   - assets
+outcome: A starter public-vault structure for Quartz publishing, with a cleaner split between private notes and publishable material.
+includedFiles:
+  - Public note template with summary and updated date
+  - Folder scaffold for concepts, tools, projects, and references
+  - Publishing-oriented frontmatter examples
+previewNotes:
+  - Keep public notes shallow, readable, and link-rich at the start.
+  - "Use `references` for public sources, not your entire private research archive."
+  - Add summaries and updated dates before publishing.
+bestNextStep:
+  label: Publish the vault with Quartz
+  href: /guides/publish-obsidian-to-quartz
+  reason: Move from structure to a live site once the public subset is ready.
 relatedGuides:
   - publish-obsidian-to-quartz
 tags:

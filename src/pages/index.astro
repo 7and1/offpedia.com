@@ -3,203 +3,224 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/Card.astro';
 import SearchBox from '../components/SearchBox.astro';
-import Badge from '../components/Badge.astro';
-import { goals } from '../data/navigation';
+import DecisionCard from '../components/DecisionCard.astro';
+import WorkflowFinder from '../components/WorkflowFinder.astro';
+import { workflowRecommendations } from '../lib/workflow-advisor';
 
 const stacks = (await getCollection('stacks')).slice(0, 3);
 const kits = (await getCollection('kits')).slice(0, 3);
-const wiki = (await getCollection('wiki')).slice(0, 6);
 const guides = (await getCollection('guides')).slice(0, 3);
-const compare = (await getCollection('compare')).slice(0, 2);
+const compare = (await getCollection('compare'))
+  .filter((entry) => ['obsidian-vs-notion', 'obsidian-vs-logseq', 'quartz-vs-docusaurus'].includes(entry.slug))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
-<BaseLayout title="Offpedia" description="Local-first workflow encyclopedia. Wiki entries, reusable stacks, and downloadable vault kits for people who want durable, portable knowledge systems.">
-
-  <!-- Hero -->
+<BaseLayout
+  title="Offpedia"
+  description="Choose a durable knowledge workflow before you rebuild it again. Offpedia helps writers, researchers, and personal wiki builders choose portable tool stacks, starter kits, and setup paths."
+>
   <section class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-b from-accent/5 via-transparent to-transparent pointer-events-none"></div>
-    <div class="container-wide relative py-20 sm:py-28 lg:py-36">
-      <div class="max-w-4xl">
-        <div class="flex items-center gap-2 mb-6">
-          <Badge label="P2 Launch" tone="accent" />
-          <Badge label="18 entries" />
-          <Badge label="Open-source" />
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(110,231,183,0.14),transparent_26rem),radial-gradient(circle_at_top_right,rgba(147,197,253,0.12),transparent_28rem)] pointer-events-none"></div>
+    <div class="container-wide relative py-16 sm:py-20 lg:py-24">
+      <div class="grid grid-cols-1 xl:grid-cols-[0.9fr_1.1fr] gap-10 items-start">
+        <div class="max-w-2xl">
+          <p class="text-[11px] uppercase tracking-[0.28em] text-text-subtle mb-5">Workflow advisor for durable knowledge systems</p>
+          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[0.94]">
+            Choose a durable knowledge workflow
+            <span class="text-gradient block mt-2">before you rebuild it again.</span>
+          </h1>
+
+          <p class="text-lg sm:text-xl text-text-muted max-w-2xl mt-6 leading-relaxed">
+            Offpedia helps writers, researchers, and personal wiki builders choose portable tool stacks, download starter kits, and follow setup paths that avoid lock-in.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mt-8">
+            <a class="btn-primary text-base px-7 py-3" href="/finder">Find my workflow</a>
+            <a class="btn-secondary text-base px-7 py-3" href="/stacks">Browse proven stacks</a>
+          </div>
+
+          <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="rounded-3xl border border-line bg-bg-surface/50 p-4">
+              <p class="text-xs uppercase tracking-[0.18em] text-text-subtle mb-2">Today</p>
+              <p class="text-sm text-text-muted">Run the finder and get one recommendation with a next action.</p>
+            </div>
+            <div class="rounded-3xl border border-line bg-bg-surface/50 p-4">
+              <p class="text-xs uppercase tracking-[0.18em] text-text-subtle mb-2">Trust</p>
+              <p class="text-sm text-text-muted">Recommendations show criteria, tradeoffs, sources, limitations, and update dates.</p>
+            </div>
+            <div class="rounded-3xl border border-line bg-bg-surface/50 p-4">
+              <p class="text-xs uppercase tracking-[0.18em] text-text-subtle mb-2">Escape hatch</p>
+              <p class="text-sm text-text-muted">If the recommendation is wrong for you, the closest alternative is right beside it.</p>
+            </div>
+          </div>
         </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[0.95] mb-6">
-          Build local-first workflows<br class="hidden sm:block" />
-          <span class="text-gradient">that still work</span><br class="hidden sm:block" />
-          when the cloud does not.
-        </h1>
-
-        <p class="text-lg sm:text-xl text-text-muted max-w-2xl mb-8 leading-relaxed">
-          Offpedia collects structured wiki entries, reusable workflow stacks, and downloadable vault kits for people who want durable, portable knowledge systems.
-        </p>
-
-        <!-- Search -->
-        <div class="mb-8">
-          <SearchBox placeholder="Search stacks, wiki, kits, guides... (⌘K)" />
-        </div>
-
-        <!-- CTA -->
-        <div class="flex flex-wrap gap-3">
-          <a class="btn-primary text-base px-7 py-3" href="/stacks">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-            Explore Stacks
-          </a>
-          <a class="btn-secondary text-base px-7 py-3" href="/kits">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-            Browse Kits
-          </a>
-          <a class="btn-ghost text-base px-7 py-3" href="/wiki">
-            Read Wiki
-          </a>
-        </div>
+        <WorkflowFinder embedded={true} />
       </div>
     </div>
   </section>
 
-  <!-- Featured Stacks -->
   <section class="container-wide py-14 sm:py-20">
-    <div class="flex items-end justify-between mb-8">
+    <div class="flex items-end justify-between gap-6 mb-8">
       <div>
-        <h2 class="section-title">Featured Stacks</h2>
-        <p class="section-subtitle">Start from a goal and choose a repeatable local-first workflow.</p>
+        <h2 class="section-title">What you get today</h2>
+        <p class="section-subtitle">Offpedia is most useful when it ends in a concrete action, not just a content browse.</p>
       </div>
-      <a href="/stacks" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+      <a href="/finder" class="hidden sm:flex btn-ghost text-sm">Open finder →</a>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {stacks.map((entry) => (
-        <Card
-          href={`/stacks/${entry.slug}`}
-          title={entry.data.title}
-          description={entry.data.description}
-          badges={[
-            entry.data.offlineReady ? 'Offline-ready' : '',
-            entry.data.localFirst ? 'Local-first' : '',
-            entry.data.gitNative ? 'Git-native' : '',
-            entry.data.difficulty,
-          ].filter(Boolean)}
-        />
-      ))}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <DecisionCard
+        eyebrow="Recommendation"
+        title="One primary path"
+        description="The finder returns one workflow path with a reason, a warning, and the nearest alternative."
+        chooseIf={['You want a recommendation without searching the whole site.', 'You need a concrete place to start today.']}
+        action={{ label: 'Run Workflow Finder', href: '/finder', kind: 'Finder' }}
+      />
+      <DecisionCard
+        eyebrow="Kit"
+        title="A starter structure"
+        description="Download a vault kit or open a stack page that already explains the folder model and next move."
+        chooseIf={['You want templates and folders, not abstract tool advice.', 'You want to start inside Obsidian today.']}
+        action={{ label: 'Browse starter kits', href: '/kits', kind: 'Kits' }}
+      />
+      <DecisionCard
+        eyebrow="Guide"
+        title="A setup path"
+        description="Follow a practical guide for sync, publishing, or frontmatter design once the workflow choice is made."
+        chooseIf={['You already know your stack and need the next implementation step.', 'You want a predictable setup path.']}
+        action={{ label: 'Read setup guides', href: '/guides', kind: 'Guides' }}
+      />
     </div>
   </section>
 
-  <!-- Popular Kits -->
-  <section class="container-wide py-14 sm:py-20 border-t border-line">
-    <div class="flex items-end justify-between mb-8">
-      <div>
-        <h2 class="section-title">Popular Kits</h2>
-        <p class="section-subtitle">Downloadable, forkable Obsidian vaults and template projects.</p>
-      </div>
-      <a href="/kits" class="hidden sm:flex btn-ghost text-sm">View all →</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {kits.map((entry) => (
-        <Card
-          href={`/kits/${entry.slug}`}
-          title={entry.data.title}
-          description={entry.data.description}
-          badges={['Template', entry.data.stack, ...entry.data.plugins.slice(0, 2)]}
-        />
-      ))}
-    </div>
-  </section>
-
-  <!-- Browse by Goal -->
   <section class="container-wide py-14 sm:py-20 border-t border-line">
     <div class="mb-8">
-      <h2 class="section-title">Browse by Goal</h2>
-      <p class="section-subtitle">What problem are you solving? Start with a goal and find the matching stack and kit.</p>
+      <h2 class="section-title">Choose your entry path</h2>
+      <p class="section-subtitle">Start from the job you are trying to do, not from the full reference catalog.</p>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-      {goals.map((goal) => (
-        <a href={goal.href} class="card-base text-center group no-underline p-4">
-          <div class="text-2xl mb-2">
-            {goal.value === 'writing' && '✍️'}
-            {goal.value === 'personal-wiki' && '📚'}
-            {goal.value === 'research' && '🔬'}
-            {goal.value === 'publishing' && '🚀'}
-            {goal.value === 'knowledge-base' && '🗄️'}
-          </div>
-          <span class="text-sm font-medium text-text group-hover:text-accent transition-colors">{goal.label}</span>
-        </a>
-      ))}
-    </div>
-  </section>
-
-  <!-- Core Wiki -->
-  <section class="container-wide py-14 sm:py-20 border-t border-line">
-    <div class="flex items-end justify-between mb-8">
-      <div>
-        <h2 class="section-title">Core Wiki</h2>
-        <p class="section-subtitle">Tool and concept entries form the knowledge base behind Offpedia.</p>
-      </div>
-      <a href="/wiki" class="hidden sm:flex btn-ghost text-sm">View all →</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {wiki.map((entry) => (
-        <Card
-          href={`/wiki/${entry.slug}`}
-          title={entry.data.title}
-          description={entry.data.description}
-          badges={[entry.data.kind, entry.data.category]}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      {workflowRecommendations.map((profile) => (
+        <DecisionCard
+          eyebrow={profile.shortLabel}
+          title={profile.recommendedPath.label}
+          description={profile.summary}
+          chooseIf={profile.criteria.slice(0, 3)}
+          avoidIf={[profile.warning]}
+          action={profile.todayAction}
+          alternative={profile.alternative}
         />
       ))}
     </div>
   </section>
 
-  <!-- Latest Guides -->
   <section class="container-wide py-14 sm:py-20 border-t border-line">
-    <div class="flex items-end justify-between mb-8">
-      <div>
-        <h2 class="section-title">Latest Guides</h2>
-        <p class="section-subtitle">Follow practical steps to complete one concrete task.</p>
-      </div>
-      <a href="/guides" class="hidden sm:flex btn-ghost text-sm">View all →</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {guides.map((entry) => (
-        <Card
-          href={`/guides/${entry.slug}`}
-          title={entry.data.title}
-          description={entry.data.description}
-          badges={[entry.data.difficulty, entry.data.timeRequired]}
-        />
-      ))}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">How recommendations work</p>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Criteria before ideology</h2>
+        <p class="mt-3 text-text-muted max-w-2xl">
+          Offpedia does not recommend a workflow just because it is local-first. The recommendation has to survive real tradeoffs.
+        </p>
+        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {['Portability', 'Offline access', 'Git support', 'Collaboration fit', 'Publishing path', 'Migration risk'].map((item) => (
+            <div class="rounded-3xl border border-line bg-bg/40 px-4 py-4 text-sm text-text-muted">{item}</div>
+          ))}
+        </div>
+      </article>
+
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">When not to choose local-first</p>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Cloud-first is sometimes the right answer</h2>
+        <ul class="mt-6 space-y-3 text-text-muted">
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>Use a compare-first path when the team needs realtime collaborative editing.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>Prefer docs frameworks or shared workspaces when the workflow depends on versioned team docs or lightweight databases.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>A low Git tolerance is a real constraint, not a moral failure. The recommendation should respect it.</span></li>
+        </ul>
+      </article>
     </div>
   </section>
 
-  <!-- Compare -->
   <section class="container-wide py-14 sm:py-20 border-t border-line">
     <div class="flex items-end justify-between mb-8">
       <div>
-        <h2 class="section-title">Compare</h2>
-        <p class="section-subtitle">Choose between similar tools with structured comparisons.</p>
+        <h2 class="section-title">Popular alternatives</h2>
+        <p class="section-subtitle">The fallback path should be visible before you commit to a stack.</p>
       </div>
-      <a href="/compare" class="hidden sm:flex btn-ghost text-sm">View all →</a>
+      <a href="/compare" class="hidden sm:flex btn-ghost text-sm">View all comparisons →</a>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       {compare.map((entry) => (
         <Card
           href={`/compare/${entry.slug}`}
           title={entry.data.title}
-          description={entry.data.description}
+          description={entry.data.quickAnswer}
           badges={entry.data.tools}
         />
       ))}
     </div>
   </section>
 
-  <!-- CTA Bottom -->
-  <section class="container-wide py-20 sm:py-28 border-t border-line">
-    <div class="text-center max-w-2xl mx-auto">
-      <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Ready to build your workflow?</h2>
-      <p class="text-text-muted mb-8">Pick a Stack, download a Kit, follow a Guide. Start with what you have.</p>
-      <div class="flex flex-wrap justify-center gap-3">
-        <a class="btn-primary" href="/stacks">Explore Stacks</a>
-        <a class="btn-secondary" href="/kits">Browse Kits</a>
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="flex items-end justify-between mb-8">
+      <div>
+        <h2 class="section-title">Proven stacks</h2>
+        <p class="section-subtitle">Flagship stacks lead with verdicts, ideal users, avoid-if warnings, and the matching next step.</p>
       </div>
+      <a href="/stacks" class="hidden sm:flex btn-ghost text-sm">View all stacks →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {stacks.map((entry) => (
+        <Card
+          href={`/stacks/${entry.slug}`}
+          title={entry.data.title}
+          description={entry.data.quickVerdict}
+          badges={[entry.data.goal, entry.data.difficulty, entry.data.publishReady ? 'Publish-ready' : 'Workflow'] }
+        />
+      ))}
     </div>
   </section>
 
+  <section class="container-wide py-14 sm:py-20 border-t border-line">
+    <div class="grid grid-cols-1 xl:grid-cols-[1fr_0.8fr] gap-8 items-start">
+      <div>
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <h2 class="section-title">Starter kits</h2>
+            <p class="section-subtitle">Product-like previews beat decorative art. See the folder tree and included files before you download.</p>
+          </div>
+          <a href="/kits" class="hidden sm:flex btn-ghost text-sm">View all kits →</a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          {kits.map((entry) => (
+            <Card
+              href={`/kits/${entry.slug}`}
+              title={entry.data.title}
+              description={entry.data.outcome}
+              badges={['Template', entry.data.stack, ...entry.data.plugins.slice(0, 1)]}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Reference material</p>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Support the decision with the reference layer</h2>
+        <p class="mt-3 text-text-muted">
+          Wiki entries still matter, but they now support a workflow decision instead of replacing one.
+        </p>
+        <div class="mt-6">
+          <SearchBox placeholder="Search stacks, compare pages, kits, guides... (⌘K)" />
+        </div>
+        <div class="mt-6 grid grid-cols-1 gap-3">
+          {guides.map((entry) => (
+            <Card
+              href={`/guides/${entry.slug}`}
+              title={entry.data.title}
+              description={entry.data.description}
+              badges={[entry.data.difficulty, entry.data.timeRequired]}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

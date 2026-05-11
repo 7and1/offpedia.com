@@ -1,7 +1,7 @@
 {
   "name": "Offpedia",
   "short_name": "Offpedia",
-  "description": "Local-first workflow encyclopedia. Wiki entries, reusable stacks, and downloadable vault kits.",
+  "description": "Workflow advisor for durable writing, research, publishing, and knowledge systems.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0c0f14",

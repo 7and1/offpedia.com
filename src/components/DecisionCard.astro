@@ -1,0 +1,93 @@
+---
+import Badge from './Badge.astro';
+
+interface ActionLink {
+  label: string;
+  href: string;
+  kind?: string;
+  note?: string;
+  reason?: string;
+}
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  chooseIf?: string[];
+  avoidIf?: string[];
+  action?: ActionLink | null;
+  alternative?: ActionLink | null;
+  badges?: string[];
+}
+
+const {
+  eyebrow,
+  title,
+  description,
+  chooseIf = [],
+  avoidIf = [],
+  action = null,
+  alternative = null,
+  badges = [],
+} = Astro.props as Props;
+---
+<article class="card-base h-full">
+  {eyebrow && <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">{eyebrow}</p>}
+  <h3 class="text-lg sm:text-xl font-semibold leading-snug">{title}</h3>
+  {description && <p class="mt-3 text-sm text-text-muted leading-relaxed">{description}</p>}
+
+  {badges.length > 0 && (
+    <div class="flex flex-wrap gap-1.5 mt-4">
+      {badges.map((badge) => <Badge label={badge} />)}
+    </div>
+  )}
+
+  {chooseIf.length > 0 && (
+    <div class="mt-5">
+      <h4 class="text-xs font-semibold uppercase tracking-[0.18em] text-text-subtle mb-2">Choose this if</h4>
+      <ul class="space-y-2 text-sm text-text-muted">
+        {chooseIf.map((item) => (
+          <li class="flex gap-2">
+            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-300 shrink-0"></span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {avoidIf.length > 0 && (
+    <div class="mt-5">
+      <h4 class="text-xs font-semibold uppercase tracking-[0.18em] text-text-subtle mb-2">Avoid this if</h4>
+      <ul class="space-y-2 text-sm text-text-muted">
+        {avoidIf.map((item) => (
+          <li class="flex gap-2">
+            <span class="mt-1 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  {(action || alternative) && (
+    <div class="mt-6 pt-5 border-t border-line space-y-3">
+      {action && (
+        <a href={action.href} class="flex items-center justify-between gap-4 no-underline group">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-text-subtle">{action.kind ?? 'Next'}</p>
+            <p class="text-sm font-medium text-text group-hover:text-accent transition-colors">{action.label}</p>
+          </div>
+          <span class="text-sm text-accent">Open</span>
+        </a>
+      )}
+      {alternative && (
+        <a href={alternative.href} class="block no-underline group">
+          <p class="text-xs uppercase tracking-[0.18em] text-text-subtle">{alternative.kind ?? 'Alternative'}</p>
+          <p class="text-sm font-medium text-text group-hover:text-accent transition-colors">{alternative.label}</p>
+          {(alternative.note || alternative.reason) && <p class="mt-1 text-sm text-text-muted">{alternative.note ?? alternative.reason}</p>}
+        </a>
+      )}
+    </div>
+  )}
+</article>

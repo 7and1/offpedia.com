@@ -26,6 +26,9 @@ dataFormats:
 platforms:
   - Web
   - Node.js
+limitations:
+  - Quartz expects a Git and static-site workflow, so it is not a zero-maintenance publishing layer for non-technical users.
+  - Team documentation features such as versioned docs and collaborative editorial workflows are weaker than Docusaurus defaults.
 relatedStacks:
   - personal-wiki-obsidian-quartz
 relatedKits:

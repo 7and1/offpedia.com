@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 ---
-<BaseLayout title="About" description="Offpedia is a local-first workflow encyclopedia — not a tool directory, not a download site.">
+<BaseLayout title="About" description="Offpedia is a workflow advisor for durable writing, research, publishing, and knowledge systems.">
   <article class="container-content py-12 sm:py-16">
     <Breadcrumb items={[{ label: 'About' }]} />
 
@@ -11,7 +11,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
     <div class="prose">
       <h2>What is Offpedia?</h2>
       <p>
-        <strong>Offpedia is a local-first workflow encyclopedia.</strong> It helps users go from "knowing a tool exists" to "having a complete, running workflow" built on durable, portable, offline-capable systems.
+        <strong>Offpedia is a workflow advisor.</strong> It helps users go from "knowing a tool exists" to "having a complete, running workflow" built on durable, portable systems.
       </p>
 
       <h2>What makes it different?</h2>
@@ -49,7 +49,7 @@ import Breadcrumb from '../components/Breadcrumb.astro';
       <p>Offpedia is built with Astro, uses Markdown content collections, deploys as a static site, and works offline via service worker caching. The content is version-controlled in Git.</p>
 
       <h2>License</h2>
-      <p>Content is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Code is MIT licensed.</p>
+      <p>Content is licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Repository visibility and code licensing may change as the project publication surface evolves.</p>
     </div>
   </article>
 </BaseLayout>

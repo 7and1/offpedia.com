@@ -29,6 +29,9 @@ platforms:
   - Windows
   - Linux
   - iOS
+limitations:
+  - Zotero is strong for sources and citations, but it is not the best place for synthesis, long-form writing, or publish-ready structure.
+  - Direct Git workflows are weaker than in Markdown-first writing tools, so treat exports and notes as separate layers.
 relatedStacks:
   - researcher-obsidian-zotero
 relatedKits: []

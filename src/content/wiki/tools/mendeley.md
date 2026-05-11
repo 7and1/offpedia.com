@@ -29,6 +29,9 @@ platforms:
   - Desktop
   - iOS
   - Android
+limitations:
+  - Mendeley is better as a library and PDF layer than as a thinking or writing environment.
+  - Long-term portability is weaker than a Markdown-first note system, so researchers should test exports before committing their archive.
 relatedStacks: []
 relatedKits: []
 tags:
