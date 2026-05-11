@@ -171,6 +171,17 @@ Validation after the implementation commit:
 
 GitHub and production status:
 
-- `main` is now ahead of `origin/main` by 2 local commits: `a5cbe90` and `1fbee8c`.
-- `git fetch origin main` and `gh repo view 7and1/offpedia.com` both failed with repository-not-found errors under the available GitHub login states.
-- Push, new GitHub Actions run observation, Pages deploy verification, Search Console submission, and public visibility change remain environment-blocked until an authenticated operator surface can access `7and1/offpedia.com`.
+- An authenticated operator token confirmed access to `7and1/offpedia.com`.
+- Local commits `a5cbe90`, `1fbee8c`, and `f1e6260` were pushed to `main`.
+- GitHub Actions run `25667240457` for commit `f1e6260` completed successfully.
+- Build job `75342818493` passed all CI steps.
+- Deploy job `75342926860` successfully deployed GitHub Pages.
+- Production HTTP checks after deploy:
+  - `https://offpedia.com/`: `200`
+  - `https://www.offpedia.com/`: `301` to apex, then `200`
+  - `https://offpedia.com/sitemap-index.xml`: `200`
+  - `https://offpedia.com/contributors/`: `200`
+  - `https://offpedia.com/rss.xml`: `200`
+- Production browser smoke on the live site passed for homepage, finder, about, flagship compare, flagship stack, flagship kit, workflow page, contributors page, and RSS across desktop and mobile viewports.
+- Search Console submission remains environment-blocked because no authenticated Google Search Console surface was available in this workspace.
+- Repository visibility remains intentionally private pending an explicit operator decision.

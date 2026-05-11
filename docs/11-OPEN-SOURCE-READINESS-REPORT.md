@@ -53,4 +53,9 @@ Recommended path:
 3. Verify the next Pages build succeeds.
 4. Flip visibility only after the above pass is green.
 
+Current state on 2026-05-11:
+
+- Steps 1-3 have been completed.
+- Repository visibility has not been changed yet.
+
 If the operator wants a cleaner public surface or independent issue tracker, use a public mirror of `source/`.
