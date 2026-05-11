@@ -13,6 +13,9 @@
     "validate:content": "node scripts/validate-content.mjs",
     "search:index": "node scripts/build-search-index.mjs",
     "health:workflow": "node scripts/check-workflow-health.mjs",
+    "audit:notion": "node scripts/notion-obsidian-audit.mjs",
+    "audit:notion:verify-fixture": "node scripts/notion-obsidian-audit.mjs \"fixtures/notion-export-sample/Workspace 11111111-2222-3333-4444-555555555555\" --out /tmp/offpedia-fixture-audit --verify fixtures/notion-export-sample/expected-findings.json",
+    "test:audit": "npm run audit:notion:verify-fixture",
     "browser:smoke": "node scripts/browser-smoke.mjs"
   },
   "dependencies": {

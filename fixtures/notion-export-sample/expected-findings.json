@@ -1,0 +1,20 @@
+{
+  "fixturePath": "fixtures/notion-export-sample/Workspace 11111111-2222-3333-4444-555555555555",
+  "scoreSchemaVersion": "0.1",
+  "expectedFindingIds": [
+    "database-csv-rebuild",
+    "missing-local-references",
+    "notion-web-links",
+    "duplicate-page-titles",
+    "publishing-frontmatter-gap",
+    "private-path-names"
+  ],
+  "expectedFindingCounts": {
+    "database-csv-rebuild": 1,
+    "missing-local-references": 1,
+    "notion-web-links": 1,
+    "duplicate-page-titles": 1,
+    "publishing-frontmatter-gap": 5,
+    "private-path-names": 2
+  }
+}
