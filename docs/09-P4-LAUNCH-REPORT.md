@@ -136,3 +136,41 @@ Validation after hardening:
 - `npm ci` reported dependency audit findings in the transitive dependency tree. They were not changed in this P4 release pass.
 - Search Console baseline metrics still need to be captured once an authenticated Search Console surface is available.
 - Standard wrapper-based browser QA may remain blocked until the runtime health surface is repaired.
+
+## 2026-05-11 90-Day Plan Implementation Update
+
+Local implementation commit:
+
+- `1fbee8c` (`Implement Offpedia 90-day plan surfaces`)
+
+Repository-owned surfaces implemented:
+
+- `/finder/` upgraded to Stack Generator v1 with a Preact island and a server-rendered default result.
+- `/contributors/` added as the public contribution entry.
+- `/rss.xml` added with RSS discovery metadata and footer link.
+- Workflow health signals added to stack pages.
+- Content expanded from 24 Markdown files to 36 Markdown files.
+- Open-source readiness, indexing watchlist, monthly maintenance, contributing, and security docs added.
+- Content validation now checks frontmatter and internal links.
+- Workflow health script now checks kit coverage, guide coverage, stale updates, orphan wiki records, search index coverage, and built sitemap coverage.
+- Browser smoke script now checks the main public routes across desktop and mobile viewports plus `/rss.xml`.
+
+Validation after the implementation commit:
+
+- Local `git diff --check`: passed.
+- Local `npm run validate:content`: passed, 36 content files and 47 internal links.
+- Local `npm run search:index`: passed, 76 search records.
+- Local `npm run health:workflow`: script runs; local sitemap verification requires `dist/sitemap-0.xml`, which is only present after build.
+- Remote runtime `npm ci`: passed; npm audit reported 11 findings in the transitive dependency tree.
+- Remote runtime `CI=1 ASTRO_TELEMETRY_DISABLED=1 npm run check`: passed with existing warnings/hints only.
+- Remote runtime `npm run validate:content`: passed.
+- Remote runtime `npm run search:index`: passed.
+- Remote runtime `CI=1 ASTRO_TELEMETRY_DISABLED=1 npm run build`: passed, 85 pages built.
+- Remote runtime `npm run health:workflow`: passed, workflow health clean after build.
+- Remote runtime preview plus `npm run browser:smoke`: passed for 8 routes across desktop and mobile plus `/rss.xml`.
+
+GitHub and production status:
+
+- `main` is now ahead of `origin/main` by 2 local commits: `a5cbe90` and `1fbee8c`.
+- `git fetch origin main` and `gh repo view 7and1/offpedia.com` both failed with repository-not-found errors under the available GitHub login states.
+- Push, new GitHub Actions run observation, Pages deploy verification, Search Console submission, and public visibility change remain environment-blocked until an authenticated operator surface can access `7and1/offpedia.com`.
