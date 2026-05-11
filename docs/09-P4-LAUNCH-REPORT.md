@@ -9,6 +9,21 @@ Date: 2026-05-11
 - GitHub Pages workflow run: `25649804633`
 - Deployment status: passed
 
+## P4 Scope
+
+In scope:
+
+- Ship the GitHub Pages publication surface.
+- Verify canonical domain, sitemap, robots, public routes, and browser-rendered routes.
+- Generate and verify the local search index.
+- Prepare Search Console sitemap submission and baseline capture.
+
+Out of scope:
+
+- Making the repository public.
+- Open-source readiness audit of git history, private operations notes, credentials, or historical artifacts.
+- Changing Cloudflare, DNS, Search Console, or GitHub repository settings without an authenticated operator surface.
+
 ## Build Evidence
 
 Commands run from the approved OpenClaw runtime workspace at `/Users/openclaw/test-workspace/offpedia-com`:
@@ -81,9 +96,43 @@ Search Console status:
 - Not submitted from this workspace.
 - Blocker: no authenticated Search Console API or `gcloud` surface was available locally.
 - Google's supported submission paths are Search Console and the Search Console API; the old sitemap ping endpoint is deprecated.
+- Baseline runbook added in `docs/10-P4-SEARCH-CONSOLE-BASELINE.md`.
+
+Production robots status observed on 2026-05-11:
+
+- `https://offpedia.com/robots.txt` returns `200`.
+- The sitemap directive is present.
+- Cloudflare Managed Content Signals are injected before the repository-owned robots content.
+- Regular search crawling remains allowed.
+- Several AI/training crawlers are blocked at the edge layer; this is not a Search Console blocker, but it should be reviewed before a separate GEO/AI-citation pass.
+
+## 2026-05-11 Hardening Update
+
+- `.github/workflows/deploy.yml` now uses Node.js 22 for the build runtime.
+- Official GitHub action majors were updated to the Node 24-compatible release line: `actions/checkout@v6`, `actions/setup-node@v6`, `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5`, and `actions/deploy-pages@v5`.
+- Workflow environment now sets `CI=1` and `ASTRO_TELEMETRY_DISABLED=1`.
+- Current `gh` authentication in this workspace cannot resolve `7and1/offpedia.com`, so Pages API and Actions-run status could not be rechecked from this machine after the workflow hardening change.
+- `https://offpedia.com/`, `https://www.offpedia.com/`, `https://offpedia.com/sitemap-index.xml`, and `https://offpedia.com/robots.txt` were reachable during the P4 follow-up check.
+
+Validation after hardening:
+
+- `git ls-remote --tags` confirmed the configured official action tags exist.
+- Local `npm run validate:content`: passed, 24 content files.
+- Local `npm run search:index`: passed, 63 search records.
+- Local `git diff --check`: passed.
+- Remote OpenClaw temp workspace `npm ci`: passed; npm audit still reports 9 findings in the transitive tree.
+- Remote OpenClaw temp workspace `CI=1 ASTRO_TELEMETRY_DISABLED=1 npm run check`: passed with 0 errors, 0 warnings, and 6 existing Astro hints.
+- Remote OpenClaw temp workspace `npm run validate:content`: passed, 24 content files.
+- Remote OpenClaw temp workspace `npm run search:index`: passed, 63 search records.
+- Remote OpenClaw temp workspace `CI=1 ASTRO_TELEMETRY_DISABLED=1 npm run build`: passed, 72 pages built.
+- Remote built `dist/about/index.html` contains the updated license and open-source-readiness wording.
+- Remote built `dist/sitemap-0.xml` contains the P4 sample route set.
+- Remote built `public/search-index.json` contains the P4 sample route set.
+- The temporary OpenClaw verification directory was removed after validation.
 
 ## Residual Risks
 
-- GitHub Actions emitted a Node.js 20 action deprecation annotation. The workflow passed, but the action versions should be reviewed before GitHub's Node 24 runner migration deadlines.
+- The previous GitHub Actions Node.js 20 action deprecation risk has been mitigated in workflow configuration, but the next push to `main` must confirm a passing Actions run.
 - `npm ci` reported dependency audit findings in the transitive dependency tree. They were not changed in this P4 release pass.
 - Search Console baseline metrics still need to be captured once an authenticated Search Console surface is available.
+- The current OpenClaw health check reports a pre-existing receipt-chain mismatch, so OpenClaw wrapper-based browser QA may remain blocked until the control-plane ledger is repaired.

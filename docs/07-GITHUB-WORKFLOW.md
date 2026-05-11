@@ -44,3 +44,21 @@ Use short imperative commits:
 ## Deployment
 
 The repository uses `.github/workflows/deploy.yml` to build Astro and deploy the `dist/` artifact to GitHub Pages.
+
+The workflow:
+
+- Uses GitHub Pages OIDC permissions, not deployment secrets.
+- Builds with Node.js 22.
+- Uses the current Node 24-compatible major versions of the official Pages actions.
+- Runs project checks, content validation, search-index generation, and the Astro build before uploading the Pages artifact.
+
+After every release candidate, verify the public endpoints:
+
+```bash
+curl -I -L https://offpedia.com/
+curl -I -L https://www.offpedia.com/
+curl -I -L https://offpedia.com/sitemap-index.xml
+curl -sL https://offpedia.com/robots.txt
+```
+
+Then follow `docs/10-P4-SEARCH-CONSOLE-BASELINE.md` to submit the sitemap and record the Search Console baseline.
