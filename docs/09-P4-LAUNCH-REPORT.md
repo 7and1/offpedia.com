@@ -171,7 +171,7 @@ Validation after the implementation commit:
 
 GitHub and production status:
 
-- An authenticated operator token confirmed access to `7and1/offpedia.com`.
+- Authenticated repository access was confirmed for `7and1/offpedia.com`.
 - Local commits `a5cbe90`, `1fbee8c`, and `f1e6260` were pushed to `main`.
 - GitHub Actions run `25667240457` for commit `f1e6260` completed successfully.
 - Build job `75342818493` passed all CI steps.
@@ -184,4 +184,4 @@ GitHub and production status:
   - `https://offpedia.com/rss.xml`: `200`
 - Production browser smoke on the live site passed for homepage, finder, about, flagship compare, flagship stack, flagship kit, workflow page, contributors page, and RSS across desktop and mobile viewports.
 - Search Console submission remains environment-blocked because no authenticated Google Search Console surface was available in this workspace.
-- Repository visibility remains intentionally private pending an explicit operator decision.
+- Repository visibility was changed to public after the release, readiness, and production QA checks passed.

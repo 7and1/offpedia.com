@@ -12,12 +12,12 @@ This report does not cover parent-directory files outside the git worktree.
 
 ## Summary
 
-Status: `GO with manual operator review before visibility change`
+Status: `GO`
 
 Default recommendation:
 
-- Keep the repository private until the operator confirms GitHub visibility, Pages behavior, and account context on the live repo.
-- If the operator wants a narrower public surface, publish a mirror of `source/` only.
+- Keep the public repo aligned with the current Pages deployment and documented license boundary.
+- If the operator ever wants a narrower public surface, publish a mirror of `source/` only.
 
 ## Audit findings
 
@@ -41,7 +41,7 @@ Default recommendation:
 ## Residual risks
 
 - Search Console submission and indexing metrics still require an authenticated Google surface outside this repo.
-- Public visibility change, branch protection review, and GitHub auth switching remain operator-controlled actions.
+- Branch protection review and any future GitHub auth switching remain operator-controlled actions.
 - The root directory outside `source/` may contain non-repo deployment artifacts; do not assume this report covers them.
 
 ## Public repo strategy
@@ -55,7 +55,7 @@ Recommended path:
 
 Current state on 2026-05-11:
 
-- Steps 1-3 have been completed.
-- Repository visibility has not been changed yet.
+- Steps 1-4 have been completed.
+- Repository visibility is now public.
 
 If the operator wants a cleaner public surface or independent issue tracker, use a public mirror of `source/`.

@@ -102,4 +102,4 @@ Search problem -> open Stack -> understand workflow -> download Kit -> follow Gu
 - Contribution process: see `CONTRIBUTING.md`
 - Security reports: see `SECURITY.md`
 
-Before a public visibility change, review `docs/11-OPEN-SOURCE-READINESS-REPORT.md` and confirm the repository state matches that report.
+For the public-source release status and remaining external follow-up items, review `docs/11-OPEN-SOURCE-READINESS-REPORT.md`.
