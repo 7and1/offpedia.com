@@ -2,7 +2,7 @@
 title: Quartz vs Docusaurus
 description: Compare Quartz and Docusaurus for personal wikis, documentation sites, and Obsidian publishing workflows.
 customSlug: quartz-vs-docusaurus
-status: p2
+status: published
 tools:
   - quartz
   - docusaurus

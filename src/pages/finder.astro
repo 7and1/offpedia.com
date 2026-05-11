@@ -1,32 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import WorkflowFinder from '../components/WorkflowFinder.astro';
+import { getCollection } from 'astro:content';
 import DecisionCard from '../components/DecisionCard.astro';
+import StackGeneratorIsland from '../components/StackGeneratorIsland';
+import { buildStackGeneratorCatalog } from '../lib/stack-generator-data';
 import { workflowRecommendations } from '../lib/workflow-advisor';
+
+const [stackEntries, kitEntries, guideEntries] = await Promise.all([
+  getCollection('stacks'),
+  getCollection('kits'),
+  getCollection('guides'),
+]);
+const generatorCatalog = buildStackGeneratorCatalog(stackEntries, kitEntries, guideEntries);
 ---
 <BaseLayout
-  title="Workflow Finder"
-  description="Find the right durable knowledge workflow for writing, research, personal wiki publishing, or team docs in one guided pass."
+  title="Stack Generator"
+  description="Choose the right durable stack for writing, research, or personal wiki publishing by persona, offline needs, Git fit, publishing pressure, and collaboration shape."
 >
   <section class="container-wide py-12 sm:py-16">
     <div class="max-w-3xl mb-10">
-      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Workflow Finder</p>
-      <h1 class="section-title text-3xl sm:text-4xl">Find the workflow that fits your constraints</h1>
+      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Stack Generator</p>
+      <h1 class="section-title text-3xl sm:text-4xl">Find the stack that fits your constraints</h1>
       <p class="section-subtitle">
-        Offpedia recommends a path by role, collaboration need, Git comfort, publishing intent, and how much ownership you need over the final archive.
+        Offpedia recommends one stack by persona, goal, offline needs, Git fit, publishing pressure, and collaboration shape. The default result is server-rendered first, then the selector surface hydrates for faster iteration.
       </p>
     </div>
 
-    <WorkflowFinder
+    <StackGeneratorIsland
+      client:load
+      catalog={generatorCatalog}
       embedded={true}
-      title="Answer six questions"
-      intro="You should leave this page knowing the primary path, the first action to take today, the kit or guide that unlocks it, and the closest alternative if the recommendation is wrong."
+      title="Answer six practical questions"
+      intro="You should leave this page with one recommended stack, the matching kit or guide, today's next step, the closest alternative, and the tradeoff that would disqualify the recommendation."
     />
   </section>
 
   <section class="container-wide py-14 sm:py-20 border-t border-line">
     <div class="mb-8">
-      <h2 class="section-title">Why the finder is trustworthy</h2>
+      <h2 class="section-title">Why the generator is trustworthy</h2>
       <p class="section-subtitle">Recommendations are constrained by workflow tradeoffs, not just feature lists.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">

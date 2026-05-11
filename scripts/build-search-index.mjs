@@ -162,11 +162,20 @@ const parsed = Object.fromEntries(Object.keys(collections).map((collection) => [
 
 index.push(makeRecord({
   collection: 'finder',
-  title: 'Workflow Finder',
-  description: 'Find the right durable knowledge workflow for writing, research, personal wiki publishing, or team docs in one guided pass.',
-  tags: ['finder', 'workflow', 'advisor'],
+  title: 'Stack Generator',
+  description: 'Choose the right durable stack for writing, research, or personal wiki publishing by persona, offline needs, Git fit, publishing pressure, and collaboration shape.',
+  tags: ['finder', 'stack-generator', 'workflow'],
   url: '/finder',
-  body: 'Choose a durable knowledge workflow before you rebuild it again. Answer six questions and get a recommendation, next action, kit, guide, and alternative.',
+  body: 'Choose a durable stack before you rebuild the workflow again. Answer six practical questions and get one recommendation, a next step, the matching kit or guide, and the nearest alternative.',
+}));
+
+index.push(makeRecord({
+  collection: 'contributors',
+  title: 'Contributors',
+  description: 'Contribution standards, license boundaries, and review expectations for improving Offpedia.',
+  tags: ['contributors', 'workflow', 'quality'],
+  url: '/contributors',
+  body: 'Contribute content, fixes, and workflow corrections without diluting the editorial quality bar. Review prioritizes correctness, portability tradeoffs, and relationship coverage.',
 }));
 
 for (const [collection, baseUrl] of Object.entries(collections)) {

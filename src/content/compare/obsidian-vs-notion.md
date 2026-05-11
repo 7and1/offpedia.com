@@ -2,7 +2,7 @@
 title: Obsidian vs Notion
 description: Compare Obsidian and Notion for writing systems, team docs, portability, offline ownership, and long-term knowledge workflows.
 customSlug: obsidian-vs-notion
-status: p2
+status: published
 tools:
   - obsidian
   - notion

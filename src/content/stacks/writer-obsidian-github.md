@@ -2,7 +2,7 @@
 title: "Writer Stack: Obsidian + GitHub"
 description: Use Obsidian for writing and GitHub for version history, backup, and publishing preparation.
 customSlug: writer-obsidian-github
-status: p2
+status: published
 goal: writing
 personas:
   - writer
@@ -43,6 +43,8 @@ alternatives:
 relatedWiki:
   - tools/obsidian
   - tools/github
+  - tools/syncthing
+  - tools/typst
   - concepts/markdown
   - concepts/frontmatter
   - concepts/git-based-publishing
@@ -131,6 +133,11 @@ GitHub is not the writing interface. It provides long-term safety:
 - Template distribution
 - Publishing workflows
 - Public project visibility
+
+## Useful optional additions
+
+- [Syncthing](/wiki/tools/syncthing) keeps a local-first vault available across devices without handing the archive to one cloud workspace.
+- [Typst](/wiki/tools/typst) becomes useful when a draft needs a more controlled PDF, report, or print output without moving the writing archive elsewhere.
 
 ## Matching kit
 

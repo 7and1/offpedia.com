@@ -4,7 +4,7 @@ description: Frontmatter is structured metadata at the top of a Markdown file, u
 customSlug: concepts/frontmatter
 kind: concept
 category: metadata
-status: p2
+status: published
 website: null
 github: null
 openSource: null

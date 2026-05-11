@@ -4,7 +4,7 @@ description: GitHub acts as the version-control, template-repository, and publis
 customSlug: tools/github
 kind: tool
 category: version-control
-status: p2
+status: published
 website: https://github.com
 github: https://github.com/github
 openSource: false

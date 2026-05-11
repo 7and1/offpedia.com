@@ -4,7 +4,7 @@ description: Markdown is a lightweight markup format and a foundational data for
 customSlug: concepts/markdown
 kind: concept
 category: data-format
-status: p2
+status: published
 website: https://daringfireball.net/projects/markdown/
 github: null
 openSource: true

@@ -2,7 +2,7 @@
 title: Obsidian vs Logseq
 description: Compare Obsidian and Logseq by data format, local-first design, writing experience, outlining, and publishing paths.
 customSlug: obsidian-vs-logseq
-status: p2
+status: published
 tools:
   - obsidian
   - logseq

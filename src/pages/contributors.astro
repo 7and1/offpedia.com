@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+<BaseLayout title="Contributors" description="How to contribute content, fixes, and review feedback to Offpedia without lowering the quality bar.">
+  <article class="container-content py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Contributors' }]} />
+
+    <div class="max-w-3xl">
+      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Public contribution surface</p>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">Contribute without diluting the workflow quality bar</h1>
+      <p class="section-subtitle">
+        Offpedia accepts improvements that make workflow choices clearer, more durable, and easier to verify. The contribution path is public, but the standard stays editorial.
+      </p>
+    </div>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Good contribution types</p>
+        <ul class="space-y-3 text-text-muted">
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-accent shrink-0"></span><span>Correct outdated tool, pricing, export, or portability details.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-accent shrink-0"></span><span>Add missing internal links between stack, kit, guide, and wiki pages.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-accent shrink-0"></span><span>Improve comparison pages with clearer use-case verdicts and migration warnings.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-accent shrink-0"></span><span>Add new tool pages only when they connect to real workflow decisions, not just feature lists.</span></li>
+        </ul>
+      </article>
+
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">What will be rejected</p>
+        <ul class="space-y-3 text-text-muted">
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>Thin pSEO pages with no editorial distinction or workflow judgment.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>Vendor promotion that hides portability, export, or migration tradeoffs.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>Copied docs, screenshots, or assets that do not have redistribution rights.</span></li>
+          <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 rounded-full bg-amber-300 shrink-0"></span><span>Workflow claims without a source, reproduction path, or clear operator note.</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="mt-10 rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+      <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Contribution flow</p>
+      <ol class="space-y-4 text-text-muted list-decimal pl-5">
+        <li>Start from a workflow problem, not from a tool wishlist.</li>
+        <li>Keep edits traceable: update related stack, kit, guide, and wiki links together.</li>
+        <li>Run `npm run validate:content`, `npm run search:index`, and `npm run health:workflow` from `source/` before asking for review.</li>
+        <li>Explain the evidence: official docs checked, workflow tested, or risk corrected.</li>
+        <li>Respect the license boundary: site code is MIT, editorial content is CC BY-SA 4.0, and imported third-party assets need explicit rights.</li>
+      </ol>
+    </section>
+
+    <section class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Review criteria</p>
+        <p class="text-text-muted">
+          Review prioritizes correctness, portability tradeoffs, relationship coverage, and whether the edited page improves a real workflow choice. Style polish matters after that.
+        </p>
+      </article>
+
+      <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">
+        <p class="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Security and private reports</p>
+        <p class="text-text-muted">
+          Do not file public issues for security-sensitive problems. Use the repository’s private vulnerability reporting surface when available, or request a private contact route first.
+        </p>
+      </article>
+    </section>
+  </article>
+</BaseLayout>

@@ -2,7 +2,7 @@
 title: Personal Wiki Kit
 description: A starter template for publishing a public personal wiki with Obsidian and Quartz.
 customSlug: personal-wiki-kit
-status: p2
+status: published
 stack: personal-wiki-obsidian-quartz
 templateRepo: null
 obsidianVersion: 1.5+

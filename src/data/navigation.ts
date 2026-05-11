@@ -1,5 +1,5 @@
 export const navItems = [
-  { href: '/finder', label: 'Finder' },
+  { href: '/finder', label: 'Generator' },
   { href: '/stacks', label: 'Stacks' },
   { href: '/kits', label: 'Kits' },
   { href: '/guides', label: 'Guides' },

@@ -4,13 +4,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/Card.astro';
 import SearchBox from '../components/SearchBox.astro';
 import DecisionCard from '../components/DecisionCard.astro';
-import WorkflowFinder from '../components/WorkflowFinder.astro';
+import StackGeneratorIsland from '../components/StackGeneratorIsland';
+import { buildStackGeneratorCatalog } from '../lib/stack-generator-data';
 import { workflowRecommendations } from '../lib/workflow-advisor';
 
-const stacks = (await getCollection('stacks')).slice(0, 3);
-const kits = (await getCollection('kits')).slice(0, 3);
-const guides = (await getCollection('guides')).slice(0, 3);
-const compare = (await getCollection('compare'))
+const [stackEntries, kitEntries, guideEntries, compareEntries] = await Promise.all([
+  getCollection('stacks'),
+  getCollection('kits'),
+  getCollection('guides'),
+  getCollection('compare'),
+]);
+const stacks = stackEntries.slice(0, 3);
+const kits = kitEntries.slice(0, 3);
+const guides = guideEntries.slice(0, 3);
+const generatorCatalog = buildStackGeneratorCatalog(stackEntries, kitEntries, guideEntries);
+const compare = compareEntries
   .filter((entry) => ['obsidian-vs-notion', 'obsidian-vs-logseq', 'quartz-vs-docusaurus'].includes(entry.slug))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
@@ -34,14 +42,14 @@ const compare = (await getCollection('compare'))
           </p>
 
           <div class="flex flex-wrap gap-3 mt-8">
-            <a class="btn-primary text-base px-7 py-3" href="/finder">Find my workflow</a>
+            <a class="btn-primary text-base px-7 py-3" href="/finder">Run the stack generator</a>
             <a class="btn-secondary text-base px-7 py-3" href="/stacks">Browse proven stacks</a>
           </div>
 
           <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div class="rounded-3xl border border-line bg-bg-surface/50 p-4">
               <p class="text-xs uppercase tracking-[0.18em] text-text-subtle mb-2">Today</p>
-              <p class="text-sm text-text-muted">Run the finder and get one recommendation with a next action.</p>
+              <p class="text-sm text-text-muted">Run the generator and get one recommendation with a next action.</p>
             </div>
             <div class="rounded-3xl border border-line bg-bg-surface/50 p-4">
               <p class="text-xs uppercase tracking-[0.18em] text-text-subtle mb-2">Trust</p>
@@ -54,7 +62,13 @@ const compare = (await getCollection('compare'))
           </div>
         </div>
 
-        <WorkflowFinder embedded={true} />
+        <StackGeneratorIsland
+          client:load
+          catalog={generatorCatalog}
+          embedded={true}
+          title="Run the Stack Generator"
+          intro="Start from the job, the archive constraints, and the collaboration pressure. Offpedia returns one stack plus the next action that makes it real."
+        />
       </div>
     </div>
   </section>
@@ -65,15 +79,15 @@ const compare = (await getCollection('compare'))
         <h2 class="section-title">What you get today</h2>
         <p class="section-subtitle">Offpedia is most useful when it ends in a concrete action, not just a content browse.</p>
       </div>
-      <a href="/finder" class="hidden sm:flex btn-ghost text-sm">Open finder →</a>
+      <a href="/finder" class="hidden sm:flex btn-ghost text-sm">Open generator →</a>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <DecisionCard
         eyebrow="Recommendation"
         title="One primary path"
-        description="The finder returns one workflow path with a reason, a warning, and the nearest alternative."
+        description="The generator returns one workflow stack with a reason, a warning, and the nearest alternative."
         chooseIf={['You want a recommendation without searching the whole site.', 'You need a concrete place to start today.']}
-        action={{ label: 'Run Workflow Finder', href: '/finder', kind: 'Finder' }}
+        action={{ label: 'Run Stack Generator', href: '/finder', kind: 'Generator' }}
       />
       <DecisionCard
         eyebrow="Kit"

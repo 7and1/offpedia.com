@@ -26,7 +26,7 @@ Out of scope:
 
 ## Build Evidence
 
-Commands run from the approved OpenClaw runtime workspace at `/Users/openclaw/test-workspace/offpedia-com`:
+Commands run from the approved remote runtime workspace:
 
 - `CI=1 ASTRO_TELEMETRY_DISABLED=1 npm run check`: passed with 0 errors.
 - `npm run validate:content`: passed, 24 content files.
@@ -73,7 +73,7 @@ OpenClaw headless Chromium CDP checks after deploy:
 - `/kits/writer-vault-starter/` rendered the kit page and next action.
 - `/sitemap-index.xml` rendered the sitemap index.
 
-The OpenClaw browser wrapper itself was blocked by a pre-existing receipt-chain error, so browser QA used direct CDP against the running OpenClaw Chromium port instead of the wrapper.
+The standard browser wrapper was unavailable during this check, so browser QA used a direct Chromium DevTools session instead.
 
 ## Sitemap And Indexing
 
@@ -94,7 +94,7 @@ Search index checks:
 Search Console status:
 
 - Not submitted from this workspace.
-- Blocker: no authenticated Search Console API or `gcloud` surface was available locally.
+- Blocker: no authenticated Search Console surface was available in this workspace.
 - Google's supported submission paths are Search Console and the Search Console API; the old sitemap ping endpoint is deprecated.
 - Baseline runbook added in `docs/10-P4-SEARCH-CONSOLE-BASELINE.md`.
 
@@ -135,4 +135,4 @@ Validation after hardening:
 - The previous GitHub Actions Node.js 20 action deprecation risk has been mitigated in workflow configuration, but the next push to `main` must confirm a passing Actions run.
 - `npm ci` reported dependency audit findings in the transitive dependency tree. They were not changed in this P4 release pass.
 - Search Console baseline metrics still need to be captured once an authenticated Search Console surface is available.
-- The current OpenClaw health check reports a pre-existing receipt-chain mismatch, so OpenClaw wrapper-based browser QA may remain blocked until the control-plane ledger is repaired.
+- Standard wrapper-based browser QA may remain blocked until the runtime health surface is repaired.

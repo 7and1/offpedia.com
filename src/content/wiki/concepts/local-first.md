@@ -4,7 +4,7 @@ description: Local-first is an application model that stores data locally first 
 customSlug: concepts/local-first
 kind: concept
 category: architecture
-status: p2
+status: published
 website: null
 github: null
 openSource: null

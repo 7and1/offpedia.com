@@ -4,7 +4,7 @@ description: Zotero is a research source manager that pairs well with Obsidian f
 customSlug: tools/zotero
 kind: tool
 category: research
-status: p2
+status: published
 website: https://www.zotero.org
 github: https://github.com/zotero/zotero
 openSource: true

@@ -7,7 +7,9 @@ import RelatedLinks from '../../components/RelatedLinks.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
 import DecisionCard from '../../components/DecisionCard.astro';
 import WorkflowMap from '../../components/WorkflowMap.astro';
+import WorkflowHealthSignals from '../../components/WorkflowHealthSignals.astro';
 import { getWorkflowRecommendationById } from '../../lib/workflow-advisor';
+import { buildWorkflowHealthSignals } from '../../lib/workflow-health';
 
 export async function getStaticPaths() {
   const entries = await getCollection('stacks');
@@ -16,7 +18,11 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
-const wikiEntries = await getCollection('wiki');
+const [wikiEntries, kitEntries, guideEntries] = await Promise.all([
+  getCollection('wiki'),
+  getCollection('kits'),
+  getCollection('guides'),
+]);
 
 const recommendationBySlug = {
   'writer-obsidian-github': getWorkflowRecommendationById('writer'),
@@ -34,6 +40,7 @@ const relatedLinks = [
   ...entry.data.relatedGuides.map((guide: string) => ({ label: guide, href: `/guides/${guide}`, type: 'Guide' })),
   ...entry.data.relatedWiki.map((wiki: string) => ({ label: wiki, href: `/wiki/${wiki}`, type: 'Wiki' })),
 ];
+const healthSignals = buildWorkflowHealthSignals(entry, kitEntries, guideEntries);
 ---
 <BaseLayout title={entry.data.title} description={entry.data.description} type="article">
   <article class="container-content py-10 sm:py-14">
@@ -95,6 +102,8 @@ const relatedLinks = [
         />
       </div>
     )}
+
+    <WorkflowHealthSignals signals={healthSignals} />
 
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-10">
       <article class="rounded-[2rem] border border-line bg-bg-surface/60 p-6 sm:p-8">

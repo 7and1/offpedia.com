@@ -18,6 +18,14 @@ This repository includes:
 - A local search-index generation script
 - A simple PWA caching layer
 
+## License Boundary
+
+- Site code and build scripts: MIT
+- Original editorial content in `src/content/`: CC BY-SA 4.0
+- Downloadable vault examples and starter structures: keep the same boundary unless a kit page states a narrower rule
+
+Contributors should preserve this split instead of collapsing everything under one generic repository license.
+
 ## Quick Start
 
 ```bash
@@ -35,6 +43,14 @@ Build:
 
 ```bash
 npm run build
+```
+
+Validation:
+
+```bash
+npm run validate:content
+npm run search:index
+npm run health:workflow
 ```
 
 ## Recommended Deployment
@@ -82,7 +98,8 @@ Search problem -> open Stack -> understand workflow -> download Kit -> follow Gu
 ## License Guidance
 
 - Site code: MIT
-- Original content: CC BY 4.0 or CC BY-SA 4.0
-- Kit templates: MIT / CC BY 4.0 dual license
+- Original content: CC BY-SA 4.0
+- Contribution process: see `CONTRIBUTING.md`
+- Security reports: see `SECURITY.md`
 
-Before a public community launch, confirm `LICENSE` and `docs/08-LEGAL-CONTENT-POLICY.md` against the commercial plan.
+Before a public visibility change, review `docs/11-OPEN-SOURCE-READINESS-REPORT.md` and confirm the repository state matches that report.

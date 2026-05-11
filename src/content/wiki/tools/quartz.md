@@ -4,7 +4,7 @@ description: Quartz is a static site generator for publishing Obsidian-style Mar
 customSlug: tools/quartz
 kind: tool
 category: publishing
-status: p2
+status: published
 website: https://quartz.jzhao.xyz
 github: https://github.com/jackyzha0/quartz
 openSource: true

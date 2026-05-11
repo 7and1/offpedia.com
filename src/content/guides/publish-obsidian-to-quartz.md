@@ -2,7 +2,7 @@
 title: How to publish an Obsidian vault as a website
 description: Use GitHub and Quartz to publish an Obsidian Markdown knowledge base as a public wiki.
 customSlug: publish-obsidian-to-quartz
-status: p2
+status: published
 difficulty: intermediate
 timeRequired: 60min
 relatedStack: personal-wiki-obsidian-quartz

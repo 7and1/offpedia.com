@@ -4,7 +4,7 @@ description: Roam Research is a cloud-first networked note-taking tool built aro
 customSlug: tools/roam
 kind: tool
 category: knowledge-base
-status: p2
+status: published
 website: https://roamresearch.com
 github: null
 openSource: false

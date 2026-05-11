@@ -4,7 +4,7 @@ description: Docusaurus is a static site generator for product documentation, de
 customSlug: tools/docusaurus
 kind: tool
 category: publishing
-status: p2
+status: published
 website: https://docusaurus.io
 github: https://github.com/facebook/docusaurus
 openSource: true

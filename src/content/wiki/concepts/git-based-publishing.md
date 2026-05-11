@@ -4,7 +4,7 @@ description: Git-based publishing manages content in a Git repository and publis
 customSlug: concepts/git-based-publishing
 kind: concept
 category: publishing
-status: p2
+status: published
 website: null
 github: null
 openSource: null

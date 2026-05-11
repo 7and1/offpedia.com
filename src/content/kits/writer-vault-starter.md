@@ -2,7 +2,7 @@
 title: Writer Vault Starter
 description: An Obsidian vault template for writers, with folders for drafts, essays, references, publishing records, and GitHub sync.
 customSlug: writer-vault-starter
-status: p2
+status: published
 stack: writer-obsidian-github
 templateRepo: null
 downloadUrl: /downloads/writer-vault-starter.zip

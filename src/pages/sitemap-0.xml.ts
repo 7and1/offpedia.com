@@ -37,7 +37,7 @@ export const GET: APIRoute = async () => {
   ]);
   const urls = new Map<string, string | undefined>();
 
-  for (const path of ['/', '/about', '/finder', '/search', '/wiki', '/stacks', '/kits', '/guides', '/compare']) {
+  for (const path of ['/', '/about', '/finder', '/search', '/contributors', '/wiki', '/stacks', '/kits', '/guides', '/compare']) {
     urls.set(urlFor(path), undefined);
   }
 

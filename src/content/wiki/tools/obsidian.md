@@ -4,7 +4,7 @@ description: A local-first Markdown knowledge-base tool for building durable and
 customSlug: tools/obsidian
 kind: tool
 category: knowledge-base
-status: p2
+status: published
 website: https://obsidian.md
 github: null
 openSource: false

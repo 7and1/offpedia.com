@@ -4,7 +4,7 @@ description: Notion is a cloud-first collaborative document and database workspa
 customSlug: tools/notion
 kind: tool
 category: workspace
-status: p2
+status: published
 website: https://www.notion.com
 github: null
 openSource: false

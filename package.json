@@ -11,16 +11,20 @@
     "preview": "astro preview",
     "check": "astro check",
     "validate:content": "node scripts/validate-content.mjs",
-    "search:index": "node scripts/build-search-index.mjs"
+    "search:index": "node scripts/build-search-index.mjs",
+    "health:workflow": "node scripts/check-workflow-health.mjs",
+    "browser:smoke": "node scripts/browser-smoke.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
+    "@astrojs/preact": "^3.5.4",
     "@astrojs/sitemap": "^3.2.0",
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource-variable/inter": "^5.0.0",
     "@fontsource-variable/jetbrains-mono": "^5.0.0",
     "astro": "^4.16.0",
     "fuse.js": "^7.0.0",
+    "preact": "^10.29.1",
     "reading-time": "^1.5.0",
     "sharp": "^0.33.0",
     "tailwindcss": "^3.4.0"

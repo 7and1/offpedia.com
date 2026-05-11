@@ -2,7 +2,7 @@
 title: How to sync Obsidian with GitHub
 description: A complete path from initializing a Git repository to pushing Markdown notes from an Obsidian vault.
 customSlug: setup-obsidian-github-sync
-status: p2
+status: published
 difficulty: beginner
 timeRequired: 30min
 relatedStack: writer-obsidian-github

@@ -3,7 +3,7 @@ title: "Personal Wiki Stack: Obsidian + Quartz"
 shortTitle: Personal Wiki Stack
 description: Use Obsidian to manage a Markdown knowledge base and Quartz to publish it as a public website.
 customSlug: personal-wiki-obsidian-quartz
-status: p2
+status: published
 goal: personal-wiki
 personas:
   - researcher
@@ -45,6 +45,9 @@ relatedWiki:
   - tools/obsidian
   - tools/quartz
   - tools/github
+  - tools/github-pages
+  - tools/cloudflare-pages
+  - tools/pagefind
   - concepts/markdown
   - concepts/git-based-publishing
 relatedKits:
@@ -104,9 +107,19 @@ A public wiki should not be a raw dump of every private note. Keep a clear split
 - Public vault
 - Drafts waiting for review
 
+## Useful optional additions
+
+- [GitHub Pages](/wiki/tools/github-pages) is the lowest-friction hosted path when you want a repo-native public deployment surface.
+- [Cloudflare Pages](/wiki/tools/cloudflare-pages) is a strong fit when you want faster previews, edge delivery, or a cleaner static-hosting handoff.
+- [Pagefind](/wiki/tools/pagefind) gives a static site a real local search layer without moving the content into a hosted database.
+
 ## Matching kit
 
 Use [Personal Wiki Kit](/kits/personal-wiki-kit).
+
+## Matching guide
+
+Follow [How to publish an Obsidian vault as a website](/guides/publish-obsidian-to-quartz) once the public subset is ready.
 
 ## Limits
 

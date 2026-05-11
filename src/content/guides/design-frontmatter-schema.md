@@ -2,7 +2,7 @@
 title: How to design a frontmatter schema
 description: Create filterable, linkable metadata fields for Obsidian, Astro, and Offpedia content.
 customSlug: design-frontmatter-schema
-status: p2
+status: published
 difficulty: beginner
 timeRequired: 20min
 relatedStack: researcher-obsidian-zotero

@@ -3,7 +3,7 @@ title: "Researcher Stack: Obsidian + Zotero"
 shortTitle: Researcher Stack
 description: Use Zotero to manage sources and Obsidian to turn research notes into writing.
 customSlug: researcher-obsidian-zotero
-status: p2
+status: published
 goal: research
 personas:
   - researcher
@@ -43,10 +43,14 @@ alternatives:
 relatedWiki:
   - tools/obsidian
   - tools/zotero
+  - tools/better-bibtex
+  - tools/pandoc
   - concepts/markdown
-relatedKits: []
+relatedKits:
+  - research-notes-vault
 relatedGuides:
   - design-frontmatter-schema
+  - connect-zotero-to-obsidian
 tags:
   - research
   - obsidian
@@ -97,4 +101,11 @@ Research Vault/
 
 ## Next step
 
-Offpedia does not include a full research kit yet, but this stack is ready for future expansion.
+Start with [Research Notes Vault](/kits/research-notes-vault) if you want the folder model, note types, and templates first. Then use [How to connect Zotero to an Obsidian research flow](/guides/connect-zotero-to-obsidian) to make the source-to-note handoff predictable.
+
+If you want the metadata layer first, use [How to design a frontmatter schema](/guides/design-frontmatter-schema) before you multiply note types or project folders.
+
+## Useful optional additions
+
+- [Better BibTeX](/wiki/tools/better-bibtex) makes citation keys, exports, and Zotero-to-writing handoffs more stable.
+- [Pandoc](/wiki/tools/pandoc) helps when research drafts need to leave Markdown for DOCX, PDF, or another submission format without rebuilding the note layer.

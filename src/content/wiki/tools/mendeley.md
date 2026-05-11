@@ -4,7 +4,7 @@ description: Mendeley is a reference manager and PDF reader for paper libraries,
 customSlug: tools/mendeley
 kind: tool
 category: research
-status: p2
+status: published
 website: https://www.mendeley.com
 github: null
 openSource: false

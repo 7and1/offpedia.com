@@ -4,7 +4,7 @@ description: Logseq is a local-first outliner knowledge-base tool for journals, 
 customSlug: tools/logseq
 kind: tool
 category: knowledge-base
-status: p2
+status: published
 website: https://logseq.com
 github: https://github.com/logseq/logseq
 openSource: true
