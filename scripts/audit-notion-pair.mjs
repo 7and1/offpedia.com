@@ -10,11 +10,21 @@ const auditScript = path.join(__dirname, 'notion-obsidian-audit.mjs');
 const usage = `Usage:
   npm run audit:notion:pair -- --before <raw-export-dir> --after <imported-vault-dir> --sample-id SAMPLE-001 --out /tmp/offpedia-samples
 
-Options:
+Required:
   --before <dir>                  Raw Notion export directory
   --after <dir>                   Obsidian Importer output directory
   --sample-id <id>                Stable sample ID, for example SAMPLE-001
   --out <dir>                     Output directory for reports
+
+Snippet metadata (optional, recorded into <sample>-snippet.md):
+  --label <text>                  Full header used in the snippet block, e.g.
+                                  "SAMPLE-001 text-light writing template"
+  --source <url-or-note>          Source URL or "private donation"
+  --license <stance>              License / safety stance
+  --shape <label>                 text-light | database-heavy | nested-heavy |
+                                  attachment-heavy | multi-db-relational
+
+Tested-on metadata (passed through to both audits, also recorded into snippet):
   --notion-export-format <label>  Example: 2026-05
   --obsidian-importer <label>     Example: v1.6.x
   --obsidian <label>              Example: v1.5+
@@ -91,11 +101,40 @@ function formatDiffItems(items) {
   return items.map((item) => `${item.id} ${item.before} -> ${item.after}`).join(', ');
 }
 
-function buildPairSummary({ sampleId, beforeReport, afterReport, beforeJson, afterJson }) {
+function formatIdsOnly(items) {
+  if (!items || items.length === 0) return 'none';
+  return items.map((item) => item.id).join(', ');
+}
+
+function formatBeforeArrowAfter(items) {
+  if (!items || items.length === 0) return 'none';
+  return items.map((item) => `${item.id} (${item.before} -> ${item.after})`).join(', ');
+}
+
+function formatIdsWithAfter(items) {
+  if (!items || items.length === 0) return 'none';
+  return items.map((item) => `${item.id} x ${item.after}`).join(', ');
+}
+
+function signedDelta(value) {
+  if (value === null || value === undefined) return 'n/a';
+  return value >= 0 ? `+${value}` : `${value}`;
+}
+
+function buildPairSummary({ sampleId, meta, beforeReport, afterReport, beforeJson, afterJson }) {
   const delta = afterReport.delta || {};
   const summary = {
     sampleId,
     generatedAt: new Date().toISOString(),
+    meta: {
+      label: meta.label || null,
+      source: meta.source || null,
+      license: meta.license || null,
+      shape: meta.shape || null,
+      notionExportFormat: meta.notionExportFormat || null,
+      obsidianImporter: meta.obsidianImporter || null,
+      obsidian: meta.obsidian || null,
+    },
     reports: {
       beforeJson,
       afterJson,
@@ -111,9 +150,11 @@ function buildPairSummary({ sampleId, beforeReport, afterReport, beforeJson, aft
       findingTotals: afterReport.findingTotals,
     },
     delta: {
+      scoreComparable: delta.scoreComparable,
       scoreImprovement: delta.scoreImprovement,
       fixedFindings: delta.fixedFindings || [],
       improvedFindings: delta.improvedFindings || [],
+      unchangedFindings: delta.unchangedFindings || [],
       newFindings: delta.newFindings || [],
       worsenedFindings: delta.worsenedFindings || [],
       residualFindingTypes: afterReport.findings.length,
@@ -121,6 +162,41 @@ function buildPairSummary({ sampleId, beforeReport, afterReport, beforeJson, aft
   };
 
   return summary;
+}
+
+function buildSnippetMarkdown(summary) {
+  const { meta, before, after, delta } = summary;
+  const header = meta.label || `${summary.sampleId}: TODO`;
+  const counts = (c) => `files=${c.files}, md=${c.markdownFiles}, csv=${c.csvFiles}, html=${c.htmlFiles}, assets=${c.assetFiles}`;
+
+  const lines = [];
+  lines.push(`## ${header}`);
+  lines.push('');
+  lines.push(`- Source: ${meta.source || 'TODO'}`);
+  lines.push(`- License/safety: ${meta.license || 'TODO'}`);
+  lines.push(`- Shape: ${meta.shape || 'TODO'}`);
+  lines.push('- Tested on:');
+  lines.push(`  - Notion export format: ${meta.notionExportFormat || 'unknown'}`);
+  lines.push(`  - Obsidian Importer: ${meta.obsidianImporter || 'unknown'}`);
+  lines.push(`  - Obsidian: ${meta.obsidian || 'unknown'}`);
+  lines.push(`- Counts (raw export): ${counts(before.counts)}`);
+  lines.push(`- Counts (after Importer): ${counts(after.counts)}`);
+  lines.push(`- Audit before Importer: score ${before.score}/100`);
+  lines.push(`  - Findings: ${formatTotals(before.findingTotals)}`);
+  lines.push(`- Audit after Importer: score ${after.score}/100`);
+  lines.push(`  - Fixed: ${formatIdsOnly(delta.fixedFindings)}`);
+  lines.push(`  - Improved (before -> after): ${formatBeforeArrowAfter(delta.improvedFindings)}`);
+  lines.push(`  - Still present: ${formatIdsWithAfter(delta.unchangedFindings)}`);
+  lines.push(`  - New (Importer introduced): ${formatIdsWithAfter(delta.newFindings)}`);
+  lines.push(`  - Worsened (before -> after): ${formatBeforeArrowAfter(delta.worsenedFindings)}`);
+  lines.push(`- Net score delta: ${signedDelta(delta.scoreImprovement)}`);
+  if (delta.scoreComparable === false) {
+    lines.push('- Score comparison: NOT COMPARABLE (scoreSchemaVersion differs between runs)');
+  }
+  lines.push('- New finding candidates: TODO (human note: anything the script missed)');
+  lines.push('- Notes: TODO (human note: surprising behavior, gotchas)');
+
+  return `${lines.join('\n')}\n`;
 }
 
 function buildPairMarkdown(summary) {
@@ -139,9 +215,13 @@ function buildPairMarkdown(summary) {
   lines.push('');
   lines.push('## Delta');
   lines.push('');
-  lines.push(`- Net score delta: ${summary.delta.scoreImprovement ?? 'n/a'}`);
+  lines.push(`- Net score delta: ${signedDelta(summary.delta.scoreImprovement)}`);
+  if (summary.delta.scoreComparable === false) {
+    lines.push('- Score comparison: NOT COMPARABLE (scoreSchemaVersion differs)');
+  }
   lines.push(`- Fixed findings: ${formatDiffItems(summary.delta.fixedFindings)}`);
   lines.push(`- Improved findings: ${formatDiffItems(summary.delta.improvedFindings)}`);
+  lines.push(`- Unchanged findings: ${formatIdsWithAfter(summary.delta.unchangedFindings)}`);
   lines.push(`- New findings: ${formatDiffItems(summary.delta.newFindings)}`);
   lines.push(`- Worsened findings: ${formatDiffItems(summary.delta.worsenedFindings)}`);
   lines.push(`- Residual finding types: ${summary.delta.residualFindingTypes}`);
@@ -150,6 +230,12 @@ function buildPairMarkdown(summary) {
   lines.push('');
   lines.push(`- Before Importer: ${formatTotals(summary.before.findingTotals)}`);
   lines.push(`- After Importer: ${formatTotals(summary.after.findingTotals)}`);
+  lines.push('');
+  lines.push('## REAL-SAMPLES.md snippet');
+  lines.push('');
+  lines.push('Paste this block into `source/fixtures/REAL-SAMPLES.md`. It is also written to a standalone `<sample>-snippet.md` for easy copy.');
+  lines.push('');
+  lines.push(buildSnippetMarkdown(summary).trimEnd());
   lines.push('');
   lines.push('## Privacy Note');
   lines.push('');
@@ -187,16 +273,33 @@ async function main() {
   const afterJson = `${afterBase}.json`;
   const beforeReport = await readJson(beforeJson);
   const afterReport = await readJson(afterJson);
-  const summary = buildPairSummary({ sampleId, beforeReport, afterReport, beforeJson, afterJson });
+  const meta = {
+    label: args.label,
+    source: args.source,
+    license: args.license,
+    shape: args.shape,
+    notionExportFormat: args['notion-export-format'],
+    obsidianImporter: args['obsidian-importer'],
+    obsidian: args.obsidian,
+  };
+  const summary = buildPairSummary({ sampleId, meta, beforeReport, afterReport, beforeJson, afterJson });
   const summaryJson = path.join(sampleOutputDir, `${sampleSlug}-pair-summary.json`);
   const summaryMarkdown = path.join(sampleOutputDir, `${sampleSlug}-pair-summary.md`);
+  const snippetMarkdown = path.join(sampleOutputDir, `${sampleSlug}-snippet.md`);
+  const snippet = buildSnippetMarkdown(summary);
 
   await writeText(summaryJson, `${JSON.stringify(summary, null, 2)}\n`);
   await writeText(summaryMarkdown, buildPairMarkdown(summary));
+  await writeText(snippetMarkdown, snippet);
 
-  console.log(`Audit pair complete: ${sampleId} ${summary.before.score} -> ${summary.after.score} (${summary.delta.scoreImprovement ?? 'n/a'}).`);
+  console.log(`Audit pair complete: ${sampleId} ${summary.before.score} -> ${summary.after.score} (${signedDelta(summary.delta.scoreImprovement)}).`);
   console.log(`Pair summary JSON: ${summaryJson}`);
   console.log(`Pair summary Markdown: ${summaryMarkdown}`);
+  console.log(`REAL-SAMPLES snippet: ${snippetMarkdown}`);
+  console.log('');
+  console.log('---- snippet (paste into source/fixtures/REAL-SAMPLES.md) ----');
+  process.stdout.write(snippet);
+  console.log('---- end snippet ----');
 }
 
 main().catch((error) => {
