@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Card from '../../components/Card.astro';
+import { breadcrumbListSchema } from '../../lib/pseo';
+
+const siteOrigin = Astro.site ?? Astro.url.origin;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      name: 'Offpedia Tools',
+      description: 'Local utilities for auditing portable knowledge workflows.',
+      url: Astro.url.href,
+    },
+    breadcrumbListSchema([
+      { name: 'Home', url: new URL('/', siteOrigin).href },
+      { name: 'Tools', url: Astro.url.href },
+    ]),
+  ],
+};
+---
+<BaseLayout
+  title="Tools"
+  description="Local utilities and checklists for auditing portable knowledge workflows before publishing or migration."
+  structuredData={structuredData}
+>
+  <section class="container-wide py-12 sm:py-16">
+    <Breadcrumb items={[{ label: 'Tools' }]} />
+
+    <div class="max-w-3xl mb-10">
+      <p class="text-[11px] uppercase tracking-[0.28em] text-text-subtle mb-4">Local-first utilities</p>
+      <h1 class="section-title text-3xl sm:text-4xl">Tools</h1>
+      <p class="section-subtitle">
+        Offpedia tools stay on your machine. They help inspect exports, publishing readiness,
+        and migration risk without asking you to upload private vaults or workspace data.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <Card
+        href="/tools/notion-export-auditor"
+        title="Notion Export Auditor"
+        description="Run a local CLI audit on a Notion export before cleaning it up for Obsidian, Bases, Quartz, or public publishing."
+        badges={['notion', 'obsidian', 'audit']}
+      />
+    </div>
+  </section>
+</BaseLayout>

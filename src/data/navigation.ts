@@ -3,6 +3,7 @@ export const navItems = [
   { href: '/stacks', label: 'Stacks' },
   { href: '/kits', label: 'Kits' },
   { href: '/guides', label: 'Guides' },
+  { href: '/tools', label: 'Tools' },
   { href: '/compare', label: 'Compare' },
   { href: '/wiki', label: 'Wiki' }
 ];

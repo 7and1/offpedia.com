@@ -96,6 +96,11 @@ const structuredData = articleFaqSchema({
   software: pair
     ? pair.tools.map((tool) => softwareApplicationSchema(tool, new URL(toolPath(tool), Astro.site ?? Astro.url.origin).href))
     : undefined,
+  breadcrumbs: [
+    { name: 'Home', url: new URL('/', Astro.site ?? Astro.url.origin).href },
+    { name: 'Compare', url: new URL('/compare/', Astro.site ?? Astro.url.origin).href },
+    { name: title, url: Astro.url.href },
+  ],
 });
 ---
 <BaseLayout

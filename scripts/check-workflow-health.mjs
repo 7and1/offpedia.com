@@ -111,7 +111,7 @@ for (const entry of wiki) {
 const searchIndex = await maybeReadJson(searchIndexFile);
 if (searchIndex) {
   const urls = new Set(searchIndex.map((item) => normalizeInternalPath(item.url)).filter(Boolean));
-  for (const route of ['/finder', '/contributors', ...entries.map((entry) => entry.route)]) {
+  for (const route of ['/finder', '/contributors', '/tools', '/tools/notion-export-auditor', ...entries.map((entry) => entry.route)]) {
     if (!urls.has(route)) {
       issues.push(`[search-index] Missing record for ${route}`);
     }
@@ -127,7 +127,7 @@ if (sitemapXml) {
       .map((match) => normalizeInternalPath(match[1]))
       .filter(Boolean),
   );
-  for (const route of ['/finder', '/contributors', ...entries.map((entry) => entry.route)]) {
+  for (const route of ['/finder', '/contributors', '/tools', '/tools/notion-export-auditor', ...entries.map((entry) => entry.route)]) {
     if (!locs.has(route)) {
       issues.push(`[sitemap] Missing URL for ${route}`);
     }

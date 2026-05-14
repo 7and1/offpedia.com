@@ -91,6 +91,11 @@ const kits = defineCollection({
 const guides = defineCollection({
   type: 'content',
   schema: base.extend({
+    quickAnswer: z.string(),
+    faq: z.array(z.object({
+      question: z.string(),
+      answer: z.string(),
+    })).default([]),
     difficulty: difficultyEnum,
     timeRequired: z.string(),
     relatedStack: z.string().optional(),

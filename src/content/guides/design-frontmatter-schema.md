@@ -3,6 +3,12 @@ title: How to design a frontmatter schema
 description: Create filterable, linkable metadata fields for Obsidian, Astro, and Offpedia content.
 customSlug: design-frontmatter-schema
 status: published
+quickAnswer: Keep frontmatter small, typed, and actually used by your workflow. Start with title, description, status, tags, and dates, then add fields only when a view or publishing step depends on them.
+faq:
+  - question: Should every Obsidian note have frontmatter?
+    answer: No. Add frontmatter to notes that need filtering, publishing, templates, or migration tracking. A private scratch note can stay plain Markdown.
+  - question: Should frontmatter match my website schema exactly?
+    answer: Match only the fields that cross the boundary. Keep extra private workflow fields out of public content unless the site template uses them.
 difficulty: beginner
 timeRequired: 20min
 relatedStack: researcher-obsidian-zotero

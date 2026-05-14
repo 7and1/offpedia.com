@@ -24,6 +24,11 @@ export type ComparePair = {
   indexable: boolean;
 };
 
+export type BreadcrumbItem = {
+  name: string;
+  url: string;
+};
+
 export type PersonaGoalPage = {
   persona: string;
   goal: string;
@@ -326,18 +331,32 @@ export function softwareApplicationSchema(tool: ToolEntry, url: string) {
   };
 }
 
+export function breadcrumbListSchema(items: BreadcrumbItem[]) {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
+}
+
 export function articleFaqSchema({
   title,
   description,
   url,
   faq,
   software,
+  breadcrumbs,
 }: {
   title: string;
   description: string;
   url: string;
   faq?: { question: string; answer: string }[];
   software?: ReturnType<typeof softwareApplicationSchema>[];
+  breadcrumbs?: BreadcrumbItem[];
 }) {
   const graph: Record<string, unknown>[] = [
     {
@@ -366,6 +385,8 @@ export function articleFaqSchema({
       })),
     });
   }
+
+  if (breadcrumbs?.length) graph.push(breadcrumbListSchema(breadcrumbs));
 
   if (software?.length) graph.push(...software);
 

@@ -3,6 +3,12 @@ title: How to sync Obsidian with GitHub
 description: A complete path from initializing a Git repository to pushing Markdown notes from an Obsidian vault.
 customSlug: setup-obsidian-github-sync
 status: published
+quickAnswer: Sync Obsidian with GitHub by treating the vault as a Git repository, committing small meaningful changes, and pushing regularly. Keep secrets, private attachments, and generated files out of the repo.
+faq:
+  - question: Is GitHub the same as Obsidian Sync?
+    answer: No. GitHub gives version history and remote backup for files, while Obsidian Sync is a purpose-built app sync service. Git is better for reviewed publishing workflows.
+  - question: Should I commit the whole vault?
+    answer: Commit only the folders you intentionally want in Git. Exclude private files, local plugins, caches, and anything that should not leave your machine.
 difficulty: beginner
 timeRequired: 30min
 relatedStack: writer-obsidian-github

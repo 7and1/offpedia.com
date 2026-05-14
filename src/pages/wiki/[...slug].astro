@@ -5,7 +5,7 @@ import ContentHeader from '../../components/ContentHeader.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-import { softwareApplicationSchema, toolPath, type ToolEntry } from '../../lib/pseo';
+import { articleFaqSchema, softwareApplicationSchema, toolPath, type ToolEntry } from '../../lib/pseo';
 
 export async function getStaticPaths() {
   const entries = await getCollection('wiki');
@@ -20,20 +20,18 @@ const relatedLinks = [
   ...entry.data.relatedKits.map((k: string) => ({ label: k, href: `/kits/${k}`, type: 'Kit' })),
 ];
 const toolEntry = entry.data.kind === 'tool' ? (entry as ToolEntry) : null;
-const structuredData = toolEntry
-  ? {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'Article',
-          headline: toolEntry.data.title,
-          description: toolEntry.data.description,
-          mainEntityOfPage: Astro.url.href,
-        },
-        softwareApplicationSchema(toolEntry, new URL(toolPath(toolEntry), Astro.site ?? Astro.url.origin).href),
-      ],
-    }
-  : undefined;
+const siteOrigin = Astro.site ?? Astro.url.origin;
+const structuredData = articleFaqSchema({
+  title: entry.data.title,
+  description: entry.data.description,
+  url: Astro.url.href,
+  software: toolEntry ? [softwareApplicationSchema(toolEntry, new URL(toolPath(toolEntry), siteOrigin).href)] : undefined,
+  breadcrumbs: [
+    { name: 'Home', url: new URL('/', siteOrigin).href },
+    { name: 'Wiki', url: new URL('/wiki/', siteOrigin).href },
+    { name: entry.data.title, url: Astro.url.href },
+  ],
+});
 ---
 <BaseLayout title={entry.data.title} description={entry.data.description} type="article" structuredData={structuredData}>
   <article class="container-content py-10 sm:py-14">

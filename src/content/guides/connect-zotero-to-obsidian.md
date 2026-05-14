@@ -3,6 +3,12 @@ title: How to connect Zotero to an Obsidian research flow
 description: Keep Zotero as the source library and Obsidian as the synthesis layer by designing a clean literature-note handoff.
 customSlug: connect-zotero-to-obsidian
 status: published
+quickAnswer: Keep Zotero as the source library and Obsidian as the thinking layer. Export stable citation keys, link literature notes back to sources, and avoid duplicating PDFs or metadata by hand.
+faq:
+  - question: Should PDFs live in Obsidian or Zotero?
+    answer: Usually keep PDFs in Zotero and write synthesis notes in Obsidian. Duplicate files only when a publishing or offline constraint requires it.
+  - question: What is the minimum useful handoff?
+    answer: A citation key, source title, author or year, and one link back to the Zotero item are enough for most research notes.
 difficulty: intermediate
 timeRequired: 45min
 relatedStack: researcher-obsidian-zotero

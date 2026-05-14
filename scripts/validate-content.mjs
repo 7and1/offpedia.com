@@ -22,6 +22,8 @@ const staticRoutes = new Set([
   '/rss.xml',
   '/search',
   '/stacks',
+  '/tools',
+  '/tools/notion-export-auditor',
   '/wiki',
   '/workflow/obsidian-with-github',
   '/workflow/obsidian-with-zotero',

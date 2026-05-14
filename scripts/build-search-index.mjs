@@ -178,6 +178,24 @@ index.push(makeRecord({
   body: 'Contribute content, fixes, and workflow corrections without diluting the editorial quality bar. Review prioritizes correctness, portability tradeoffs, and relationship coverage.',
 }));
 
+index.push(makeRecord({
+  collection: 'tools',
+  title: 'Tools',
+  description: 'Local utilities and checklists for auditing portable knowledge workflows before publishing or migration.',
+  tags: ['tools', 'audit', 'workflow'],
+  url: '/tools',
+  body: 'Offpedia tools are local-first helpers. They explain commands and privacy boundaries instead of uploading private exports to a hosted service.',
+}));
+
+index.push(makeRecord({
+  collection: 'tools',
+  title: 'Notion Export Auditor',
+  description: 'Run a local CLI audit on a Notion export before cleaning it up for Obsidian, Bases, Quartz, or public publishing.',
+  tags: ['notion', 'obsidian', 'audit', 'migration'],
+  url: '/tools/notion-export-auditor',
+  body: 'Audit CSV database exports, broken local links, Notion web links, duplicate page titles, private path names, HTML leftovers, large attachments, missing publishing metadata, and before-after importer cleanup.',
+}));
+
 for (const [collection, baseUrl] of Object.entries(collections)) {
   const dir = path.join(contentRoot, collection);
   try {
