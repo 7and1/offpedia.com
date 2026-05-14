@@ -13,6 +13,7 @@ type Props = {
   title?: string;
   intro?: string;
   embedded?: boolean;
+  layout?: 'split' | 'stacked';
   initialInput?: Partial<GeneratorInput>;
 };
 
@@ -23,6 +24,7 @@ export default function StackGeneratorIsland({
   title = 'Stack Generator',
   intro = 'Choose the job, the collaboration pressure, and how much ownership you need. Offpedia returns one stack, the matching kit or guide, and the nearest alternative.',
   embedded = false,
+  layout = 'split',
   initialInput = {},
 }: Props) {
   const [input, setInput] = useState<GeneratorInput>({
@@ -42,7 +44,7 @@ export default function StackGeneratorIsland({
         embedded ? '' : 'container-wide my-10 sm:my-14',
       ].join(' ')}
     >
-      <div className="grid grid-cols-1 xl:grid-cols-[0.96fr_1.04fr] gap-8">
+      <div className={layout === 'stacked' ? 'grid grid-cols-1 gap-6' : 'grid grid-cols-1 xl:grid-cols-[0.96fr_1.04fr] gap-8'}>
         <div>
           <p className="text-[11px] uppercase tracking-[0.24em] text-text-subtle mb-3">Interactive stack generator</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{title}</h2>
@@ -137,14 +139,14 @@ export default function StackGeneratorIsland({
             </label>
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className={layout === 'stacked' ? 'mt-6 flex flex-wrap gap-2 sr-only' : 'mt-6 flex flex-wrap gap-2'}>
             <span className="badge-accent">Server-rendered default result</span>
             <span className="badge">Hydrates only the selector surface</span>
             <span className="badge">No blank no-JS state</span>
           </div>
         </div>
 
-        <div className="rounded-[1.75rem] border border-white/5 bg-[#0a0d11] p-6 sm:p-7" aria-live="polite">
+        <div className="rounded-[1.75rem] border border-white/5 bg-[#0a0d11] p-5 sm:p-7" aria-live="polite">
           <div className="flex flex-wrap items-center gap-2 mb-4">
             <span className="badge-accent">Recommended stack</span>
             <span className="badge">{recommendation.matchedSignals[0] || 'Constraint-matched'}</span>
@@ -153,7 +155,7 @@ export default function StackGeneratorIsland({
           <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">{recommendation.stack.label}</h3>
           <p className="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed">{recommendation.summary}</p>
 
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className={layout === 'stacked' ? 'mt-5 grid grid-cols-1 gap-3' : 'mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4'}>
             <article className="rounded-3xl border border-white/10 bg-white/5 p-4">
               <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400 mb-2">Why this fits</p>
               <p className="text-sm text-slate-200">{recommendation.reason}</p>
