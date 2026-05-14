@@ -3,7 +3,7 @@ title: Notion export sample audit report
 description: Read the Offpedia fixture audit result and understand how findings map to real Notion to Obsidian cleanup decisions.
 customSlug: notion-export-sample-audit-report
 status: published
-quickAnswer: The sample audit report is a teaching fixture: it shows typical Notion export risks such as CSV databases, missing links, HTML leftovers, duplicate titles, private paths, and incomplete publishing metadata.
+quickAnswer: "The sample audit report is a teaching fixture: it shows typical Notion export risks such as CSV databases, missing links, HTML leftovers, duplicate titles, private paths, and incomplete publishing metadata."
 faq:
   - question: Is the sample report based on private user data?
     answer: No. It is a repository fixture designed to exercise the auditor without exposing a real workspace.

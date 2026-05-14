@@ -3,7 +3,7 @@ title: Notion to Obsidian frontmatter
 description: Build a small frontmatter schema for imported Notion pages so Obsidian, Bases, and publishing tools can filter the vault.
 customSlug: notion-to-obsidian-frontmatter
 status: published
-quickAnswer: Use frontmatter after a Notion import to preserve only durable metadata: title, status, type, dates, source, publish state, and key database fields that power search, Bases, or publishing.
+quickAnswer: "Use frontmatter after a Notion import to preserve only durable metadata: title, status, type, dates, source, publish state, and key database fields that power search, Bases, or publishing."
 faq:
   - question: Should every Notion database column become frontmatter?
     answer: No. Keep fields only when they support filtering, publishing, ownership, or cleanup. Dead columns create maintenance work.
